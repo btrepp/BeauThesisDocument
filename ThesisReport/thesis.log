@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.8.29)  29 AUG 2011 16:10
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2011.8.29)  29 AUG 2011 17:32
 entering extended mode
-**H:/Thesis/ThesisReport/thesis.tex
-(H:/Thesis/ThesisReport/thesis.tex
+**H:/BeauThesisDocument/ThesisReport/thesis.tex
+(H:/BeauThesisDocument/ThesisReport/thesis.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for english, afrikaans, ancientgreek, ar
 abic, armenian, assamese, basque, bengali, bokmal, bulgarian, catalan, coptic, 
@@ -13,11 +13,11 @@ an, ngerman-x-2009-06-19, nynorsk, oriya, panjabi, pinyin, polish, portuguese,
 romanian, russian, sanskrit, serbian, slovak, slovenian, spanish, swedish, swis
 sgerman, tamil, telugu, turkish, turkmen, ukenglish, ukrainian, uppersorbian, u
 senglishmax, welsh, loaded.
-(H:\Thesis\ThesisReport\Latex/Classes/PhDthesisPSnPDF.cls
+(H:\BeauThesisDocument\ThesisReport\Latex/Classes/PhDthesisPSnPDF.cls
 Document Class: Latex/Classes/PhDthesisPSnPDF 2007/09/06 v2 PhD thesis class
-("H:\Portable Applications\MikTex\tex\latex\base\book.cls"
+(H:\PortableApplications\MikTex\tex\latex\base\book.cls
 Document Class: book 2007/10/19 v1.4h Standard LaTeX document class
-("H:\Portable Applications\MikTex\tex\latex\base\bk11.clo"
+(H:\PortableApplications\MikTex\tex\latex\base\bk11.clo
 File: bk11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
@@ -33,10 +33,10 @@ File: bk11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-("H:\Portable Applications\MikTex\tex\latex\amsfonts\amssymb.sty"
+(H:\PortableApplications\MikTex\tex\latex\amsfonts\amssymb.sty
 Package: amssymb 2009/06/22 v3.00
 
-("H:\Portable Applications\MikTex\tex\latex\amsfonts\amsfonts.sty"
+(H:\PortableApplications\MikTex\tex\latex\amsfonts\amsfonts.sty
 Package: amsfonts 2009/06/22 v3.00 Basic AMSFonts support
 \@emptytoks=\toks14
 \symAMSa=\mathgroup4
@@ -44,35 +44,35 @@ Package: amsfonts 2009/06/22 v3.00 Basic AMSFonts support
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 96.
 ))
-("H:\Portable Applications\MikTex\tex\latex\graphics\graphics.sty"
+(H:\PortableApplications\MikTex\tex\latex\graphics\graphics.sty
 Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
 
-("H:\Portable Applications\MikTex\tex\latex\graphics\trig.sty"
+(H:\PortableApplications\MikTex\tex\latex\graphics\trig.sty
 Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
 )
-("H:\Portable Applications\MikTex\tex\latex\00miktex\graphics.cfg"
+(H:\PortableApplications\MikTex\tex\latex\00miktex\graphics.cfg
 File: graphics.cfg 2007/01/18 v1.5 graphics configuration of teTeX/TeXLive
 )
 Package graphics Info: Driver file: pdftex.def on input line 91.
 
-("H:\Portable Applications\MikTex\tex\latex\pdftex-def\pdftex.def"
+(H:\PortableApplications\MikTex\tex\latex\pdftex-def\pdftex.def
 File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
 
-("H:\Portable Applications\MikTex\tex\generic\oberdiek\infwarerr.sty"
+(H:\PortableApplications\MikTex\tex\generic\oberdiek\infwarerr.sty
 Package: infwarerr 2010/04/08 v1.3 Providing info/warning/message (HO)
 )
-("H:\Portable Applications\MikTex\tex\generic\oberdiek\ltxcmds.sty"
+(H:\PortableApplications\MikTex\tex\generic\oberdiek\ltxcmds.sty
 Package: ltxcmds 2011/04/18 v1.20 LaTeX kernel commands for general use (HO)
 )
 \Gread@gobject=\count88
 ))
-("H:\Portable Applications\MikTex\tex\latex\caption\caption.sty"
+(H:\PortableApplications\MikTex\tex\latex\caption\caption.sty
 Package: caption 2011/08/18 v3.2b Customizing captions (AR)
 
-("H:\Portable Applications\MikTex\tex\latex\caption\caption3.sty"
+(H:\PortableApplications\MikTex\tex\latex\caption\caption3.sty
 Package: caption3 2011/08/18 v1.3b caption3 kernel (AR)
 
-("H:\Portable Applications\MikTex\tex\latex\graphics\keyval.sty"
+(H:\PortableApplications\MikTex\tex\latex\graphics\keyval.sty
 Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \KV@toks@=\toks15
 )
@@ -85,7 +85,7 @@ Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 )
 \c@ContinuedFloat=\count89
 )
-("H:\Portable Applications\MikTex\tex\latex\fancyhdr\fancyhdr.sty"
+(H:\PortableApplications\MikTex\tex\latex\fancyhdr\fancyhdr.sty
 \fancy@headwidth=\skip43
 \f@ncyO@elh=\skip44
 \f@ncyO@erh=\skip45
@@ -96,24 +96,24 @@ Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 \f@ncyO@olf=\skip50
 \f@ncyO@orf=\skip51
 )
-("H:\Portable Applications\MikTex\tex\latex\amsfonts\eucal.sty"
+(H:\PortableApplications\MikTex\tex\latex\amsfonts\eucal.sty
 Package: eucal 2009/06/22 v3.00 Euler Script fonts
 LaTeX Font Info:    Overwriting math alphabet `\EuScript' in version `bold'
 (Font)                  U/eus/m/n --> U/eus/b/n on input line 33.
 )
-("H:\Portable Applications\MikTex\tex\generic\babel\babel.sty"
+(H:\PortableApplications\MikTex\tex\generic\babel\babel.sty
 Package: babel 2008/07/08 v3.8m The Babel package
 
 *************************************
 * Local config file bblopts.cfg used
 *
-("H:\Portable Applications\MikTex\tex\latex\00miktex\bblopts.cfg"
+(H:\PortableApplications\MikTex\tex\latex\00miktex\bblopts.cfg
 File: bblopts.cfg 2006/07/31 v1.0 MiKTeX 'babel' configuration
 )
-("H:\Portable Applications\MikTex\tex\generic\babel\english.ldf"
+(H:\PortableApplications\MikTex\tex\generic\babel\english.ldf
 Language: english 2005/03/30 v3.3o English support from the babel system
 
-("H:\Portable Applications\MikTex\tex\generic\babel\babel.def"
+(H:\PortableApplications\MikTex\tex\generic\babel\babel.def
 File: babel.def 2008/07/08 v3.8m Babel common definitions
 \babel@savecnt=\count90
 \U@D=\dimen109
@@ -122,18 +122,18 @@ File: babel.def 2008/07/08 v3.8m Babel common definitions
 \l@australian = a dialect from \language\l@british 
 \l@newzealand = a dialect from \language\l@british 
 ))
-("H:\Portable Applications\MikTex\tex\latex\graphics\color.sty"
+(H:\PortableApplications\MikTex\tex\latex\graphics\color.sty
 Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
 
-("H:\Portable Applications\MikTex\tex\latex\00miktex\color.cfg"
+(H:\PortableApplications\MikTex\tex\latex\00miktex\color.cfg
 File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
 )
 Package color Info: Driver file: pdftex.def on input line 130.
 
-("H:\Portable Applications\MikTex\tex\latex\graphics\dvipsnam.def"
+(H:\PortableApplications\MikTex\tex\latex\graphics\dvipsnam.def
 File: dvipsnam.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
 ))
-("H:\Portable Applications\MikTex\tex\latex\footmisc\footmisc.sty"
+(H:\PortableApplications\MikTex\tex\latex\footmisc\footmisc.sty
 Package: footmisc 2011/06/06 v5.5b a miscellany of footnote facilities
 \FN@temptoken=\toks16
 \footnotemargin=\dimen110
@@ -148,17 +148,17 @@ Package footmisc Info: Declaring symbol style lamport* on input line 903.
 Package footmisc Info: Declaring symbol style lamport*-robust on input line 924
 .
 )
-("H:\Portable Applications\MikTex\tex\latex\natbib\natbib.sty"
+(H:\PortableApplications\MikTex\tex\latex\natbib\natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip52
 \bibsep=\skip53
 LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count93
 )
-("H:\Portable Applications\MikTex\tex\latex\base\ifthen.sty"
+(H:\PortableApplications\MikTex\tex\latex\base\ifthen.sty
 Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
 )
-("H:\Portable Applications\MikTex\tex\latex\tools\multicol.sty"
+(H:\PortableApplications\MikTex\tex\latex\tools\multicol.sty
 Package: multicol 2011/06/27 v1.7a multicolumn formatting (FMi)
 \c@tracingmulticols=\count94
 \mult@box=\box26
@@ -206,14 +206,14 @@ Package: multicol 2011/06/27 v1.7a multicolumn formatting (FMi)
 \colbreak@box=\box51
 \multicol@sort@counter=\count102
 )
-("H:\Portable Applications\MikTex\tex\latex\tocbibind\tocbibind.sty"
+(H:\PortableApplications\MikTex\tex\latex\tocbibind\tocbibind.sty
 Package: tocbibind 2010/10/13 v1.5k extra ToC listings
 Package tocbibind Info: The document has chapter divisions on input line 50.
 
 
 Package tocbibind Note: Using chapter style headings, unless overridden.
 
-) ("H:\Portable Applications\MikTex\tex\latex\nomencl\nomencl.sty"
+) (H:\PortableApplications\MikTex\tex\latex\nomencl\nomencl.sty
 Package: nomencl 2005/09/22 v4.2 Nomenclature package (LN)
 \nomlabelwidth=\dimen119
 \nom@tempdim=\dimen120
@@ -222,17 +222,17 @@ Package: nomencl 2005/09/22 v4.2 Nomenclature package (LN)
 \@nomenclaturefile=\write3
 
 Writing nomenclature file thesis.nlo
-("H:\Portable Applications\MikTex\tex\generic\oberdiek\ifpdf.sty"
+(H:\PortableApplications\MikTex\tex\generic\oberdiek\ifpdf.sty
 Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
 Package ifpdf Info: pdfTeX in PDF mode is detected.
 )
-("H:\Portable Applications\MikTex\tex\latex\hyperref\hyperref.sty"
+(H:\PortableApplications\MikTex\tex\latex\hyperref\hyperref.sty
 Package: hyperref 2011/08/19 v6.82h Hypertext links for LaTeX
 
-("H:\Portable Applications\MikTex\tex\generic\oberdiek\hobsub-hyperref.sty"
+(H:\PortableApplications\MikTex\tex\generic\oberdiek\hobsub-hyperref.sty
 Package: hobsub-hyperref 2011/04/23 v1.4 Bundle oberdiek, subset hyperref (HO)
 
-("H:\Portable Applications\MikTex\tex\generic\oberdiek\hobsub-generic.sty"
+(H:\PortableApplications\MikTex\tex\generic\oberdiek\hobsub-generic.sty
 Package: hobsub-generic 2011/04/23 v1.4 Bundle oberdiek, subset generic (HO)
 Package: hobsub 2011/04/23 v1.4 Subsetting bundle oberdiek (HO)
 Package hobsub Info: Skipping package `infwarerr' (already loaded).
@@ -269,22 +269,22 @@ Package: atbegshi 2011/01/30 v1.15 At begin shipout hook (HO)
 Package: refcount 2010/12/01 v3.2 Data extraction from references (HO)
 Package: hycolor 2011/01/30 v1.7 Color options of hyperref/bookmark (HO)
 )
-("H:\Portable Applications\MikTex\tex\generic\ifxetex\ifxetex.sty"
+(H:\PortableApplications\MikTex\tex\generic\ifxetex\ifxetex.sty
 Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
-("H:\Portable Applications\MikTex\tex\latex\oberdiek\kvoptions.sty"
+(H:\PortableApplications\MikTex\tex\latex\oberdiek\kvoptions.sty
 Package: kvoptions 2010/12/23 v3.10 Keyval support for LaTeX options (HO)
 )
 \@linkdim=\dimen121
 \Hy@linkcounter=\count103
 \Hy@pagecounter=\count104
 
-("H:\Portable Applications\MikTex\tex\latex\hyperref\pd1enc.def"
+(H:\PortableApplications\MikTex\tex\latex\hyperref\pd1enc.def
 File: pd1enc.def 2011/08/19 v6.82h Hyperref: PDFDocEncoding definition (HO)
 )
 \Hy@SavedSpaceFactor=\count105
 
-("H:\Portable Applications\MikTex\tex\latex\00miktex\hyperref.cfg"
+(H:\PortableApplications\MikTex\tex\latex\00miktex\hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
 )
 Package hyperref Info: Option `plainpages' set `false' on input line 3932.
@@ -317,17 +317,17 @@ Package hyperref Info: Plain pages OFF on input line 4068.
 Package hyperref Info: Backreferencing ON on input line 4071.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4291.
-("H:\Portable Applications\MikTex\tex\latex\hyperref\backref.sty"
+(H:\PortableApplications\MikTex\tex\latex\hyperref\backref.sty
 Package: backref 2010/08/30 v1.36 Bibliographical back referencing
 
-("H:\Portable Applications\MikTex\tex\latex\oberdiek\rerunfilecheck.sty"
+(H:\PortableApplications\MikTex\tex\latex\oberdiek\rerunfilecheck.sty
 Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 82.
 ))
 \c@Hy@tempcnt=\count106
 
-("H:\Portable Applications\MikTex\tex\latex\ltxmisc\url.sty"
+(H:\PortableApplications\MikTex\tex\latex\ltxmisc\url.sty
 \Urlmuskip=\muskip10
 Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
 )
@@ -351,33 +351,36 @@ LaTeX Info: Redefining \pageref on input line 5804.
 
 Package hyperref Message: Driver: hpdftex.
 
-("H:\Portable Applications\MikTex\tex\latex\hyperref\hpdftex.def"
+(H:\PortableApplications\MikTex\tex\latex\hyperref\hpdftex.def
 File: hpdftex.def 2011/08/19 v6.82h Hyperref driver for pdfTeX
 \Fld@listcount=\count111
 \c@bookmark@seq@number=\count112
 \Hy@SectionHShift=\skip57
 )
-("H:\Portable Applications\MikTex\tex\latex\graphics\graphicx.sty"
+(H:\PortableApplications\MikTex\tex\latex\graphics\graphicx.sty
 Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
 \Gin@req@height=\dimen124
 \Gin@req@width=\dimen125
 ))
 \@input{Latex/Macros/MacroFile1.aux}
-(H:\Thesis\ThesisReport\Latex/Macros/MacroFile1.tex)
-(H:\Thesis\ThesisReport\thesis.aux
-(H:\Thesis\ThesisReport\0_frontmatter/abstract.aux)
-(H:\Thesis\ThesisReport\0_frontmatter/dedication.aux)
-(H:\Thesis\ThesisReport\0_frontmatter/acknowledgement.aux)
-(H:\Thesis\ThesisReport\0_frontmatter/glossary.aux)
-(H:\Thesis\ThesisReport\1_introduction/introduction.aux
+(H:\BeauThesisDocument\ThesisReport\Latex/Macros/MacroFile1.tex)
+(H:\BeauThesisDocument\ThesisReport\thesis.aux
+(H:\BeauThesisDocument\ThesisReport\0_frontmatter/abstract.aux)
+(H:\BeauThesisDocument\ThesisReport\0_frontmatter/dedication.aux)
+(H:\BeauThesisDocument\ThesisReport\0_frontmatter/acknowledgement.aux)
+(H:\BeauThesisDocument\ThesisReport\0_frontmatter/glossary.aux)
+(H:\BeauThesisDocument\ThesisReport\1_introduction/introduction.aux
 
 LaTeX Warning: Label `largepotato' multiply defined.
 
-) (H:\Thesis\ThesisReport\2/aims.aux) (H:\Thesis\ThesisReport\3/XYZ.aux)
-(H:\Thesis\ThesisReport\4/XYZ.aux) (H:\Thesis\ThesisReport\5/XYZ.aux)
-(H:\Thesis\ThesisReport\6/XYZ.aux) (H:\Thesis\ThesisReport\7/discussion.aux)
-(H:\Thesis\ThesisReport\8/materials_methods.aux)
-(H:\Thesis\ThesisReport\9_backmatter/declaration.aux))
+) (H:\BeauThesisDocument\ThesisReport\2/aims.aux)
+(H:\BeauThesisDocument\ThesisReport\3/XYZ.aux)
+(H:\BeauThesisDocument\ThesisReport\4/XYZ.aux)
+(H:\BeauThesisDocument\ThesisReport\5/XYZ.aux)
+(H:\BeauThesisDocument\ThesisReport\6/XYZ.aux)
+(H:\BeauThesisDocument\ThesisReport\7/discussion.aux)
+(H:\BeauThesisDocument\ThesisReport\8/materials_methods.aux)
+(H:\BeauThesisDocument\ThesisReport\9_backmatter/declaration.aux))
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 90.
 LaTeX Font Info:    ... okay on input line 90.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 90.
@@ -393,7 +396,7 @@ LaTeX Font Info:    ... okay on input line 90.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 90.
 LaTeX Font Info:    ... okay on input line 90.
 
-("H:\Portable Applications\MikTex\tex\context\base\supp-pdf.mkii"
+(H:\PortableApplications\MikTex\tex\context\base\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count113
 \scratchdimen=\dimen126
@@ -413,10 +416,10 @@ Package caption Info: End \AtBeginDocument code.
 \AtBeginShipoutBox=\box53
 Package backref Info: ** backref set up for natbib ** on input line 90.
 Package hyperref Info: Link coloring OFF on input line 90.
- ("H:\Portable Applications\MikTex\tex\latex\hyperref\nameref.sty"
+ (H:\PortableApplications\MikTex\tex\latex\hyperref\nameref.sty
 Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
 
-("H:\Portable Applications\MikTex\tex\generic\oberdiek\gettitlestring.sty"
+(H:\PortableApplications\MikTex\tex\generic\oberdiek\gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
 \c@section@level=\count119
@@ -425,85 +428,75 @@ LaTeX Info: Redefining \ref on input line 90.
 LaTeX Info: Redefining \pageref on input line 90.
 LaTeX Info: Redefining \nameref on input line 90.
 
-(H:\Thesis\ThesisReport\thesis.out) (H:\Thesis\ThesisReport\thesis.out)
+(H:\BeauThesisDocument\ThesisReport\thesis.out)
+(H:\BeauThesisDocument\ThesisReport\thesis.out)
 \@outlinefile=\write4
 
-<0_frontmatter/figures/logo.png, id=51, 301.125pt x 129.48375pt>
-File: 0_frontmatter/figures/logo.png Graphic file (type png)
+<0_frontmatter/figures/UWA_crest.png, id=51, 1003.75pt x 1357.07pt>
+File: 0_frontmatter/figures/UWA_crest.png Graphic file (type png)
 
-<use 0_frontmatter/figures/logo.png>
-Package pdftex.def Info: 0_frontmatter/figures/logo.png used on input line 101.
-
-(pdftex.def)             Requested size: 113.81102pt x 48.93958pt.
+<use 0_frontmatter/figures/UWA_crest.png>
+Package pdftex.def Info: 0_frontmatter/figures/UWA_crest.png used on input line
+ 101.
+(pdftex.def)             Requested size: 113.81102pt x 153.85445pt.
  [1
 
 
 
 \FN@pp@footnotehinttrue 
 
-{H:/Portable Applications/MikTex/pdftex/config/pdftex.map} <H:/Thesis/ThesisRep
-ort/0_frontmatter/figures/logo.png>] [2]
-(H:\Thesis\ThesisReport\0_frontmatter/abstract.tex [3
+{H:/PortableApplications/MikTex/pdftex/config/pdftex.map} <H:/BeauThesisDocumen
+t/ThesisReport/0_frontmatter/figures/UWA_crest.png>]
+(H:\BeauThesisDocument\ThesisReport\0_frontmatter/abstract.tex [2
 
-]) [4
-\FN@pp@footnotehinttrue 
-
-
-] (H:\Thesis\ThesisReport\0_frontmatter/dedication.texpdfTeX warning (ext4): de
-stination with the same identifier (name{page.i}) has been already used, duplic
-ate ignored
+])
+(H:\BeauThesisDocument\ThesisReport\0_frontmatter/dedication.texpdfTeX warning 
+(ext4): destination with the same identifier (name{page.i}) has been already us
+ed, duplicate ignored
 <to be read again> 
                    \relax 
 l.7 \end{dedication}
                      [1
 
+
+
 ])
-(H:\Thesis\ThesisReport\0_frontmatter/acknowledgement.texpdfTeX warning (ext4):
- destination with the same identifier (name{page.ii}) has been already used, du
-plicate ignored
+(H:\BeauThesisDocument\ThesisReport\0_frontmatter/acknowledgement.texpdfTeX war
+ning (ext4): destination with the same identifier (name{page.ii}) has been alre
+ady used, duplicate ignored
 <to be read again> 
                    \relax 
-l.9 \end{acknowledgements}
-                           [2
+l.20 \end{acknowledgements}
+                            [2
 
 
-]) (H:\Thesis\ThesisReport\thesis.toc
+]) (H:\BeauThesisDocument\ThesisReport\thesis.toc
 LaTeX Font Info:    Try loading font information for U+msa on input line 6.
-
-("H:\Portable Applications\MikTex\tex\latex\amsfonts\umsa.fd"
+(H:\PortableApplications\MikTex\tex\latex\amsfonts\umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
 LaTeX Font Info:    Try loading font information for U+msb on input line 6.
 
-("H:\Portable Applications\MikTex\tex\latex\amsfonts\umsb.fd"
+(H:\PortableApplications\MikTex\tex\latex\amsfonts\umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 ))
 \tf@toc=\write5
-pdfTeX warning (ext4): destination with the same identifier (name{page.iii}) ha
-s been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.152 \listoffigures
-                    	% print list of figures [3
+ [3
 \FN@pp@footnotehinttrue 
 
 
-]pdfTeX warning (ext4): destination with the same identifier (name{page.iv}) ha
-s been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.152 \listoffigures
-                    	% print list of figures [4
+] [4
 
-]
-(H:\Thesis\ThesisReport\thesis.lof)
+] (H:\BeauThesisDocument\ThesisReport\thesis.lof)
 \tf@lof=\write6
  [5] [6
 
-] (H:\Thesis\ThesisReport\thesis.lot)
+]
+(H:\BeauThesisDocument\ThesisReport\thesis.lot)
 \tf@lot=\write7
-[7] (H:\Thesis\ThesisReport\0_frontmatter/glossary.tex)
-(H:\Thesis\ThesisReport\thesis.nls [8
+ [7]
+(H:\BeauThesisDocument\ThesisReport\0_frontmatter/glossary.tex)
+(H:\BeauThesisDocument\ThesisReport\thesis.nls [8
 
 
 \FN@pp@footnotehinttrue 
@@ -546,9 +539,9 @@ Underfull \hbox (badness 10000) in paragraph at lines 11--13
 
 ) [9] [10
 
-] (H:\Thesis\ThesisReport\1_introduction/introduction.tex
+] (H:\BeauThesisDocument\ThesisReport\1_introduction/introduction.tex
  1.
-<1_introduction/figures/largepotato.jpg, id=143, 491.8375pt x 291.0875pt>
+<1_introduction/figures/largepotato.jpg, id=136, 491.8375pt x 291.0875pt>
 File: 1_introduction/figures/largepotato.jpg Graphic file (type jpg)
 
 <use 1_introduction/figures/largepotato.jpg>
@@ -564,7 +557,7 @@ ine 91.
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 103.
 
 
-("H:\Portable Applications\MikTex\tex\latex\base\omscmr.fd"
+(H:\PortableApplications\MikTex\tex\latex\base\omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
@@ -572,8 +565,9 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
  [1
 
 
-] [2 <H:/Thesis/ThesisReport/1_introduction/figures/largepotato.jpg>]) [3]
-(H:\Thesis\ThesisReport\2/aims.tex [4
+] [2 <H:/BeauThesisDocument/ThesisReport/1_introduction/figures/largepotato.jpg
+>]) [3]
+(H:\BeauThesisDocument\ThesisReport\2/aims.tex [4
 
 
 
@@ -584,7 +578,7 @@ No file 3/XYZ.tex.
 No file 4/XYZ.tex.
 No file 5/XYZ.tex.
 No file 6/XYZ.tex.
-(H:\Thesis\ThesisReport\7/discussion.tex [6
+(H:\BeauThesisDocument\ThesisReport\7/discussion.tex [6
 
 
 
@@ -598,35 +592,39 @@ No file 6/XYZ.tex.
 
 ]
  3.
-) [7] (H:\Thesis\ThesisReport\8/materials_methods.tex [8
+) [7] (H:\BeauThesisDocument\ThesisReport\8/materials_methods.tex [8
 
 
 
 ]
  4.
-) [9] (H:\Thesis\ThesisReport\thesis.bbl (H:\Thesis\ThesisReport\thesis.brf)
+) [9] (H:\BeauThesisDocument\ThesisReport\thesis.bbl
+(H:\BeauThesisDocument\ThesisReport\thesis.brf)
 \tf@brf=\write8
+ [10
 
-[10
 
-
-]) [11] (H:\Thesis\ThesisReport\9_backmatter/declaration.tex [12
+]) [11]
+(H:\BeauThesisDocument\ThesisReport\9_backmatter/declaration.tex [12
 
 ])
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 257.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 257.
 
-(H:\Thesis\ThesisReport\thesis.aux
-(H:\Thesis\ThesisReport\0_frontmatter/abstract.aux)
-(H:\Thesis\ThesisReport\0_frontmatter/dedication.aux)
-(H:\Thesis\ThesisReport\0_frontmatter/acknowledgement.aux)
-(H:\Thesis\ThesisReport\0_frontmatter/glossary.aux)
-(H:\Thesis\ThesisReport\1_introduction/introduction.aux)
-(H:\Thesis\ThesisReport\2/aims.aux) (H:\Thesis\ThesisReport\3/XYZ.aux)
-(H:\Thesis\ThesisReport\4/XYZ.aux) (H:\Thesis\ThesisReport\5/XYZ.aux)
-(H:\Thesis\ThesisReport\6/XYZ.aux) (H:\Thesis\ThesisReport\7/discussion.aux)
-(H:\Thesis\ThesisReport\8/materials_methods.aux)
-(H:\Thesis\ThesisReport\9_backmatter/declaration.aux))
+(H:\BeauThesisDocument\ThesisReport\thesis.aux
+(H:\BeauThesisDocument\ThesisReport\0_frontmatter/abstract.aux)
+(H:\BeauThesisDocument\ThesisReport\0_frontmatter/dedication.aux)
+(H:\BeauThesisDocument\ThesisReport\0_frontmatter/acknowledgement.aux)
+(H:\BeauThesisDocument\ThesisReport\0_frontmatter/glossary.aux)
+(H:\BeauThesisDocument\ThesisReport\1_introduction/introduction.aux)
+(H:\BeauThesisDocument\ThesisReport\2/aims.aux)
+(H:\BeauThesisDocument\ThesisReport\3/XYZ.aux)
+(H:\BeauThesisDocument\ThesisReport\4/XYZ.aux)
+(H:\BeauThesisDocument\ThesisReport\5/XYZ.aux)
+(H:\BeauThesisDocument\ThesisReport\6/XYZ.aux)
+(H:\BeauThesisDocument\ThesisReport\7/discussion.aux)
+(H:\BeauThesisDocument\ThesisReport\8/materials_methods.aux)
+(H:\BeauThesisDocument\ThesisReport\9_backmatter/declaration.aux))
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 257.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 257.
 Package rerunfilecheck Info: File `thesis.out' has not changed.
@@ -639,29 +637,29 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 7876 strings out of 494045
- 119469 string characters out of 3146805
- 209992 words of memory out of 3000000
+ 7879 strings out of 494045
+ 120837 string characters out of 3146805
+ 209997 words of memory out of 3000000
  10898 multiletter control sequences out of 15000+200000
  15432 words of font info for 57 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 43i,11n,45p,447b,497s stack positions out of 5000i,500n,10000p,200000b,50000s
-<H:/Portable Applications/MikTex/fonts/type1/public/amsfonts/cm/cmbx10.pfb><H
-:/Portable Applications/MikTex/fonts/type1/public/amsfonts/cm/cmbx12.pfb><H:/Po
-rtable Applications/MikTex/fonts/type1/public/amsfonts/cm/cmbx6.pfb><H:/Portabl
-e Applications/MikTex/fonts/type1/public/amsfonts/cm/cmbx9.pfb><H:/Portable App
-lications/MikTex/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><H:/Portable Applic
-ations/MikTex/fonts/type1/public/amsfonts/cm/cmmi10.pfb><H:/Portable Applicatio
-ns/MikTex/fonts/type1/public/amsfonts/cm/cmr10.pfb><H:/Portable Applications/Mi
-kTex/fonts/type1/public/amsfonts/cm/cmr12.pfb><H:/Portable Applications/MikTex/
-fonts/type1/public/amsfonts/cm/cmr6.pfb><H:/Portable Applications/MikTex/fonts/
-type1/public/amsfonts/cm/cmr9.pfb><H:/Portable Applications/MikTex/fonts/type1/
-public/amsfonts/cm/cmsy10.pfb><H:/Portable Applications/MikTex/fonts/type1/publ
-ic/amsfonts/cm/cmti12.pfb><H:/Portable Applications/MikTex/fonts/type1/public/a
-msfonts/cm/cmti7.pfb>
-Output written on thesis.pdf (26 pages, 269197 bytes).
+ 43i,11n,45p,459b,497s stack positions out of 5000i,500n,10000p,200000b,50000s
+<H:/PortableApplications/MikTex/fonts/type1/public/amsfonts/cm/cmbx10.pfb><H:
+/PortableApplications/MikTex/fonts/type1/public/amsfonts/cm/cmbx12.pfb><H:/Port
+ableApplications/MikTex/fonts/type1/public/amsfonts/cm/cmbx6.pfb><H:/PortableAp
+plications/MikTex/fonts/type1/public/amsfonts/cm/cmbx9.pfb><H:/PortableApplicat
+ions/MikTex/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><H:/PortableApplications
+/MikTex/fonts/type1/public/amsfonts/cm/cmmi10.pfb><H:/PortableApplications/MikT
+ex/fonts/type1/public/amsfonts/cm/cmr10.pfb><H:/PortableApplications/MikTex/fon
+ts/type1/public/amsfonts/cm/cmr12.pfb><H:/PortableApplications/MikTex/fonts/typ
+e1/public/amsfonts/cm/cmr6.pfb><H:/PortableApplications/MikTex/fonts/type1/publ
+ic/amsfonts/cm/cmr9.pfb><H:/PortableApplications/MikTex/fonts/type1/public/amsf
+onts/cm/cmsy10.pfb><H:/PortableApplications/MikTex/fonts/type1/public/amsfonts/
+cm/cmti12.pfb><H:/PortableApplications/MikTex/fonts/type1/public/amsfonts/cm/cm
+ti7.pfb>
+Output written on thesis.pdf (24 pages, 440230 bytes).
 PDF statistics:
- 258 PDF objects out of 1000 (max. 8388607)
+ 251 PDF objects out of 1000 (max. 8388607)
  41 named destinations out of 1000 (max. 500000)
  107 words of extra memory for PDF output out of 10000 (max. 10000000)
 
