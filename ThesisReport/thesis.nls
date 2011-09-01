@@ -2,6 +2,10 @@
 
  \nomgroup{A}
 
+  \item [{BMS}]\begingroup Battery Management System\nomeqref {0}
+		\nompageref{viii}
+  \item [{GPS}]\begingroup Global Positioning System\nomeqref {0}
+		\nompageref{viii}
   \item [{TCP}]\begingroup Transmission Control Protocol\nomeqref {0}
 		\nompageref{viii}
   \item [{ZMQ}]\begingroup Zero MQ\nomeqref {0}\nompageref{viii}
