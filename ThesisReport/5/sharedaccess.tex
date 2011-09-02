@@ -1,11 +1,13 @@
 
 %: ----------------------- contents from here ------------------------
 
-\section{Sharing Resources}
+\section{Redraw Performance}
 
-\subsection{Refresh on Message}
+\subsection{Refresh on Arrival}
 
 Whenever a new message is recieved by the user interface, it would seem appropriate to process that message instantaneously. Figure \ref{screenaccess} shows the flow of this methodology. A message is recieved, then the system processes the message, redraws the screen, and then starts over again. While this is a working solution, it does present problems in regards to performance and the overall usability of the system.
+
+\figuremacro{screenaccess}{Processing message flow chart}{This figure shows the naive approach to processing and displaying recieved message data}
 
 The performance penalty in such a design is not immediately obvious. Data that is recieved should be displayed instantanouelsy. Inspecting Figure \ref{screenaccess} further does help highlight the problem that occurs in this situation. While the system is processing or displaying the message, it is unable to process anymore messages. This can be a problem when the source of the messages is generating messages faster than the device can process.
 
@@ -15,8 +17,27 @@ In situations such as the BMS module, the program was able to sufficiently cope 
 
 The delay that occured was proportional to the size of the ZeroMQ Message Queue \cite:{zeroMQ\_internals}. This delay could be up to a couple of seconds, which is unacceptable for live feedback to the driver. Reducing the size of the Message Queue helped alleviate the problem, however the screen would still attempt to redraw as fast as the messages where recieved. This also led to the interface portion of the system hogging the CPU. Thus an alternate method of dealing with screen updates was developed.
 
+\subsection{Add to Queue}
 
-\figuremacro{screenaccess}{Processing message flow chart}{This figure shows the naive approach to processing and displaying recieved message data}
+\figuremacro{screenaccessnew}{Appending to Queue}{This figure shows the flow of appending screen refreshes to a queue}
+
+
+\subsection{Redrawing the Screen}
+
+The previous section discussed the problems that occured with allowing the screen to update whenever a message was recieved. The biggest performance penalty that occured was not from the actual processing of the data, but from having to display it on the screen. All of the processing is relatively trivial computation wise. It is the transfer of variables into various memory locations so they can be accessed when the screen is displayed. Copying a variable itself is trivial, however processing that variable for display on screen is incredibly intense.
+
+Inspection of the EyeLin library source code showed that the library was using a simple framebuffer in order to interact with the screen \cite:{frame\_buffer}. This framebuffer method stored the entire screen state as an 24bit image. By default, whenever one pixel was changed in this image, all the data was copied to the framebuffer again. This was incredibly wasteful, and contributed to the large delays in redrawing the screen. Many items on the screen need to be redrawn together, for instance, a digit display has three or more digits that may change from it's last appearance. By default the library would redraw three times if the number changed by a large amount. This caused alot of performance issues in previous projects using these libraries see 
+
+\subsection{Batch Redraw}
+
+In order to offset this problem the way in which the queue processed draws was modified. The thread that processed the queue would attempting to dequeue as much items as possible and process them as a batch. This gives more performance than attempting to redraw the screen for every change.
+
+
+
+
+
+
+
 
 % ---------------------------------------------------------------------------
 %: ----------------------- end of thesis sub-document ------------------------

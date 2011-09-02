@@ -4,6 +4,8 @@
 
   \item [{BMS}]\begingroup Battery Management System\nomeqref {0}
 		\nompageref{viii}
+  \item [{CPU}]\begingroup Central Processing Unit\nomeqref {0}
+		\nompageref{viii}
   \item [{GPS}]\begingroup Global Positioning System\nomeqref {0}
 		\nompageref{viii}
   \item [{TCP}]\begingroup Transmission Control Protocol\nomeqref {0}
