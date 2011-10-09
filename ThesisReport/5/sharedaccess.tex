@@ -3,6 +3,8 @@
 
 \section{Redraw Performance}
 
+Due to the limited resources of the system, care must be taken when attempting to update the screen. As as windowing system was already being developed, it was desirable to have this system absract these actions away from the programmer. By using the toolkit the programmer can trigger when an element should be draw, and specify the drawing code to draw the element. The absraction means that the developed code will never be called directly by the programmer, it is all taken care of by the underlying mechanisms.
+
 \subsection{Refresh on Arrival}
 
 Whenever a new message is recieved by the user interface, it would seem appropriate to process that message instantaneously. Figure \ref{screenaccess} shows the flow of this methodology. A message is recieved, then the system processes the message, redraws the screen, and then starts over again. While this is a working solution, it does present problems in regards to performance and the overall usability of the system.
