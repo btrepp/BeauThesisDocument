@@ -18,7 +18,17 @@
 
 \section{Motivation}
 
-\section{Elements}
+In order to improve stability of the system, a windowing toolkit was developed to display information to the user. Interactions with the user occur in only a few pre-definable ways. The user will either view data that the system has produced, or press buttons on the screen in order transition the display to another screen. The currently developed software (EyeLin) provided very low level access to complete these actions. This allows for greater flexibility in developing using the software, but makes it  more confusing to deal with, and contributes to bugs in the software. In order to alleviate this problem, a high-level abstraction was developed on top of the existing software. This abstraction allows the low level functionality, such as interacting with the touchscreen, to be hidden. This simplifies development when layout the user interface. This also allows for code to be written and debugged once, for example the toolkit completely removes interactions with the touchscreen, allowing buttons to be added in a much simpler fashion.
+
+As other requirements of the system required C++ libraries, the windowing toolkit was implemented using C++. This is an object oriented language that provides a few distinct advantages over the C language that is traditionally used on embedded devices such as this. The first advantage is the use of object orientation. When constructing a user interface, it is much easier to understand the different elements of the interface as unique objects. By thinking of a text display as a single object, it becomes more intuitive to manipulate. The other advantage in the use of C++ is that it allows for objects to inherit from other objects. This use of polymorphism allows elements to implement the functionality they require by inheriting from specifications in the toolkit. The toolkit is able to call these new functions due to use of virtual methods.
+
+The toolkit has been written in a way that the programmer utilizing it does not need to understand anything about threads. While the mechanics inside the toolkit do use threads, the interaction with this threads is completely abstracted away. It is not possible to directly manipulate the underlying threads with the toolkit. This removes any problems with synchronization between threads, as they cannot be manipulated. There are three threads running inside the toolkit. One thread is responsible for manipulating the screen, one thread is responsible for responding too events occurring on the touchscreen  and the last thread is responsible for reading and processing the network messages.
+
+The final advantage of developing this toolkit, is that it is not limited to use in this project. As the toolkit is written in a generic way, with the exception of being able to receive the messages transmitted over the network, it is able to be deployed on future projects. This allows future projects to have a rich user interface, while keeping the high-level abstraction in place.
+
+\input{5/elements}
+
+
 
 \section{Subscriber}
 

@@ -1,0 +1,42 @@
+\section{Elements}
+
+The windowing toolkit consists of pre-made classes that the are either used directly, such as the digit display element, or are inherited from, such as the base or runnable classes. Figure \ref{uiframework3} shows the classes developed in the toolkit.
+
+\figuremacro{uiframework3}{UML diagram of the window toolkit}{}
+
+\subsection{UIElement}
+
+The UIElement is the most basic class definition in the toolkit. It is an abstract class that can never be instantiated. Its purpose is to define methods for interacting with the screen and other objects. It also provides default functionality for most methods, this allows all the classes that inherit from it to function the same way.
+
+\subsubsection{addChild()}
+
+An important definition of the UIElement class, is that it may contain any number of other UIElement classes inside it. To add another UIElement class the method addChild() is called. This stores the child element inside a C++ vector whose length is only limited by the amount of ram inside the machine. The advantage of this is that actions can be performed on a UIElement and all it's children. If a element needs to be drawn, all it's children will be drawn too or if an element is disabled, all it's children will be disabled too.
+
+\subsubsection{draw()}
+
+ The most important method of the UIElement class is the draw method.  This method definition is not implemented in the UIElement class, it is defined a virtual abstract method. All classes that can be instantiated must implement this function call. The purpose of this function call is to allow the user to specify the low level commands that are used to display this element. This can include drawing lines, squares, or setting individual pixels. This method should be implemented by the programmer, but should only ever be called by the mechanics of the toolkit. The developed of the user interface should never directly call this method.
+
+\subsubsection{enqueueDraw()}
+
+enqueueDraw() is called whenever the system, or the programmer, wants to trigger a refresh of the screen. This will signal the toolkit that a redraw should be prepared. The purpose of this method is two-fold. Firstly it allows the toolkit to perform optimizations of the draw function in order to maximize speed (see \ref{Redrawing the Screen}). Secondly it's implementation has O(1) complexity. This means that the call to enqueueDraw() completes in constant time. This is used for performance reasons, as whatever thread has called enqueueDraw(), will not need to wait for the screen to be redrawed, it will return instantly. The draw will be scheduled to occur some time after enqueueDraw() is called. By default this method will also call the enqueueDraw() method of all it's children, allowing entire sections of the display to be redrawn using one function call.
+
+\subsubsection{animate()}
+TODO
+
+\subsubsection{setActive()}
+
+A property that is required of any draw-able object inside the toolkit is whether it is current being displayed to the user. This property allows elements to exist in the machines memory, but only be draw if they are current being displayed. To manipulate this property, the method setActive() is called. This method allows the state to be set to either true or false, meaning that the object will be drawn or not drawn respectively. If the active state is false, calls to enqueueDraw() will be processed, but the call to the draw() function will be skipped. Thus individual elements of the display can be hidden at will. This method will also call the setActive() method of all the children of this element. Thus allowing sections of the display to be hidden with one function call.
+
+\subsubsection{isActive()}
+
+This method will return the current state of the element. This is used to check whether the current element is being drawn or not. This method is called internally by the screen drawing mechanics. It can also be used in order to check whether the element is being displayed, and perform different tasks if it is not being displayed.
+
+\subsection{base}
+
+The base element represents the panels or windows that are being displayed to the user. An important property of the base element is that it is defined to occupy the whole screen. This element will draw the entire width of the screen, which will clear any old draws that may still be present. Another extended property of the base element is that it maintains a list of all the other base elements that are present. This is used in order to allow for global navigation buttons. Rather than layout buttons in the same location on every screen, a button can be added as a global button. This will ensure that it appears on all the screens present in the list. This allows the buttons and their location on the screen to be defined once, making the final program more stable and simpler to understand.
+For further discussion on the button element see \ref{Button}.
+The base class itself is abstract, it cannot be instansiated. There is no way to display a "default" base element. In order to build a panel, the panel must inherit from the base element, and implement at minimum the abstract function getButton().
+
+\subsection{getButton()}
+
+In order to transition to a panel, an action must be undertaken by either the user or the system. The most common way of transisitioning would be when the user wants to display a different screen. Typically this would occur by the use of pressing buttons. This is why any base panel must implement the getButton() function. This function returns a button object that contains the image data to display for this button, and the action to undertake when the button is pressed. This action will typically be a call to the activate() function of the panel, though other actions can be called before the call to activate().
