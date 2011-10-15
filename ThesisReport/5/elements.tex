@@ -34,7 +34,7 @@ This method will return the current state of the element. This is used to check 
 \subsection{base}
 
 The base element represents the panels or windows that are being displayed to the user. An important property of the base element is that it is defined to occupy the whole screen. This element will draw the entire width of the screen, which will clear any old draws that may still be present. Another extended property of the base element is that it maintains a list of all the other base elements that are present. This is used in order to allow for global navigation buttons. Rather than layout buttons in the same location on every screen, a button can be added as a global button. This will ensure that it appears on all the screens present in the list. This allows the buttons and their location on the screen to be defined once, making the final program more stable and simpler to understand.
-For further discussion on the button element see \ref{Button}.
+For further discussion on the button element see \ref{sec:Button}.
 The base class itself is abstract, it cannot be instansiated. There is no way to display a "default" base element. In order to build a panel, the panel must inherit from the base element, and implement at minimum the abstract function getButton().
 
 \subsubsection{base()}
@@ -62,8 +62,8 @@ Mentioned earlier was the use of global buttons, which are buttons that will app
 This method is an internal method to the framework, and should not need to be called by the developer. It is responsible for setting up the touch screen in the lower level libraries. It takes the list of buttons that has been built by calling addButton() and registers each button and the region the button exists on with the touch drivers. This abstracts any interaction or understanding of how the touch screen mechanics away from the developer. This function will be called whenever activate is called, thus setting up the framework to respond to actions on the buttons that exist on the current panel. It will also clear the previously registered buttons, so they cannot be clicked while the system is displaying the new panel.
 
 \subsubsection{buttonPressed()}
-
-The buttonPressed() method defines what happens when the user presses a button. This method is implemented in the base class definition in a way that it should never need to be overwritten in any classes inheriting from the base class. This method takes the position in the list of buttons that is pressed and performs the actions that occur when the button is pressed. The runnable abstract class allows any action to be coded and run by this method see \ref{runnable}. This method also performs things like animating the buttons. In order to provide instant feedback to the user pressing a button, the framework will invert the colour of the button. After a short while, the button will turn back to it's previous state, and the buttons action will be performed. This small animation provides instant feedback that the user has pressed the button, and results in a much more enjoyable user experience. Delaying the action also has another advantage. By waiting a short time between running the action, which is usually the display of a different base panel, the framework is able to remove and duplicate keypresses that may occur. This prevents the user from pressing a button to transisition into a panel, and then immediately pressing a button in the new panel which they did not intend to press.
+\label{sec:base:butpress}
+The buttonPressed() method defines what happens when the user presses a button. This method is implemented in the base class definition in a way that it should never need to be overwritten in any classes inheriting from the base class. This method takes the position in the list of buttons that is pressed and performs the actions that occur when the button is pressed. The runnable abstract class allows any action to be coded and run by this method see \ref{sec:runnable}. This method also performs things like animating the buttons. In order to provide instant feedback to the user pressing a button, the framework will invert the colour of the button. After a short while, the button will turn back to it's previous state, and the buttons action will be performed. This small animation provides instant feedback that the user has pressed the button, and results in a much more enjoyable user experience. Delaying the action also has another advantage. By waiting a short time between running the action, which is usually the display of a different base panel, the framework is able to remove and duplicate keypresses that may occur. This prevents the user from pressing a button to transisition into a panel, and then immediately pressing a button in the new panel which they did not intend to press.
 
 \subsubsection{activate()}
 
@@ -74,6 +74,7 @@ This method also allows animations to be specified. By supplying an argument def
 When this method finishes it returns the next action to run. This could either be a class that runs the next panel, or some other action to be performed when this panel is not longer being displayed.
 
 \subsection{runnable}
+\label{sec:runnable}
 
 The runnable class is an abstract class which is used to allow the developer using the toolkit to run actions inside the toolkit. By using polymorphism, the toolkit is able to call methods on classes which were not programmed or compiled with the toolkit. This runnable aspect is used in order to 'run' various aspects of the user interface. For instance, the base class's activate function must return a pointer to a runnable class. This is used to define what happens when the panel is no longer active. Runnable classes are also used extensively by the button system. A button must contain a runnable class. This class will be run when the button is pressed. Thus allowing any code to run whenever a button is pressed by the user. 
 
@@ -83,4 +84,38 @@ A property used in the runnable class is whether this action is triggering a scr
 
 \subsubsection{run()}
 
-This is the abstract method that must be implemented in any class inheriting from the runnable class.
+This is the abstract method that must be implemented in any class inheriting from the runnable class. It is called by the framework in order to run developer specified actions. Any code inside this method is run by the thread that controls the button interactions. This means that whatever is inside this method will block the touchscreen until it has completed, though this method is able to interact with the touch screen and read of events itself. This is a useful property, as while the system is performing some action, the user will be prevented from transitioning the screen, or running another action. 
+
+\subsection{Button}
+\label{sec:button}
+
+The button class is a fully implemented class in the framework. The developer using the framework does not need to inherit from this class in order to use it's functionality, though they are able to if they desire more control over the way buttons behave. This element is a object representation of a button, and contains all the information required to use the button in the framework. It stores information pertaining to the position, size, state, image and action to be performed when this button is pressed. This allows the framework to lay the button out and display it to the user, and perform actions when the button is pressed. The thumbnail is able to exist as a simple RGB based image, or an alpha enabled RGBA image see \ref{alpha}. The information stored in this object is also used to correctly set up the touch drivers in order to correctly identify when the button is pressed.
+
+\subsubsection{button()}
+
+The constructor of this button requires two parts of information, the action to run when the button is pressed and the image data that will represent this button on the screen. The runnable action must be a class that inherits from the runnable class see \ref{sec:runnable}. The image data must be an array of bytes formatted as either RGB or RGBA pixels. As the image data is a contigous array, the function also requires the knowledge of it's width and height. In order to differentiate the difference between RGB and RGBA, the constructor also needs to know how many channels are in  the image data. 3 defines a RGB image and 4 defines a RGBA image. In order to neaten code, if the channels argument is ommitted the system will assume a RGB image is supplied. This will be programmaticallly safe, as if an RGBA image is supplied but the channels are 3, the framework will not read outside the array of the image. It will however display a corrupted looking image, so it is recommended to explicitly pass the number of channels inside the image. 
+Note that the size of the image is the size of the area that responds to the users touch. If the areas were different sizes, image scaling would have to be performed, which will lead to high levels of distortion on the very low resolution images displayed.
+
+\subsubsection{setPosition()}
+
+This method allows the developer to move the location of the button. It takes two arguments, the x and y co-ordinates where the top left corner of t he button will sit. The co-ordinate system used is that of pixels available on the screen. By default the button will be placed at (0,0) which places the top left corner of the button at the top left corner of the screen.
+
+\subsubsection{getX()}
+
+This method returns the current x position of the top left corner of the button. It is mainly used to find out the location of the button on the screen, in order to avoid laying another button over the same space.
+
+\subsubsection{getY()}
+
+Performs the same function as getX(), except it returns the y co-ordinate in pixels.
+
+\subsubsection{getWidth()}
+
+Returns the width of the image in pixels. This is used to find out how wide the image is on the screen.
+
+\subsubsection{getHeight()}
+
+Performs the same function as getWidth(), except returns the height instead of the width.
+
+\subsubsection{invertButton()}
+
+This method inverts all the colours on the button. This is used in the base class when a button is pressed (see \ref{sec:base:butpress}). This method marks the button as inverted, and the next call to enqueueDraw() will draw the button with inverted colours. Calling this function a second time will restore the state to it's original condition.

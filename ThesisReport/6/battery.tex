@@ -3,8 +3,18 @@
 
 \section{Battery}
 
+The battery panel is the main display panel used in the user interface. It is the first panel displayed to the user when the system turns on.  It displays five important pieces of information to the user operating the vehicle. This panel listens to both the battery (TBS) and gps messages. It requires the battery messages to display the battery voltage, current and charge to the user. These are displayed using the digitelements mentioned in \ref{sec:digitelement}. It also uses a custom charge element class that exists outside of the framework to draw a battery on the center of the screen. This green bar on this battery will decrease in proportion to the charge remaining in the car, providing a quick visual indicator for how much charge is still stored. 
 
-\figuremacro{batt}{Panel showing other panels}{Shortcuts to different aspects of the program. (Battery, Maps, Trip Meter, Accelerometer, Arduino, Savings, About, Options)}
+This panel also displays the speed in km/h, which is why it has to register to the gps module. The speed is included so the user does not have to interact with the screen while driving. This panels main purpose was to provide a quick overview to data points that are immediately of concern to the driver. 
+
+Displayed in the top left corner is a rudimentary calculation of how much distance is remaining in the car. Range tests conducted by the REV team indicated that this distance was 80km from a full charge. To provide some security while driving, the interface assumes that the max distance the car will travel on a full charge is 70km. It uses this to calculate the distance remaining according to the formula \ref{eq:distanceremaining}
+
+\begin{equation}
+\label{eq:distanceremaining}
+70=10
+\end{equation}
+
+\figuremacro{batt}{Battery state panel}{Screenshot of the battery state panel, showing the voltage, current, charge, speed (via gps) and distance remaining}
 
 
 
