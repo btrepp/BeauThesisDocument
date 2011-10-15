@@ -13,11 +13,11 @@ In order to display the map images, the map data must first be obtained and stor
 
 Another possibility is to use an existing Internet based map server and download the map imagery as needed. The has several downsides. Foremost it requires an Internet connection whenever to display the maps. The system does have a 3G connection installed, but this cannot be considered a dependable communication channel. It is highly likely to drop out, and is limited in coverage to the areas in which it has reception. Even without these issues, most map-servers do not allow you to download maps in bulk, as this violates their usage policies \cite{tile_usage_policy}. This makes this method undesirable as it is not suit-able for downloading maps in bulk, or as needed. Attempting to pre-download all these maps using a non-3g link would result in a violation of the usage policy.
 
-The method chosen to obtain the map data was to pre-create create the map data using a more powerful machine. A map-server was setup and loaded with all the street data for the oceania region. For more information on the map-server setup see appendix \ref{app:mapserver}. This method overcomes the problems of the previously mentioned methods. All the processing is done on the much faster machine in advance. The area processed in advance is defined by the properties in table \ref{tab:mapbbox}. This area is depicted by the image shown in Figure \ref{mapperth}. The expanse of these maps covers all of metropolitan Perth. In future more maps can easily be processed, however this will result in more storage space being required. The current settings are a good balance between storage and expanse of data. This is because the map data will be less useful outside of the city, and the car is typically not driven any further than the pre-rendered maps. 
+The method chosen to obtain the map data was to pre-create create the map data using a more powerful machine. A map-server was setup and loaded with all the street data for the oceania region. For more information on the map-server setup see appendix \ref{app:mapserver}. This method overcomes the problems of the previously mentioned methods. All the processing is done on the much faster machine in advance. The area processed in advance is defined by the properties in table \ref{tab:mapbbox}. This area is depicted by the image shown in Figure \ref{mapperth}. The expanse of these maps covers all of metropolitan Perth. In future more maps can easily be processed, however this will result in more storage space being required. The current settings are a good balance between storage and expanse of data. This is because the map data will be less useful outside of the city, and the car is typically not driven any further than the pre-rendered maps. The current space usage of the map data is given in table \ref{tab:mapdata}. As this is much much larger than the internal 16MB of flash storage the eyebot has, it must be stored on external storage. Luckily, storage is now cheap, and 8GB usb thumb drive has enough performance and space to store and serve the image data.
 
-\begin{table}
+\begin{table}[htdp]
 \begin{center}
-	\label{tab:mapbbox} 
+	
    \begin{tabular}{|l|l|}
         \hline
         Property           & Value           \\ \hline
@@ -27,11 +27,51 @@ The method chosen to obtain the map data was to pre-create create the map data u
         Bottom Right       & 116.508,-32.253 \\
         \hline
     \end{tabular}
+	\caption[Properties of the pre-rendered map data]{The properties of the pre-rendered map data}
+	\label{tab:mapbbox} 
 \end{center}
 \end{table}
 
 \figuremacro{mapperth}{Pre-rendered map size}{This figure shows the area that has been pre-rendered for use in the map panel display}
 
+\begin{table}[htdp]
+\begin{center}
+    \begin{tabular}{|l|l|}
+        \hline
+        Property              & Value                             \\ \hline
+        Zoom Levels           & 7                                 \\ 
+        Number of Files       & 435,456 \\ 
+        Total Size            & 580.2 MB                          \\
+        File Resolution            & 256*256 pixels                          \\  
+        File Format            & Palette PNG                         \\ 
+        Time taken to process & Approximately 1 Day                          \\
+        \hline
+    \end{tabular}
+	\caption[File statistics of map data]{File statistics of map data}
+	\label{tab:mapdata}
+\end{center}
+\end{table}
+
+\subsection{Tiling}
+
+As mentioned previously, the map data is much larger than the internal storage of the eye-bot. It is also much much larger than the operating systems 64MB of ram. This makes it impossible for the entire map data to be loaded inside any program to be displayed to the user. In order to overcome this limitation, the map panel only loads a small subset of the map data at a time, and displays it using a method called tiling. Rather than have one giant map that displays all of the information, and sliding this around to view the correct part, this method divides the map into many smaller maps. These smaller maps are referred to as tiles. Each tile consists of a 256 pixels wide by 256 pixels high image. These images are combined in order to display the current location, as seen in figure \ref{tiles}. By loading the adjacent tiles in all directions the screen will always have data to display.
+
+\figuremacro{tiles}{Tiling Maps}{This figure shows the tiles that are loaded, labeled 0-8, and the area of the screen that is able to view them.}
+
+\subsubsection{Converting GPS Co-ordinates}
+
+The GPS outputs the current position in latitude/longitude format. This format must be converted so that the correct tiles may be loaded. To do this the GPS co-ordinates are converted to grid based co-ordinates using a mercator projection \cite{slippy_map_tilenames}. The equations to convert to this format are given by \ref{eq:gpstotiles}. It is possible to convert from a grid co-ordinate back to a GPS co-ordinate using the equations given by \ref{eq:tiletogps}. This of course will only be able to return the top left corner of the tile in GPS co-ordinates, and not the original position.
+
+\begin{equation}
+\label{eq:gpstotiles}
+70=10
+\end{equation}
+\begin{equation}
+\label{eq:tilestogps}
+70=10
+\end{equation}
+
+With the GPS co-ordinate converted it is possible to locate the tile to display to the user. Rather than utilize lookup files to locate the tile, a specific folder structure is used to instantaneously load the file. This is done by storing the files in the format \emph{/zoom/tilex/tiley.png}. This allows the system to directly open the file and display it. Thus even if the entire world was loaded in the maps folder, for many different zoom levels, the display time of the current location would not change.
 
 % ---------------------------------------------------------------------------
 %: ----------------------- end of thesis sub-document ------------------------
