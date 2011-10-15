@@ -3,7 +3,34 @@
 
 \section{Maps}
 
-\figuremacro{map}{Map display panel}{Screenshot of the map display panel, showing the map of the current location and the map controls visible}
+A common, yet useful driver aid is displaying the map of the current location. This is what the maps panel does. It listens to the GPS messages to determine the position of the car. A screen-shot of this panel is shown in Figure \ref{map}. This panel uses the full area to display the current location of the vehicle on the screen. The actual position of the vehicle is centered on the middle of the screen, allowing the driver to view streets and landmarks relative to his current position. The panel features several levels of zoom, controlled by the bar on the top right corner on the screen. The plus button will zoom in, and move the slider to the right, while the minus button will zoom out, and move the slider to the left. The system supports various levels of zoom, being able to display a few buildings relative to the car or being able to display the surrounding suburbs.
+
+\figuremacro{map}{Map display panel}{Screen-shot of the map display panel, showing the map of the current location and the map controls visible}
+
+\subsection{Map Data}
+
+In order to display the map images, the map data must first be obtained and stored. There are many possible methods for doing this, ranging from creating the maps as needed, or downloading them from external services and storing them in a cache. The relatively low CPU power of the eye-bot m6 makes rendering the maps on-the-fly a undesirable prospect. Open source map data for the entire planet results in a file that is 18GB in size \cite{planet_osm}. This file is much too large to store locally, and this file is actually storing a compressed version of the data. Even if it were possible for the eye-bot to store this file, via the use of external storage, it would be a large strain on the CPU to convert the street level data into viewable maps. It would also require many other pieces of software to be installed on the device, making it much more complicated to manage.
+
+Another possibility is to use an existing Internet based map server and download the map imagery as needed. The has several downsides. Foremost it requires an Internet connection whenever to display the maps. The system does have a 3G connection installed, but this cannot be considered a dependable communication channel. It is highly likely to drop out, and is limited in coverage to the areas in which it has reception. Even without these issues, most map-servers do not allow you to download maps in bulk, as this violates their usage policies \cite{tile_usage_policy}. This makes this method undesirable as it is not suit-able for downloading maps in bulk, or as needed. Attempting to pre-download all these maps using a non-3g link would result in a violation of the usage policy.
+
+The method chosen to obtain the map data was to pre-create create the map data using a more powerful machine. A map-server was setup and loaded with all the street data for the oceania region. For more information on the map-server setup see appendix \ref{app:mapserver}. This method overcomes the problems of the previously mentioned methods. All the processing is done on the much faster machine in advance. The area processed in advance is defined by the properties in table \ref{tab:mapbbox}. This area is depicted by the image shown in Figure \ref{mapperth}. The expanse of these maps covers all of metropolitan Perth. In future more maps can easily be processed, however this will result in more storage space being required. The current settings are a good balance between storage and expanse of data. This is because the map data will be less useful outside of the city, and the car is typically not driven any further than the pre-rendered maps. 
+
+\begin{table}
+\begin{center}
+	\label{tab:mapbbox} 
+   \begin{tabular}{|l|l|}
+        \hline
+        Property           & Value           \\ \hline
+        Minimum Zoom Level & 11              \\ 
+        Maximum Zoom Level & 18              \\ 
+        Top Left           & 115.687,-31.71  \\ 
+        Bottom Right       & 116.508,-32.253 \\
+        \hline
+    \end{tabular}
+\end{center}
+\end{table}
+
+\figuremacro{mapperth}{Pre-rendered map size}{This figure shows the area that has been pre-rendered for use in the map panel display}
 
 
 % ---------------------------------------------------------------------------
