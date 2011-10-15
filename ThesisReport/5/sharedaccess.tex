@@ -9,7 +9,7 @@ Due to the limited resources of the system, care must be taken when attempting t
 
 Whenever a new message is recieved by the user interface, it would seem appropriate to process that message instantaneously. Figure \ref{screenaccess} shows the flow of this methodology. A message is recieved, then the system processes the message, redraws the screen, and then starts over again. While this is a working solution, it does present problems in regards to performance and the overall usability of the system.
 
-\figuremacro{screenaccess}{Processing message flow chart}{This figure shows the naive approach to processing and displaying recieved message data}
+\figuremacroW{screenaccess}{Processing message flow chart}{This figure shows the naive approach to processing and displaying recieved message data}{0.6}
 
 The performance penalty in such a design is not immediately obvious. Data that is recieved should be displayed instantanouelsy. Inspecting Figure \ref{screenaccess} further does help highlight the problem that occurs in this situation. While the system is processing or displaying the message, it is unable to process anymore messages. This can be a problem when the source of the messages is generating messages faster than the device can process.
 
