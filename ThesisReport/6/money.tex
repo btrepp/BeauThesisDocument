@@ -1,9 +1,24 @@
 
 %: ----------------------- contents from here ------------------------
 
-\section{Cost Panel}
+\section{Economy Panel}
 
-\figuremacro{money}{Savings Panel}{}
+Reduced running costs are one of the most cited reasons for the interest in electric vehicles. As such the system tries to quantify the savings that occur by providing a screen which shows an approximation of the running costs of the vehicle. It does this by making some assumptions as to the cost that the petrol version of the car would consume. This is constrasted against the power that the car has consumed over the same duration. Using these values, the cost of running the car on electricity and on petrol can be calculated and the difference can be displayed. Figure \ref{money} shows this panel displayed on the device.
+
+\figuremacro{money}{Savings Panel}{This figure shows the savings panel, it calculates the cost of running the car on electricity and approximates the cost of running the car on petrol}
+
+\subsection{Petrol Approximation}
+
+The car does not consume any petrol, so it is not able to provide data in relation to the amount of fuel consumed. As such the system attempts to approximate the amount of fuel that would be consumed. It does this by using the cars advertised fuel consumption, at 6.1~L per 100~km \cite{getz_fuel_consumption}. It uses the same method to calculate the distance driven as seen in section \ref{sec:distancedriven}. This value is calculated independently of the values calculated in the trip panel, this was done to ensure that each panel cannnot affect the other panel. It is not possible to reset the a trip meter and change the economy panel. The last variable required to calculate the cost is the price of the fuel. While this is highly variable, a single value is used to provide an approximation to the cost.
+
+\begin{align}
+\label{eq:fuelcost}
+Petrol\ Cost &=\mathrm{Distance\ Driven} * \mathrm{Fuel\ Economy} *\mathrm{Price\ per\ Litre}
+\end{align}
+
+Equation \ref{eq:fuelcost} shows the formula used to calculate the petrol cost. The distance driven, and cost per litre of fuel are displayed on the display providing insight into how the calculation is performed. The static price of petrol used works with this display, as the user is able to see the links between the numbers.
+
+
 
 
 % ---------------------------------------------------------------------------
