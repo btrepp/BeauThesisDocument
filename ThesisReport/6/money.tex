@@ -3,11 +3,11 @@
 
 \section{Economy Panel}
 
-Reduced running costs are one of the most cited reasons for the interest in electric vehicles. As such the system tries to quantify the savings that occur by providing a screen which shows an approximation of the running costs of the vehicle. It does this by making some assumptions as to the cost that the petrol version of the car would consume. This is constrasted against the power that the car has consumed over the same duration. Using these values, the cost of running the car on electricity and on petrol can be calculated and the difference can be displayed. Figure \ref{money} shows this panel displayed on the device.
+Reduced running costs are one of the most cited reasons for the interest in electric vehicles. As such the system tries to quantify the savings that occur by providing a screen which shows an approximation of the running costs of the vehicle. It does this by making some assumptions as to the cost that the petrol version of the car would consume. This is constrasted against the power that the car has consumed over the same duration. Using these values, the cost of running the car on electricity and on petrol can be calculated and the difference can be displayed. Figure \ref{money} shows this panel displayed on the device. The values displayed here are persitant through multiple drives, allowing for the differences to be calculated over a long period.
 
 \figuremacro{money}{Savings Panel}{This figure shows the savings panel, it calculates the cost of running the car on electricity and approximates the cost of running the car on petrol}
 
-\subsection{Petrol Approximation}
+\subsection{Petrol approximation calculation}
 
 The car does not consume any petrol, so it is not able to provide data in relation to the amount of fuel consumed. As such the system attempts to approximate the amount of fuel that would be consumed. It does this by using the cars advertised fuel consumption, at 6.1~L per 100~km \cite{getz_fuel_consumption}. It uses the same method to calculate the distance driven as seen in section \ref{sec:distancedriven}. This value is calculated independently of the values calculated in the trip panel, this was done to ensure that each panel cannnot affect the other panel. It is not possible to reset the a trip meter and change the economy panel. The last variable required to calculate the cost is the price of the fuel. While this is highly variable, a single value is used to provide an approximation to the cost.
 
@@ -18,6 +18,28 @@ Petrol\ Cost &=\mathrm{Distance\ Driven} * \mathrm{Fuel\ Economy} *\mathrm{Price
 
 Equation \ref{eq:fuelcost} shows the formula used to calculate the petrol cost. The distance driven, and cost per litre of fuel are displayed on the display providing insight into how the calculation is performed. The static price of petrol used works with this display, as the user is able to see the links between the numbers.
 
+This is not an incredibly precise calculation, as the GPS can drop out or be slightly off with the distance travelled. It also will not reflect the real cost, due to a static fuel consumption being assumed. It is also unable to take into account the fluctuation of fuel prices over a long period of time. The calculations purpose is to provide a rough ballpark figure, so the user is able to have some indication of the cost the petrol car might have incurred.
+
+\subsection{Electricity calculation}
+
+Given the voltage and current, the instananeous power can be calculated according to Joule's Law \cite{joules_law}. The formula for calculating the power is given in equation \ref{eq:power}.
+
+\begin{align}
+\label{eq:power}
+P &= VI
+\end{align}
+
+The battery monitor module outputs both the current flowing out of, and the voltage level of the battery at a rate of 1hz. With this information it is possible to calculate the power that the vehicle has consumed. By dividing equation \ref{eq:power} by the number of seconds in an hour, the power consumed in units of kwh is obtained for the last second. Continually summing this value will lead to the total kwh consumed by the vehicle.
+
+By multiplying the result by the cost in per kwh hour, the total cost can be obtained. Like the petrol calculation, the units of this calculation are displayed on the screen, so the user is able to intuitively understand the calculations being performed. This calculation does have some drawbacks, as it does not take into account fluctuations in electricity costs, such as on and off-peak charging. It does also not take into account in-efficiencies in the charging equipment. The power present in the batteries, and consumed by system while running will not be equal to the power that was supplied to charge the batteries. This is acceptable however, as the purpose of the calculation is to provide rough estimates, in order to provide feedback as to how much the car is costing to drive.
+
+\subsection{Resetting}
+
+Over time, the operator may want to reset the settings back to an initial zero state. This could possibly after months of driving. To faciliate this, the panel has a reset button present. This button will reset the distance driven and kwh consumed values. As these values are now both zero, the calculated cost values will also become zero.
+
+\subsection{Persistance}
+
+A required feature of this panel, is persistance of the calculated results. If the system is offline, it should remember the calculated values when it next starts up. It achieves this functionality by storing the values needed in a simple text file, that is present with the program's executable. If this file is not present when the program is run, it will be created with zero values. The system constantly 
 
 
 
