@@ -3,7 +3,7 @@
 
 \section{Trip Meter}
 
-A useful driver aid that is common on vehicles is that of a trip meter. Traditionally this component records the distance the car has traveled since the trip meter was set. This functionality is usually a result of the simple systems in place, and is tied to the revolutions of the wheels on the vehicle. As this system has more hardware at it's disposal, the trip meter can implement more functionality than a standard trip meter, making it much more useful in examining the performance of the car. Figure \ref{trip} shows the trip meter panel being displayed on the screen.
+A useful driver aid that is common on vehicles is that of a trip meter. Traditionally this component records the distance the car has traveled since the trip meter was set. This functionality is usually a result of the simple systems in place, and is tied to the revolutions of the wheels on the vehicle. As this system has more hardware at it's disposal, the trip meter can implement more functionality than a standard trip meter, making it much more useful in examining the performance of the car. Figure \ref{trip} shows the trip meter panel being displayed on the screen. An important note of this panel is that all calculations are done whether the panel is being displayed or not.
 
 \figuremacro{trip}{Trip Meter Panel}{This figure shows two independent trip meters and the best record speed data}
 
@@ -64,6 +64,14 @@ The final functionality of each independent trip meter is the reset button. This
 \subsection{Current Speed}
 
 The trip meters provide statistics on where the car has been driven, but do not provide much insight into the instantaneous speed of the vehicle. As this variable is already being used in calculations it is trivial to display it to the driver. This is displayed using a simple digit element, and appears in the top right corner of Figure \ref{trip}.
+
+\subsection{Time Trial Data}
+
+A common metric in measuring the performance of cars is to measure how long the car takes to achieve a certain speed. Usually this requires expensive equipment in order to accurately measure the time and speed data. As the information exists inside the trip meter in some form already, it is useful to display a less accurate version of this time trial data. By recording the time it takes to reach 50 or 100 km/h the operator is able to have quick feedback on the performance, without having to setup lots of equipment. The flow chart of this calculation is given by Figure \ref{timetrialflowchart}. The results of this are displayed below the current speed in Figure \ref{trip}
+
+\figuremacro{timetrialflowchart}{Time Trial Data flow chart}{The program flow used to calculate the 0-50 km/h and 0-100 km/h time trial data}
+
+An important condition on this flow chart is that the zero time must be set before any calculations are performed. The zero time is the time at which the car was last traveling 0~km/h. This time will be reset whenever the car is stopped, so the calculation requires no input from the user. Also present in the flow diagram is that the system will display the best time recorded. If there is a previous best time, and a new one is achieved, the new one will automatically be displayed. This allows the user to ignore the trip meter panel entirely, and be able to trigger and record some performance data on normal drives.
 
 
 % ---------------------------------------------------------------------------
