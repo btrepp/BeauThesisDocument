@@ -3,6 +3,67 @@
 
 \section{Trip Meter}
 
+A useful driver aid that is common on vehicles is that of a trip meter. Traditionally this component records the distance the car has traveled since the trip meter was set. This functionality is usually a result of the simple systems in place, and is tied to the revolutions of the wheels on the vehicle. As this system has more hardware at it's disposal, the trip meter can implement more functionality than a standard trip meter, making it much more useful in examining the performance of the car. Figure \ref{trip} shows the trip meter panel being displayed on the screen.
+
+\figuremacro{trip}{Trip Meter Panel}{This figure shows two independent trip meters and the best record speed data}
+
+The first unique point of this trip meter, is that it contains two independent meters. This is useful as it allows the driver to evaluate the statistics of two overlapping trips. One trip meter can be used to record the distance traveled since the car was last charged, while the other can be used to record the distance traveled in the last week or month. This independence allows the operator to decide how best to use the trip meter data, resulting in a high level of flexibility. In figure \ref{trip} the trip meters are located on the left, sitting above each other.
+
+Each trip meter records the distance traveled, the time elapsed since the meter was started, the time the car has been moving since the meter was started and calculations based on the elapsed and moving time. These statistics are displayed live to the user, but are not logged, as the logging functionality  is taken car of by a different component in the system. The trip meter panel also displays the current moving speed in the top right. Below the moving speed are the best run records in seconds. This allows the driver to have quick feedback as to how the car is performing, without having to do lots of processing on logged data.
+
+\subsection{Distance Driven}
+\label{sec:distancedriven}
+The most important part of a trip meter, is the distance that the meter has recorded. This is shown on figure \ref{trip} at the bottom of each trip meter. The meter stores the distance driven internally as a double length floating point number, but displays it on the screen as a rounded integer. This is done in order improve precision for later calculations as other values will depend on the distance that has been driven. Equation \ref{eq:distancedriven} shows the the distance is calculated based on the GPS position.
+
+\begin{align}
+\label{eq:distancedriven}
+\mathrm{Distance} &=\mathrm{Distance}_\mathrm{lastrun} + \mathrm{Speed}(\mathrm{Time}_\mathrm{now}-\mathrm{Time}_\mathrm{lastrun})
+\end{align}
+
+The method for working out is a continuous function that is based on the last known distance the car has traveled. This method was chosen as it does not require any information other than the last time the formula was run, and the last distance calculated. This also makes the trip meter flexible in that the distance calculation does not need to be processed at exact intervals. If messages are dropped for whatever reason, the calculation will still take place, though it will not be as accurate as it could be. The calculation will be able to cope with fluctuations in the message timing, and can adapt to the speed of the GPS being used.
+
+The downside of this method, is that big changes in time can cause problems with the calculation. If the signal drops out for an extended period of time, such as going through a tunnel, the calculation in \ref{eq:distancedriven} would have a big margin for error. In order to prevent this, the trip meter will ignore large time differences. If two calculations are over 10 seconds apart, the result will not be trusted, and not be used in the calculation. This prevents GPS signal loss from having an adverse effect on the trip meter calculations, but does impose a limit on the trip meter.
+
+The limitation of this method of calculating the distance driven is that it relies on the GPS messages being sent to it. If the GPS signal is lost, the distance driven will not be increased. This is a limitation imposed by the use of the GPS sensor, and cannot be avoided, as attempting to guess the distance driven while the GPS signal has been lost has a very high probability of being incorrect.
+
+\subsection{Time Elapsed}
+
+Another variable displayed on the trip panel is the time elapsed. This is simply the time elapsed since the trip meter was last reset. This time increments even while the GPS signal has been lost, performing a stop-watch like action on the trip. While it may seem natural to just record the time that the trip meter was started and subtract it from the current system time, this would lead to problems during the system startup. The time needs to increment even while the GPS is connecting, and must be resistant to changes in the systems internal clock. Thus the time is calculated similar to section \ref{sec:distancedriven}. The formula used to calculate the elapsed time is given in equation \ref{eq:timeelapsed}. The time elapsed is displayed as the highest element of the trip meter in Figure \ref{trip}
+
+\begin{align}
+\label{eq:timeelapsed}
+\mathrm{TimeElapsed} &=\mathrm{TimeElapsed}_\mathrm{lastrun} + (\mathrm{Time}_\mathrm{now}-\mathrm{Time}_\mathrm{lastrun})
+\end{align}
+
+Much like the distance, this method of calculation depends on the last known values. This means it does not matter at the actual time the system trip started once the timer has been running. This makes it resistant to changes in the system time, and thus makes the timer more robust. 
+This timer records the time elapsed on the nanosecond level, as it is used elsewhere in calculations. For display, the timer converts these values into the traditional hours, minutes, seconds format that is easy for the operator to read.
+
+\subsection{ Moving Time}
+
+An aspect of the cars telemetry that would be interesting to the driver is the cars moving time. This is defined as the time in which the car has spent in motion. The main use of this data point is to contrast it against the elapsed time, to highlight how long the car has spent sitting still in traffic. This variable is also useful to record for future calculations, such as working out the average speed of the trip. This element is calculated according to equation \ref{eq:timeelapsed}, except that it will not update if the current speed of the car is 0~km/h. As such this element requires the speed of the car to be processed, so it cannot be calculated when the GPS signal is lost. This fits in with the functionality defined in section \ref{sec:distancedriven}, as the trip meter will not update the moving time or distance driven if the GPS signal is lost. The moving time is displayed below the elasped time and above the distance driven in Figure \ref{trip}
+
+\subsection{Average Speed}
+
+When reviewing the trip meter data, it is useful to know the average speed the car was traveling during the trip. Having this information allows the driver to better understand the characteristics of the drive. This element is also easy to calculate, as the time elapsed and the distance driven are already available. Equation \ref{eq:averagespeed} shows the formula used to calculate the average speed. The calculated value is displayed to the right of the elapsed time in figure \ref{trip}.
+
+\begin{align}
+\label{eq:averagespeed}
+\mathrm{Average Speed} &=\frac{\mathrm{Distance Driven}}{\mathrm{Time Elapsed}}
+\end{align}
+
+This value is calculated whenever the distance driven or elapsed time values are updated. As this value is using two calculated values, it does not need to worry about discrepancies in time or the loss of the GPS signal.
+
+\subsection{Average Moving Speed}
+
+The average moving speed is like the average speed. The only difference is that it uses the moving time to calculate the speed, rather than the elapsed time. This is done using the same equation \ref{eq:averagespeed}, only substituting "Time Elapsed" for "Moving Time". This value provides the average speed of the car when it was actually being driven, thus ignoring time spent waiting in traffic.
+
+\subsection{Reset}
+
+The final functionality of each independent trip meter is the reset button. This button resets the trip meter it is attached to. The distance driven, moving and elapsed time counters will all display zero, and the average speed calculators will display zero. As each trip meter is independent, one can be reset without affecting the other. To reset the trip meters, the driver just has to press the reset button, located below the average moving time and to the right of the distance driven in Figure \ref{trip}.
+
+\subsection{Current Speed}
+
+The trip meters provide statistics on where the car has been driven, but do not provide much insight into the instantaneous speed of the vehicle. As this variable is already being used in calculations it is trivial to display it to the driver. This is displayed using a simple digit element, and appears in the top right corner of Figure \ref{trip}.
 
 
 % ---------------------------------------------------------------------------

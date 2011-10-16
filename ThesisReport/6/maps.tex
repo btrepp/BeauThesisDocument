@@ -7,6 +7,11 @@ A common, yet useful driver aid is displaying the map of the current location. T
 
 \figuremacro{map}{Map display panel}{Screen-shot of the map display panel, showing the map of the current location and the map controls visible}
 
+The controls visible on Figure \ref{map} are not always required by the operator. They can obscure parts of the map in which the driver may be interested in. This can be a problem as the driver should not be expected to adjust the position of the car, in order to see a part of the map that is hidden by the UI controls. In order to prevent this problem, the controls can be hidden by tapping any area of the screen that is not occupied by a button. Doing this will hide all the navigation elements and just display the map as shown in \ref{maphidden}.
+
+\figuremacro{maphidden}{Map display panel with hidden controls}{Screen-shot of the map display panel, showing the map of the current location and the map controls hidden}.
+
+
 \subsection{Map Data}
 
 In order to display the map images, the map data must first be obtained and stored. There are many possible methods for doing this, ranging from creating the maps as needed, or downloading them from external services and storing them in a cache. The relatively low CPU power of the eye-bot m6 makes rendering the maps on-the-fly a undesirable prospect. Open source map data for the entire planet results in a file that is 18GB in size \cite{planet_osm}. This file is much too large to store locally, and this file is actually storing a compressed version of the data. Even if it were possible for the eye-bot to store this file, via the use of external storage, it would be a large strain on the CPU to convert the street level data into viewable maps. It would also require many other pieces of software to be installed on the device, making it much more complicated to manage.
@@ -74,6 +79,25 @@ The GPS outputs the current position in latitude/longitude format. This format m
 With the GPS co-ordinate converted it is possible to locate the tile to display to the user. Rather than utilize lookup files to locate the tile, a specific folder structure is used to instantaneously load the file. This is done by storing the files in the format \emph{/zoom/tilex/tiley.png}. This allows the system to directly open the file and display it. Thus even if the entire world was loaded in the maps folder, for many different zoom levels, the display time of the current location would not change.
 
 \subsection{Palleted File Format}
+
+The amount of storage required for all these tiles in an uncompressed format is shown in equation \ref{eq:mapstorage} using the data obtained in table \ref{tab:mapdata}. This amounts to approximately 81 gigabytes of information at all the various zoom levels. This size is much too large to store and a small usb drive. It would be possible to store this data on a mechanical disk, but this is much more costly than a cheaper flash based drive, and would require much more power to run.
+In order to solve this problem, a compressed file format is used. The PNG file format results in a much more smaller filesize per tile. The average filesize of the final compresed files is approximately 1.3~kB. This is a large contrast to the size of one file in an uncompressed format, being 192~kB. PNG uses various compression techniques to greatly reduce the filesize of the tiles.
+
+\begin{align}
+\label{eq:mapstorage}
+Total Space Required &=\frac {\mathrm{height} * \mathrm{width} *\mathrm{image}* {\mathrm{number\ of\ tiles}}} {{ \mathrm{bytes\ in\ a\ megabyte}}} \\
+&= \frac{256*256*3*435456}{1048676} \notag \\
+&= 81648~MB \notag
+\end{align}
+
+The main technique that is utilized in this system is the use of pallettes. Palleting restricts the colour space in the image, in order to save space. The map images do not utilized the full 24bit colour space that the screen is capable of displaying as the maps need to be visually clean, they only use a handful of colours to represent the area. Palleting works by defining the sets of colours that will be used in the image beforehand, or the pallette of this image. Consider an image with only two colours. If each colour in the pallette is given a value, each pixel in the image can be represented by that value. Hence each pixel can be represented by 1 bit, rather than 3 bytes (24 bits). This is a simple example, but it highlights how pallettes can be used to save space.
+The downside to using this technique, is that it is slightly slower than using raw image data. As the pallette is represented in a different format, it must be loaded and converted to the unprocessed data when needed. This takes some time compared to just reading the raw data. This trade-off is worthwhile however, as the space saving more than makes up for the extra CPU time to load the images. The method also has the advantage that the tile images can be easily read or modified by consumer software on other machines, PNG files are very common and can be natively viewed on all full-blown operating systems.
+
+
+\subsection{Sliding Maps}
+
+The last feature that the map panel implements is centering the vehicles position on the screen. This means that the screen will slide around in response to changes in the vehicles position. It does this by using a modified version of the equations in \ref{eq:gpstotiles}. These modified equation works takes the same inputs, but returns the position of the car inside the grid co-ordinate as a floating point number. This return result has the range $0 \le result<1$. A return value of 0 indicates that the top right corner of the image should be placed in the center of the screen. A return value of 1 is never possible, as this would be 0 on a different tile. This allows the tiles to be moved around as the car moves, providing sleek graphical feedback to the operator of the vehicle.
+
 
 % ---------------------------------------------------------------------------
 %: ----------------------- end of thesis sub-document ------------------------
