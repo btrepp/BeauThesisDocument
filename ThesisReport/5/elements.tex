@@ -66,6 +66,7 @@ This method is an internal method to the framework, and should not need to be ca
 The buttonPressed() method defines what happens when the user presses a button. This method is implemented in the base class definition in a way that it should never need to be overwritten in any classes inheriting from the base class. This method takes the position in the list of buttons that is pressed and performs the actions that occur when the button is pressed. The runnable abstract class allows any action to be coded and run by this method see \ref{sec:runnable}. This method also performs things like animating the buttons. In order to provide instant feedback to the user pressing a button, the framework will invert the colour of the button. After a short while, the button will turn back to it's previous state, and the buttons action will be performed. This small animation provides instant feedback that the user has pressed the button, and results in a much more enjoyable user experience. Delaying the action also has another advantage. By waiting a short time between running the action, which is usually the display of a different base panel, the framework is able to remove and duplicate keypresses that may occur. This prevents the user from pressing a button to transisition into a panel, and then immediately pressing a button in the new panel which they did not intend to press.
 
 \subsubsection{activate()}
+\label{sec:activate}
 
 The activate method is defined in the base class. It can be overwritten in classes that inherit from the base class, though any class implementing different functionality should call the base classes activate() method as well. This method's main responsibility is to display or 'activate' the panel that it is called upon, and to translate the touch driver information into button presses. The default functionality of this method, is to call enqueueDraw() first. This will display the current panel on the screen. Next it will call refreshTouchMap(), to register the active buttons to the framework. Once the panel has been setup, this method will then block and await input from the user via screen events. Thus this method should only ever be called in the thread that is responsible for controlling the button presses. A apparent downside to this is that there is no easy to for the developer to change the active panel inside a different thread, it is certainly possible to change the active panel though it is more difficult than changing in response to user interaction. On the other hand, this limitation is actually advantageous from a user friendliness standpoint. As the screen will only change from different base panels in response to actions performed by the user, it is easier for them to mentally link actions they have performed into re-actions displayed by the device. This specification means that the panels won't transisition by themselves, leading to a much simpler and easier to understand user interface. 
 
@@ -92,6 +93,12 @@ The method has returns a pointer to the class it was called on. This is done to 
 The popup class implements the runnable abstract class by default. This allows the popup to be passed as a runnable object. This run action performs the neccesary steps in order to activate the popup and display it on the screen. The advantage of this is that a popup can be passed as an argument to the button class, meaning that when the button is pressed the popup will be shown. This results in very simple and easy to read code.
 
 \subsubsection{getButton()}
+
+This method exists because the popup inherits from the base class. It allows the popup to specify a button element that should be used to display the popup. This button element will usually contain a runnable class that activates the popup. This method can return null if there is no button for this popup.
+
+\subsubsection{activate()}
+
+This method is inherited from the base class. See section \ref{sec:activate} for more information.
 
 
 \subsection{runnable}
@@ -144,3 +151,65 @@ This method inverts all the colours on the button. This is used in the base clas
 \subsubsection{getRunnable()}
 
 When the button object is created, it requires a runnable object to perform when the button is pressed. This method returns a pointer to that object so that it may be run, or inspected by the framework.
+
+\subsection{Digitelement}
+
+The digit element is a class that is repsonsible for displaying numbers to the screen. It is fully implemented in the framework, and does not need any methods to be implemented to be use-able. It renders white colour numbers from zero to nine, with a transparent surrounding so it is able to be overlaid on any image. Internally the digitelement is aware of the number that it has currently displaying and the new value it needs to display. It maintains this awareness in order to change only the information that differs from that present on the screen. This is done in order to maximize performance of the system. If a number, say zero, is displayed the system will not draw a zero over the top of it, it will skip to drawing the next digit.
+
+One caveat of this element is that it records the current background when it is initialized. This snapshot is used to clear out the previous image data if it differs from the desired data. This is done to prevent the digits from being drawn on-top of each other continuously. This does make the digit element currently unsuitable for display over any moving image data, though moving image data is not used extensively in the interface.
+
+The digitelement is highly configurable, allowing the developer to specify the position, size, integer places, decimal places and units to be displayed after the digit element. Common engineering units are defined in the image element, such as km/h, V and A. This allows relevant information to be laid out quickly. 
+The class takes double length floating point values as an input, but will display the number according to the parameters specified during construction. This ensures the element has consistent sizing, as a change in the magnitude of the number will not cause it to shift about on the display. If decimal places is less than 1, the element will round the value to the nearest integer.
+
+Finally the digitelement can also represent an error state. This is typically used when no information has been recieved, so the number to be displayed is undefined. In this situation displaying any number would be incorrect. As such the element will display a horizontal dash. This indicates that an error has been triggered, and their is no valid data to display. 
+
+\subsubsection{getX()}
+
+This method returns the current x position of the top left corner of the button. It is mainly used to find out the location of the button on the screen.
+
+\subsubsection{getY()}
+
+Performs the same function as getX(), except it returns the y co-ordinate in pixels.
+
+\subsubsection{getWidth()}
+
+Returns the width of the digitelement in  pixels. This will be the width of a individual digit element multiplied by the number of digits that are being displayed.
+
+\subsubsection{getHeight()}
+
+Returns the height of the digitelement. This is the same as the height of any individual number in the element, as they are all rendered at the same size.
+
+\subsubsection{setValue()}
+
+This function is used to set the value to be displayed on the digitelement. The new value will be displayed on the screen after a call to enqueueDraw().
+
+\subsubsection{setError()}
+
+This function is used to set or reset the error state. It will cause the digitelement to display a horizontal line instead of numbers. 
+
+\subsection{Console Element}
+
+The console element is a generic text element that is used to display full width text to the screen. The main purpose of this element is to provide an easy way to see debugging information on the screen itself, without requiring any remote connections to the controller. This element takes any string and converts it to be correctly displayed on the screen. It is designed to be used with data that is dynamically changing.
+
+The console element maintains an internal queue of the elements it is currently displayed. This allows a buffer to exist that will display the most recently added strings. The older strings will be removed as newer strings are added. To avoid any conflicts with memory, a string is copied into the internal buffer when it is added. This prevents any other section of the program from freeing or overwriting the memory where the string was stored. When a string is no longer being displayed, it is removed from the queue, and the memory used to store it is cleared.
+
+As the queue has the possibility of being accessed from multiple threads, it must have security in place to ensure the queue does not become corrupted. If any strings memeory is cleared at the same it is being drawn, the system will have undefined behaviour. In order to prevent this, a mechanism calling locking is used. When a thread needs to manipulate or read the queue, it locks the queue. Any other thread that tries to lock the queue at this point will be forced to wait. When the thread is finally finished with the queue, it will unlock the queue, allowing the other thread to perform an operation on it. This will cause the second thread to stop until the first thread is finished. This simple method of synchronization will prevent the queue from becoming corrupt, and ensures the stability of the console element.
+
+The console element is concerned with displaying the newest values first. In order to best illustrate this, the new values appear at the bottom of the screen, and move upwards until they are no longer displayed. This mimics the display of consoles in normal computers. 
+
+A problem that can occur with the display of the strings is the string length. The display only has a fixed width, and the desired string may be longer than the screen width. This could cause some of the data to not appear on the screen. In order to alleviate this problem, the string is split into multiple strings, each with a maximum length that is equal to the width of the screen. This allows the string to be rendered on multiple lines. When a string spills over to multiple lines, it means less space for the older lines that are to be rendered. The element takes into account multi-line strings, and may not always display the desired amount of strings if some strings are too long. This is done to enable all of the information of the newer strings to be read.
+
+A problem with multiple-lined strings is that it can be hard to differentiated between the different lines. To solve this the console element uses alternating colours when displaying different lines. This provides strong visual indicators as to which lines are grouped together as one string, making it easy to identify what the element is trying to say.
+
+\subsubsection{consolelement()}
+
+The constructor to the consoleelement takes two arguments. The first is an offset. This offset specifies how many lines at the top of the screen the element should not print in. This is to prevent the element from drawing text over buttons or other elements that may appear at the top of the screen. The second element is the maximum number of lines that should be drawn. This argument is used to prevent the element from drawing over buttons or other elements at the bottom of the screen.
+
+\subsubsection{addLine()}
+
+This method adds a line to the queue. It will lock the queue, add the line, free any lines that are now too old and then finally unlock the queue. Note that this makes it's own copy of the supplied string, so it's argument may be destroyed after this method is called.
+
+\subsubsection{draw()}
+
+This method is implemented in the console element and does not need to be overridden. It will lock the queue, split any multiple line strings, draw the lines and then unlock the queue. This method is called by the framework, if the developed wants to refresh the console element, enqueueDraw() should be called instead.
+
