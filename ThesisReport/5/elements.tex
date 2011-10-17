@@ -73,6 +73,27 @@ This method also allows animations to be specified. By supplying an argument def
 
 When this method finishes it returns the next action to run. This could either be a class that runs the next panel, or some other action to be performed when this panel is not longer being displayed.
 
+\subsection{Popup}
+
+No user interface is complete without popup windows. These are smaller windows that overlay the existing panel. A popup can be positioned anywhere on the screen, and have any width and size, making it a flexible element for displaying information. The popup window will prevent any interaction with the panel they are sitting on top of. This is defined as a modal behaviour \cite{modal}. The reason the popups will only implement modal interfaces is due to the fact that there is no way for the user to manipulate the position of the dialog box. This was done to simplify the user interface, and make it easier to understand. By default a popup will include a close button, so any new popup will always be able to close and return to the normal operation of the panel. Other buttons must be added by the developer. 
+
+\subsubsection{popup()}
+
+The constructor to the popup takes arguments in the form of the size and position of the popup, and an action to be performed when the popup closes. The last argument is a runnable object that will be called when the popup is closed. This allows actions to be scheduled in between the popup dissapearing, and the previous panel taking focus. This flexibility can be used to trigger screen refresh events, or to flush a file to the disk, or even make another panel take focus. The popup class is a child of the base class, and the runnable class.
+
+\subsubsection{buildUI()}
+
+Due to the way C++ calls constructors, a method buildUI has been created in order to over-ride the default button layout. Any class that inherits from another class will call the superclasses constructor. This is a problem if the child class does not wish to use the default exit button provided. To overcome this, the elements inside the popup are laid out when buildUI() is called. This method is called after the popup has been fully constructed. Due to polymorphism, the method will always call the implementation of the child class. This allows the child class to completely override the default layout.
+
+The method has returns a pointer to the class it was called on. This is done to allow the object to be constructed and the layout generated in one line of code, and still return a pointer to the popup object.
+
+\subsubsection{run()}
+
+The popup class implements the runnable abstract class by default. This allows the popup to be passed as a runnable object. This run action performs the neccesary steps in order to activate the popup and display it on the screen. The advantage of this is that a popup can be passed as an argument to the button class, meaning that when the button is pressed the popup will be shown. This results in very simple and easy to read code.
+
+\subsubsection{getButton()}
+
+
 \subsection{runnable}
 \label{sec:runnable}
 
@@ -119,3 +140,7 @@ Performs the same function as getWidth(), except returns the height instead of t
 \subsubsection{invertButton()}
 
 This method inverts all the colours on the button. This is used in the base class when a button is pressed (see \ref{sec:base:butpress}). This method marks the button as inverted, and the next call to enqueueDraw() will draw the button with inverted colours. Calling this function a second time will restore the state to it's original condition.
+
+\subsubsection{getRunnable()}
+
+When the button object is created, it requires a runnable object to perform when the button is pressed. This method returns a pointer to that object so that it may be run, or inspected by the framework.
