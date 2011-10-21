@@ -27,7 +27,11 @@ As the device does not have enough power to dynamically render any sort of compl
 
 \subsection{Navigation Model}
 
-Uses a tree model that can throw back any other blah blah.. FIXME
+Figure \ref{uinavigation} shows the basic routes throughout the user interface. This model is a generic tree, that can have as many leafs as possible. When the user wishes to navigate to a new panel, a pointer to that new panel is required. Thus as-long as the panel knows of the panel it wishes to transition to, any panel can be made active from any other panel. This allows the nested elements, such as syslog and status to navigate to any of the higher level panels easily as-well. These routes are not shown on the diagram, as there would be too many pathways to follow. If a panel returns a NULL pointer, the system will navigate to the App Panel to avoid a crash. This also provides handy functionality for traversing back to the top-most panel in the tree, as any leaf panel can request to transition to NULL and the App Panel will be displayed.
+
+
+\figuremacro{uinavigation}{Basic Navigation of the interface}{The basic navigation routes through the user interface, does not show "quickbar" navigation routes}
+
 
 \input{6/app}
 \input{6/battery}
@@ -39,7 +43,9 @@ Uses a tree model that can throw back any other blah blah.. FIXME
 \input{6/about}
 
 \input{6/settings}
-
+\input{6/debug}
+\input{6/copy}
+\input{6/exit}
 
 
 

@@ -1,0 +1,43 @@
+
+%: ----------------------- contents from here ------------------------
+
+\section{Debug}
+
+The top left most button in figure \ref{options} will navigate to the debug panel. This panel is shown in figure \ref{messages}. The purpose of this panel is to display the messages that are being received from the daemon programs, see section \ref{sec:design}. This panel displays the byte level contents of each message to the user as it is received. This is used to help facilitate debugging, as the writer of the daemon is able to see exactly what is being received in the interface.
+
+\figuremacro{messages}{Debug Messages Panel}{This figure shows the Debug panel, it allows the user to filter which messages are displayed and alternates the colour between each received message}
+
+This display panel has various buttons that exist on the top of the screen. These buttons allow known messages to be filtered out, enabling specific debugging to be undertaken. As discussed earlier, the first 3 bytes of a message are used to filter different kinds of messages. When a button is enabled, it will allow those messages to be drawn on the screen. Multiple combinations of messages can be combined to display any combination. The buttons labeled, TBS,GPS,IMU and DIO will filter the ASCII values of the first three bytes of each message. The all button will ignore any filtering, and will allow any message to be displayed, including ones that may not have been developed or seen before.
+
+This panel uses a ConsoleElement to display it's data as seen in section \ref{sec:consoleelement}. This allows new messages to be displayed on the bottom of the screen, and travel upwards as they become outdated. It also provides a clear distinction between messages, as seen in figure \ref{messages}. The messages alternate between red and white as they are displayed, making it easy to identify the trailing portions of each message.
+
+\section{Network Status Display}
+
+In order to verify that the system is working correctly, it is helpful to view the messages being sent as in the Debug Panel. This panel can provide too much information, and requires the user to understand hex in order to verify that each message is being received. In order to simplify this, a panel was developed that displays the status of each different type of message. This uses the simple boolean display element previously mentioned in section \ref{sec:diopanel}. This element will display green whenever messages are currently being received by the system. If no message is received in the previous 10 seconds, the marker will transition to red in order to illustrate this. This allows a quick view as to the health of the system, and highlights components that need to have further inspection.
+
+\figuremacro{netstat}{Daemon Status Panel}{This figure shows the status of the various daemons, green indicates the daemon is active, red indicates a timeout}
+
+\section{System Logs Display}
+
+As mentioned in section \ref{sec:dmesglogging}, all aspects of this system report errors by logging them to the syslog application. This prints out the warnings and errors created to \emph{/var/log/messages}. This panel loads and displays any information logged into this file. This information may come from any of the daemons mentioned in section \ref{sec:design}, the interface itself, or even other systems that are running on the Linux installation.
+
+\figuremacro{dmesg}{Syslog Panel}{This figure shows the System Log panel, this displays the most recent entries in \emph{/var/log/messages}}
+
+An important aspect of this panel is that it only displays the most recent information that has been logged. This makes it compatible with the ConsoleElement described in section \ref{sec:consoleelement}. The Console Element will automatically take care of displaying the last pieces of information it has received. This would produce the desired functionality, however further optimization needed to be undertaken.
+
+The file \emph{/var/log/messages}, is logged to by all applications since the system started. Thus it grows in size the longer the system has been operational. Without optimizing the way this file is read, it would take O(n) time to display the newest entries in the file on the Console Element, where n is the number of entries in the file. This is not acceptable as the time taken to display the logs will increase the longer the application is running. In order to fix this problem, the file is read from the end of the file minus a 2048 byte offset.  The maximum width that can be displayed is 60 characters, and the maximum possible lines that can be shown on the screen is 20. This yields the result of 1200 possible characters as seen in equation \ref{eq:maximumdisplaycharacters}. This size is roughly doubled to 2048, in order to ensure more than enough lines are read for each update. This method of reading the last 2048 characters and finding the unique lines inside them is not affected by the file size, so the time taken to update the display is now O(1). The update is not dependent on the number of lines in \emph{/var/log/messages}
+
+\begin{align}
+\label{eq:maximumdisplaycharacters}
+\mathrm{Maximum\ Characters} &= \mathrm{Characters\ per\ line}* \mathrm{Number\ of \ Lines} \\
+&= 20*60 \notag \\
+&=1200 \notag 
+\end{align}
+
+As the actual log file may be updated very quickly the screen must not update automatically. This is to stop the screen transitioning while the user may be reading something on it. As such the panel does not support any automatically updating functionality. In order to update the screen, a system like that in section \ref{sec:screenabout} is used. A invisible button is created to span the whole display. When pressed, this button will read the \emph{/var/log/messages} file and update the screen accordingly. This allows for the maximum utilization of space possible, as no space needs to be created to display a refresh button. The messages will also be updated when this panel becomes the active panel displayed on the screen.
+
+
+% ---------------------------------------------------------------------------
+%: ----------------------- end of thesis sub-document ------------------------
+% ---------------------------------------------------------------------------
+

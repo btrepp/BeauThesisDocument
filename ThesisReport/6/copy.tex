@@ -1,0 +1,22 @@
+
+%: ----------------------- contents from here ------------------------
+
+\section{Copy Log Files}
+
+Discussed in section \ref{sec:filelogger} is a utility that records the telemetry data locally. In order to make the files created by this logger easier to access, the user interface provides a mechanism for them to be copied onto an external usb drive. Figure \ref{copy} shows the display asking for user confirmation to copy the log files. If the user confirms the action, the program will navigate to the directory in which the log files are stored, and copy them byte by byte to the external drive. Once completed the screen will display the figure \ref{copycompleted}. 
+\figuremacro{copy}{Copy Popup}{Popup asking the user if they wish to copy log files to the an external drive}
+
+If an error occurs, the system will log the results to the in-built system logger, syslog. This will allow the results to be viewable at \emph{/var/log/messages}, and thus can be viewed by the Syslog panel. While copying, the interface will display the progress of the action. It does this by indicating the amount of files to be copied, and the current file it is copying across. This is implemented so the user can be sure the system has not hung or encountered another error.
+
+\figuremacro{copycompleted}{Copy Completed Popup}{This popup confirms that all the log files have been correctly copied to the usb drive}
+
+\section{Delete Log Files}
+
+In order to prevent the storage media from filling up, and to help organize the files when they are copied over the interface provides a mechanism to delete all the log files. Figure \ref{delete} shows a popup asking the user if they wish to delete the files. This functionality functions much the same way as copy, except that it does not require an external drive. It will simply open the folder and delete the files one by one. This action will also display its progress, and will provide the user with a message once the action is complete.
+
+\figuremacro{delete}{Delete Log Files Popup}{This asks the user if they want to delete all the log files stored on the system}
+
+% ---------------------------------------------------------------------------
+%: ----------------------- end of thesis sub-document ------------------------
+% ---------------------------------------------------------------------------
+

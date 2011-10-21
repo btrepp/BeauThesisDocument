@@ -3,7 +3,7 @@
 
 \section{Economy Panel}
 
-Reduced running costs are one of the most cited reasons for the interest in electric vehicles. As such the system tries to quantify the savings that occur by providing a screen which shows an approximation of the running costs of the vehicle. It does this by making some assumptions as to the cost that the petrol version of the car would consume. This is constrasted against the power that the car has consumed over the same duration. Using these values, the cost of running the car on electricity and on petrol can be calculated and the difference can be displayed. Figure \ref{money} shows this panel displayed on the device. The values displayed here are persitant through multiple drives, allowing for the differences to be calculated over a long period.
+Reduced running costs are one of the most cited reasons for the interest in electric vehicles. As such the system tries to quantify the savings that occur by providing a screen which shows an approximation of the running costs of the vehicle. It does this by making some assumptions as to the cost that the petrol version of the car would consume. This is contrasted against the power that the car has consumed over the same duration. Using these values, the cost of running the car on electricity and on petrol can be calculated and the difference can be displayed. Figure \ref{money} shows this panel displayed on the device. The values displayed here are persistent through multiple drives, allowing for the differences to be calculated over a long period.
 
 \figuremacro{money}{Savings Panel}{This figure shows the savings panel, it calculates the cost of running the car on electricity and approximates the cost of running the car on petrol}
 
@@ -18,11 +18,11 @@ Petrol\ Cost &=\mathrm{Distance\ Driven} * \mathrm{Fuel\ Economy} *\mathrm{Price
 
 Equation \ref{eq:fuelcost} shows the formula used to calculate the petrol cost. The distance driven, and cost per litre of fuel are displayed on the display providing insight into how the calculation is performed. The static price of petrol used works with this display, as the user is able to see the links between the numbers.
 
-This is not an incredibly precise calculation, as the GPS can drop out or be slightly off with the distance travelled. It also will not reflect the real cost, due to a static fuel consumption being assumed. It is also unable to take into account the fluctuation of fuel prices over a long period of time. The calculations purpose is to provide a rough ballpark figure, so the user is able to have some indication of the cost the petrol car might have incurred.
+This is not an incredibly precise calculation, as the GPS can drop out or be slightly off with the distance traveled. It also will not reflect the real cost, due to a static fuel consumption being assumed. It is also unable to take into account the fluctuation of fuel prices over a long period of time. The calculations purpose is to provide a rough ballpark figure, so the user is able to have some indication of the cost the petrol car might have incurred.
 
 \subsection{Electricity calculation}
 
-Given the voltage and current, the instananeous power can be calculated according to Joule's Law \cite{joules_law}. The formula for calculating the power is given in equation \ref{eq:power}.
+Given the voltage and current, the instantaneous power can be calculated according to Joule's Law \cite{joules_law}. The formula for calculating the power is given in equation \ref{eq:power}.
 
 \begin{align}
 \label{eq:power}
@@ -35,7 +35,7 @@ By multiplying the result by the cost in per kwh hour, the total cost can be obt
 
 \subsection{Resetting}
 
-Over time, the operator may want to reset the settings back to an initial zero state. This could possibly after months of driving. To faciliate this, the panel has a reset button present. This button will reset the distance driven and kwh consumed values. As these values are now both zero, the calculated cost values will also become zero.
+Over time, the operator may want to reset the settings back to an initial zero state. This could possibly after months of driving. To facilitate this, the panel has a reset button present. This button will reset the distance driven and kwh consumed values. As these values are now both zero, the calculated cost values will also become zero.
 
 \subsection{Persistance}
 
@@ -57,7 +57,7 @@ Most of these values are directly displayed on the screen, so it is easy to veri
         5    & Petrol Economy (km/L) & 0.062         \\
         \hline
     \end{tabular}
-	\caption{File Format for persistance of Economy Panel}
+	\caption{File Format for persistence of Economy Panel}
 	\label{tab:economyformat}
 \end{center}
 \end{table}
