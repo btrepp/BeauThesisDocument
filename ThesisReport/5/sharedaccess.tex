@@ -2,6 +2,7 @@
 %: ----------------------- contents from here ------------------------
 
 \section{Screen Drawing Queue}
+\label{sec:screendrawing}
 
 Due to the limited resources of the system, care must be taken when attempting to update the screen. As as windowing system was already being developed, it was desirable to have this system absract these actions away from the programmer. By using the toolkit the programmer can trigger when an element should be draw, and specify the drawing code to draw the element. The absraction means that the developed code will never be called directly by the programmer, it is all taken care of by the underlying mechanisms.
 
@@ -47,7 +48,7 @@ Attempting to remove as many items as possible is a problem in a multi-threaded 
 Another issue that can occur with processing drawing events in a batch format is that no new draw events may be generated. Consider that the thread is attempting to remove a certain number of redraw events, however there may only be half present inside the queue. If , for whatever reason, no more redraw events are added, the queue will wait forever attempting to remove them. This is undesirable, as some transitions may only trigger a few redraw events and do nothing more. A good example of this is a static page, like the sponsor page. It only has a few elements, the buttons and the sponsor logos, and is not dynamically updated in response to any data. If the thread was waiting for more draw events, they would never be recieved. The solution to this problem is to continue on with the drawing actions if the queue is ever empty. This prevents the thread for waiting for more events, and helps garuntee the constant refreshing of the screen.
 
 
-%\figuremacro{screenflowchart}{Screen drawing flow chart}{This figure shows the managing and drawing of elements inside the drawing queue}
+\figuremacro{screenflowchart}{Screen drawing flow chart}{This figure shows the managing and drawing of elements inside the drawing queue}
 
 
 

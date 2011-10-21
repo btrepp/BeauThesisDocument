@@ -21,7 +21,14 @@ An important definition of the UIElement class, is that it may contain any numbe
 enqueueDraw() is called whenever the system, or the programmer, wants to trigger a refresh of the screen. This will signal the toolkit that a redraw should be prepared. The purpose of this method is two-fold. Firstly it allows the toolkit to perform optimizations of the draw function in order to maximize speed (see \ref{Redrawing the Screen}). Secondly it's implementation has O(1) complexity. This means that the call to enqueueDraw() completes in constant time. This is used for performance reasons, as whatever thread has called enqueueDraw(), will not need to wait for the screen to be redrawed, it will return instantly. The draw will be scheduled to occur some time after enqueueDraw() is called. By default this method will also call the enqueueDraw() method of all it's children, allowing entire sections of the display to be redrawn using one function call.
 
 \subsubsection{animate()}
-TODO
+
+In order to improve the user experience the ability to transition between two panels was implemented. This transition is triggered via two calls to the animate command. The first call signals the screen driver that it wishes to animate from the currently displayed panel, to some other panel. This backs up the current panel to memory, so it can be drawn at the beginning of the animation later. After the first call, all the drawing functions for the second screen are run. This will draw the new panel to a fake screen, it will not actually be displayed to the user until later. Once the fake screen has been drawn, the final call to animate is called. This triggers the transition with the supplied animation and number of frames.
+
+The extra calls allow any of the existing image functions to still be used. Due to the method in which the screen is backed up, and new images are drawn to a temporary screen, the existing commands to set pixels or draw lines will still function. This allows the animations to exist without requiring complicated re-programming of the entire screen manipulation libraries. 
+
+In section \ref{sec:screendrawing} the drawing commands are stored in queues before they are processed. As such  the animate commands must also be stored in that queue, so they are executed at the correct time in relation to the drawing commands. Figure \ref{screenqueueanimationkey} shows this.
+
+\figuremacro{screenqueueanimationkey}{Animation Events in screen drawing queue}{This figure shows animation signals relative to various draw commands}
 
 \subsubsection{setActive()}
 
