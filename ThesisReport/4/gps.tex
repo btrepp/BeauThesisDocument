@@ -22,7 +22,7 @@ As the GPS device did not work with the generic serial drivers, alternative driv
 
 This driver was not immediately compatible with the device. This was because the device was manufactured after the kernel [CITE ME]. As such the driver did not recognize the manufacturer ID and product ID of the GPS[ see figure X.X]. The driver was then modified to include this information and re-deployed to the eye-bot. This was successful in creating the virtual serial device inside /dev, and also in allowing data to be read from this device.
 
-While the cdc-acm driver was able to be loaded and functioned, it still contained errors. If the system was under intense CPU load, the program may not run quick enough to remove all the data from the serial port buffer.[ CITE TTY/SERIAL BUFFERS]. This would cause the operating system to throttle the port. Examination of the driver source code reveals that new information is dropped while this driver is throttled[cdc-acm/2.6.17-arm]. This is acceptable behaviour in this instance, however this driver had a race condition. If the TTY was throttled under certain conditions, it would be unable to un-throttle later on. This cause the TTY to drain it’s buffer and never accept any new data from the GPS even if it’s buffer was empty. [SOURCE CODE ANALYSIS SECTION HERE]. The driver was further modified to include spin-locks, a primitive kernel locking technique, in order to prevent this situation. The driver is now able to run for extended periods of time without locking up, enabling a reliable GPS reporting mechanism to be developed. 
+While the cdc-acm driver was able to be loaded and functioned, it still contained errors. If the system was under intense CPU load, the program may not run quick enough to remove all the data from the serial port buffer.[ CITE TTY/SERIAL BUFFERS]. This would cause the operating system to throttle the port. Examination of the driver source code reveals that new information is dropped while this driver is throttled[cdc-acm/2.6.17-arm]. This is acceptable behavior in this instance, however this driver had a race condition. If the TTY was throttled under certain conditions, it would be unable to un-throttle later on. This cause the TTY to drain it’s buffer and never accept any new data from the GPS even if it’s buffer was empty. [SOURCE CODE ANALYSIS SECTION HERE]. The driver was further modified to include spin-locks, a primitive kernel locking technique, in order to prevent this situation. The driver is now able to run for extended periods of time without locking up, enabling a reliable GPS reporting mechanism to be developed. 
 
 \subsection {Design}
 
@@ -34,12 +34,33 @@ This first iteration of this code used blocking ports and read a single byte at 
 
 \subsubsection{Final Design}
 
-The design was refined in order to support bulk-reads and non-blocking operation. This fixes the two problems with the first approach. Rather than reading one character at a time, the program now reads as many as possible and stores the information into it’s own circular buffer. This allows the serial port to be purged as quickly as possible. It also has the added feature of allowing the program to decide how to discard messages in the case that it cannot keep up with the GPS.
+The design was refined in order to support bulk-reads and non-blocking operation. This fixes the two problems with the first approach. Rather than reading one character at a time, the program now reads as many as possible and stores the information into it's own circular buffer. This allows the serial port to be purged as quickly as possible. It also has the added feature of allowing the program to decide how to discard messages in the case that it cannot keep up with the GPS.
 
 \subsubsection{Network Protocol}
 
-Table X.X shows the protocol for the GPS message when transmitted over the network. The protocol uses a binary format instead of an ASCII based one. This reduces the space/data transmitted over the link, which helps reduce cost and improve speed. The motivation for ASCII based protocols is that control characters can be used to help synchronize the data. As this design uses ZeroMQ in order to manage the flow of data, such control characters are unnecessary. All values are transmitter in network order, this is big-endian order so that the most significant byte is transmitted first.
+Table \ref{tab:gpsprotocol} shows the protocol for the GPS message when transmitted over the network. The protocol uses a binary format instead of an ASCII based one. This reduces the space/data transmitted over the link, which helps reduce cost and improve speed. The motivation for ASCII based protocols is that control characters can be used to help synchronize the data. As this design uses ZeroMQ in order to manage the flow of data, such control characters are unnecessary. All values are transmitted in network order, this is big-endian order so that the most significant byte is transmitted first.
 
+\begin{table}
+    \begin{tabular}{*{6}{|l}|}
+        \hline
+        47 &  50 & 53 & 0 & 0  & 01    \\ \hline \hline
+        \multicolumn{5}{|c|}{ Header} & \multicolumn {1}{|c|}{Data Payload} \\ \hline
+	\multicolumn{3}{|c|}{Filter} & Minor Filter & Revision Number & Fix \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}
+    \begin{tabular}{*{6}{|l}|}
+        \hline
+        4E1FE968 & 00000000 & C1FFD54D & 42E7A1F1 & 43B40000 & 41200000 \\ \hline \hline
+         \multicolumn {6}{|c|}{Data Payload} \\ \hline
+	Time(s) & Time(us) & Latitude & Longitude & Bearing & Speed \\
+        \hline
+    \end{tabular}
+	\caption{Network protocol for GPS daemon}
+	\label{tab:gpsprotocol}
+\end{table}
 
 
 

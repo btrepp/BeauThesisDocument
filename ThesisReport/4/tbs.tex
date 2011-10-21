@@ -23,6 +23,7 @@ The e-xpert device has a set protocol that it uses to communicate with other dev
         Flow Control & None \\
         \hline
     \end{tabular}
+	\caption{Connection settings for Battery Monitor}
 \end{center}
 \end{table}
 
@@ -67,6 +68,8 @@ The last byte in the message is the "end of transfer" byte \cite{e_xpert}. The p
         Time Remaining & 0x65 \\
         \hline
     \end{tabular}
+	\caption{Hexadecimal values of different TBS messages}
+	\label{tab:tbsmessages}
 \end{center}
 \end{table}
 
@@ -78,6 +81,33 @@ The last byte in the message is the "end of transfer" byte \cite{e_xpert}. The p
 Like the GPS module, the battery monitor module was developed using C. This keeps in line with the design principles of making each component as simple as possible. Figure \ref{tbsflowchart} shows the program flow of this daemon.
 
 \figuremacro{tbsflowchart}{Flow chart of the battery monitor daemon}{}
+
+\subsubsection{Network protocol}
+
+Table \ref{tab:tbsprotocol} shows the protocol for the battery monitor message when transmitted over the network. As the design uses a binary format file like the GPS module, this format is impossible to read natively, but more efficient on space. There is no need for these values to be read on the network layer anyway. All values are transmitted in big endian network order.
+
+\begin{table}
+    \begin{tabular}{*{7}{|l}|}
+        \hline
+        54 &  42 & 53 & 0 & 0  & 4e1fe968  &         00000000   \\ \hline \hline
+        \multicolumn{5}{|c|}{ Header} & \multicolumn {2}{|c|}{Data Payload} \\ \hline
+	\multicolumn{3}{|c|}{Filter} & Minor Filter & Revision Number &Time(s) & Time remaining (s) \\
+        \hline
+    \end{tabular}
+%\end{table}
+%
+%\begin{table}
+    \begin{tabular}{*{6}{|l}|}
+        \hline
+ 42b40000 & 43710000 & c150000 &  00000000 & 00000000 & 00000000 \\ \hline \hline
+         \multicolumn {6}{|c|}{Data Payload} \\ \hline
+	  Charge(\%) & Voltage(V) & Current(A) & AmpHours(Ah) & Temperature(C) & Status \\
+        \hline
+    \end{tabular}
+	\caption{Network protocol for Battery Monitor daemon}
+	\label{tab:tbsprotocol}
+\end{table}
+
 
 
 % ---------------------------------------------------------------------------
