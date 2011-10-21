@@ -73,9 +73,35 @@ A common metric in measuring the performance of cars is to measure how long the 
 
 An important condition on this flow chart is that the zero time must be set before any calculations are performed. The zero time is the time at which the car was last traveling 0~km/h. This time will be reset whenever the car is stopped, so the calculation requires no input from the user. Also present in the flow diagram is that the system will display the best time recorded. If there is a previous best time, and a new one is achieved, the new one will automatically be displayed. This allows the user to ignore the trip meter panel entirely, and be able to trigger and record some performance data on normal drives.
 
-\subsection{Persistance}
+\subsection{Persistence}
+\label{sec:tripersistence}
 
-TODO: talk about file format and persistance
+A required feature of this panel, is persistence of the calculated results. If the system is off-line, it should remember the calculated values when it next starts up. It achieves this functionality by storing the values needed in a simple text file, that is present with the program's executable. If this file is not present when the program is run, it will be created with zero values. The system will write data to this file every 10 seconds. The delay is required so that the file-system is not overloaded by requests to continually write the data to the file system, which would result in poor performance of the messaging loop. 10 seconds is an adequate trade-of between loss of data due to a system crash, and the performance cost of saving the data.
+
+Table \ref{tab:tripformat} shows the file structure used to store the persistent information. This file format is stored as an ASCII file, so it is easy to modify the values displayed should the need arise. Each property is separated by a newline character. There is only one property stored per line, making the file a simple one-dimensional column. It creates it's own file under the name of \emph{tripsaved.txt} in order to simplify loading and protect it from errors in other files.
+
+Most of these values are directly displayed on the screen, so it is easy to verify if they have been set correctly. Line 1 is the current distance value. This value is used to offset the other trip meters. This value should be 0 under normal operation. Lines 2 and 3 represent how far the each individual trip meter has recorded. Lines 4 and 6 represent the elapsed time of each meter and Lines 5 and 7 represent the moving time. The average speed values are calculated from these values.
+
+The last important aspect of the file is that it is written atomically. All the values are written out to the file together. This is done in an attempt to minimize the affect of power outages on the file. It reduces the chances that half the file has been written when the power was cut, thus helping to protect the file's integrity.
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|l|l|l|}
+        \hline
+        Line & Property              & Example Value \\ \hline
+        1    & Current Distance (km)  & 0       \\ 
+        2    & Trip 1 Start (km)  & -118.962       \\ 
+        3    & Trip 2 Start (km)     & -128.845          \\ 
+        4    & Trip 1 Time (s)    & 70430            \\ 
+        5    & Trip 1 Moving Time (s) & 46652         \\
+        6    & Trip 2 Time (s)    & 70162            \\ 
+        7    & Trip 2 Moving Time (s) & 46384         \\
+        \hline
+    \end{tabular}
+	\caption{File Format for persistance of Trip Panel}
+	\label{tab:tripformat}
+\end{center}
+\end{table}
 
 
 % ---------------------------------------------------------------------------

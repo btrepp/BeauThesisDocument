@@ -213,3 +213,23 @@ This method adds a line to the queue. It will lock the queue, add the line, free
 
 This method is implemented in the console element and does not need to be overridden. It will lock the queue, split any multiple line strings, draw the lines and then unlock the queue. This method is called by the framework, if the developed wants to refresh the console element, enqueueDraw() should be called instead.
 
+\subsection{UIImage}
+
+Basic functionality that is useful to have in any graphical display is that of displaying images. This ability is faciliated by the image class. This is a simple class that allows an image to be displayed and placed anywhere on the display. The image class represents an image internally as an uncompressed byte array. This image is sent to the lower layers for display, and can have it's location manipulated by calling functions on the class.
+
+The image class does not need to be extended to be utilized by the  developer. It is fully implemented inside the windowing toolkit. Once it has been instantiated it is able to display the image to the screen. The image class can accept either raw uncompressed byte data to display, or it can load up a PNG format image from the devices file-system. This flexibility was introduced in order to allow images not compiled with the executable to be displayed. This functionality is used in depth in the Map display panel of the user inter-face see section \ref{sec:maps}.
+
+Image data that is loaded via a byte array will only be displayed by the image class. The memory used to store the image will not be cleared on destruction of the image object. This is done for stability reasons, as it is impossible to know if any other portion of the program is using this data, or if the data was statically compiled into the executable. If a filename is supplied, the image class will perform all the memory management functions. It will load the PNG image and convert it to the internal structure required by the lower level display drivers. It will also free the converted data when the image class is destroyed. As this is all done internally, the developer does not need to worry about memory management when using the image class. This was done to minimize memory leaks, as the class will always free internal data when it will no longer needed to be used.
+
+\subsubsection{uiimage()}
+
+Two constructors exist for the image class. The first constructor takes the position and image data as an argument. This constructor will set the internal pointers to the image data towards the supplied arguments. It will set up the image in a non memory managed mode. In this mode the image class will not free the image data when it is destroyed. This mode of operation is suited towards static image data that is compiled into the program. An example of this is images or icons that are used to display navigational or informational aids.
+
+The other constructor for this class takes the filename of an image on the device's filesystem. If the file cannot be found, a substitute error message is used in it's place. This will cause something always to be displayed to the user inter-face on this images location. This mode will convert the supplied file from the PNG format to a contiguous array of bytes. When destroyed, the array of bytes will be cleared automatically. 
+
+
+\subsubsection{setPosition()}
+
+This method allows the developer to set the x and y position of the top left corner of the image.
+
+
