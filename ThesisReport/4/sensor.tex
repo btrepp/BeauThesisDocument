@@ -16,10 +16,96 @@
 
 %: ----------------------- contents from here ------------------------
 
-\section{Distributed}
+\section{Distributed Design}
+
+The system design developed is a distributed system. This means all that all the components of the system are isolated from each other. They are able to run independently, and can developed separately. In order to share data between different components of the system, a protocol is developed using the ZeroMQ messaging framework to transmit the data between components.
+
+\subsection{Isolation}
+
+The main motivation for developing the complete system as a distributed system is isolation. Each component is isolated from the code in other components. This isolation property brings numerous advantages to the system design. 
+
+The first advantage is that each component of the system can be developed independently. As the code for each component is separate, the component can be developed at different rates, even completely different developers. This can be used to speed up the development, and debugging process, as individuals do not need to worry about conflicts created due to changes they may make.
+
+Another advantage of the isolation property is robustness. As each system component is run, it consumes it's own space of the operating systems memory. This space is protected from interference by the operating system. No other running process will be able to manipulate it's contents. This protects the process as errors in other components cannot affect this process. If any process were to hang, or exhibit unexpected behavior, it's effects will be isolated to the process that caused it. This provides stability in the final system, as an error in one component will still allow all the other components to function correctly.
+
+\subsection{Distribution of Components}
+
+Another advantageous property of the distributed system is that each component can run on isolated hardware. The entire system can be spread among many devices, or just the one. This property allows for increased flexibility in the allocation of resources. If the current hardware is unable to support all the components at the same time, extra hardware can be purchased to take some of the load. Due to the design, the displaced components will not need to be re-compiled or modified in order to run on the new hardware. The displaced components will only need to be installed and configured to communicate with the existing hardware. 
+
+By allowing flexibility in the layout of hardware, the system can be simply expanded in future. Hardware requirements can be much more flexible, allowing older slower hardware to be supplemented by newer components, rather than replaced entirely. This will save costs in development of the system.
+
+This property also has advantages for debugging the system. Components can be run on other devices, such as the machines used to developed them. These machines can also use the network protocol to communicate to the existing system. This allows utilities to simulate the functionality of components, see Appendix \ref{app:utilities}, which greatly simplifies the task of debugging the system.
+
+\subsection{Simpler Component Architecture}
+
+As the system uses individual processes for each component, development does not require extensive knowledge of threading. Threading and synchronization is complicated. It is hard to analyze and debug multi-threaded programs, as any variable may be changing at any time. This architecture removes threads, as concurrency is provided by running multiple components in isolated processes. This greatly simplifies the design and debugging of each individual component, which results in a more stable and faster developed system.
+
+\section{Network Protocol}
+
+As each component cannot access the memory of any other component, a protocol was developed to facilitate communication between different components. This protocol is transmitted using the ZeroMQ layer, which exists on top of the standard TCP/IP network layer. This library was used as it has been developed by a larger group of developers than this single project, and as such will implement more functionality and have more robustness than could have been developed in the time-frame for this project.
+
+\figuremacro{zeromqnetwork}{ZeroMQ layer in network topology}{}
+
+Figure \ref{zeromqnetwork} shows the ZeroMQ layer with respect to the application and network layers. It illustrates how ZeroMQ exists between the applications and the TCP/IP layer. ZeroMQ can also be used to communicate without using the network, however both applications must be running on the same device. This gives performance increases, as it does not transmit the messages onto the network.
+
+\subsection{Messages}
+
+The ZeroMQ layer transmits all information as messages, as opposed to the standard networking design or streams. Figure \ref{messagesvstreams} shows the difference between these two methodologies.
+
+\figuremacro{messagesvstreams}{Messages Vs Streams of Data}{}
+
+TCP transmits data as a stream, it is stored and then read from a buffer on the receiving end. This method of transmission makes it hard to synchronize were the data stream has begun. Assumptions must be made as to the position of the currently recieved byte in the stream. While the nature of TCP does provide some  guarantees as to the start of the stream, a careless error in reading the length of the message could result in the program believing the wrong location is the current one. This can cause instability in the program, as the data would be interpreted incorrectly. This can either occur via accidental, or malicious means, such as a buffer overflow attack \cite{bufferoverflow}. 
+
+A ZeroMQ message differs from a TCP stream as it is a bounded element of data. A message is received in full when it arrives. This allows the entire message to be processed, and removes concern about missing data that may still be on the network.  It is important to note that the TCP issues still exist over the ZeroMQ layer, as ZeroMQ runs on-top of the TCP layer. It is still theoretically vulnerable to these issues, but these problems can be prevented by different programming techniques. As these protections exist in this layer, there is no concern with implementing them, and the layer can be used in multiple projects, simplifying development time.
+
+\subsection{Description of Network Protocol}
+
+As the system communicates via messages, no synchronization is needed in order to sync the sender and receiver. The protocol is thus a standard ordering of bytes that can be used to identify different messages from each other. Table \ref{tab:networkprotocol} shows the meaning of each byte.
+
+\begin{table}
+    \begin{tabular}{*{5}{|l}|}
+        \hline
+        Byte 1 & Byte 2 & Byte 3 & Byte 4 & Byte 5  \\ \hline \hline
+        \multicolumn{5}{|c|}{ Header}  \\ \hline
+	\multicolumn{3}{|c|}{Filter} & Minor Filter & Revision Number \\
+        \hline
+    \end{tabular}
+ \begin{tabular}{*{7}{|l}|}
+        \hline
+        Byte 6 & Byte 7 & Byte 8 & Byte 9 & Byte 10 & Byte 11 & Byte ... \\ \hline \hline
+       \multicolumn {7}{|c|}{Data Payload} \\ \hline
+ \multicolumn {7}{|c|}{Meaning depends on filter} \\
+        \hline
+    \end{tabular}
+	\caption{Network protocol for the distributed system}
+	\label{tab:networkprotocol}
+\end{table}
+
+Each message is started with a 5 byte header, followed by a variable length data payload. The formatting of the data inside the payload depends on the individual message being transmitted. The header consists of a 3 byte major filter, a single minor filter, and the revision number of the protocol. As the major filter takes up 3 bytes there are over 16 million possible unique messages, see equation \ref{eq:headerpossibilities}. This is more than will ever be needed, however it provides a 3 byte way of identifying messages. This is useful for inspecting the bytes, as it is easy to remember 3 unique numbers and differentiate between them. 
+
+\begin{align}
+\label{eq:headerpossibilities}
+\mathrm{Unique Possible Messages} &=\mathrm{Possible\ values\ of\ a \ byte}^3 \\
+&= 2^8*2^8*2^8 \notag \\
+&= 16777216 \notag
+\end{align}
+
+After the major filter is a minor filter. The purpose of this filter is to differentiate between subsets of the same component. If a component wishes to perform some form of processing on the data, or to transmit its message in a different format, it can specify a minor filter to use. This differentiates the two different messages, but groups them logically as coming from the same source.
+
+The last component of the header is the revision number. This is used to break compatibility with older programs. Whatever component is receiving the messages will only process messages that have a compatible revision number. When a component has a major change in the structure of it's messages, it will increase the revision number transmitted. This will cause any other components expecting the older revision to not accept the new version. This helps avoids errors, as the old receiver will not mis-interpret the new message, it will ignore it and record an error.
+
 
 \section{Error Logging}
 \label{sec:dmesglogging}
+
+All components of the system will log any errors or unusual occurrences so they can be examined and the causes investigated. There are many different methods that can be utilized in order to log this data. The simplest is to allow each daemon to create it's own file to log to. This method is simple to implement, but can become difficult to manage. Code must be written in each module to record the error messages, which requires time and effort to debug. The files that the system is logging to must also be managed, as there is only finite space available on the device.
+
+As all components of the system will be run on Linux, a much more elegant solution exists to solve this problem. A set of standards was defined for logging data from programs. This method is commonly referred to as "syslog" \cite{syslog}. These logging mechanisms are native to most Linux installations, they exist on the platform the device is running on. There have been implementations of syslog on Linux, Unix and BSD platforms. Syslog separates the logging functionality from the code of the program, which helps simplify development of the program. It has been developed by many contributors over many years \cite{syslog}. This makes it much more robust and scalable than any logging system that could have been developed for this thesis.
+
+The added advantage of using syslog is that it has been developed to also work over a network. A Log device can log messages to a Log collector that is running on a different device. This provides a good synergy with the system design. As the logging of each device can take place on one central device, making it easier to check the log files for any errors.
+
+All the components developed in this project use the in syslog.h file which is a part of the standard C libraries. There is no special libraries required to utilize the functions required to log to the system logger. By default the log messages are stored in \emph{/var/log/messages}. The resulting log messages contain information about the process that created the message, the time it occurred, and the contents of the message itself. This allows the log files to be filtered for specific circumstances, helping track down errors that may occur in the system.
+
 
 \input {4/gps}
 \input {4/tbs}
