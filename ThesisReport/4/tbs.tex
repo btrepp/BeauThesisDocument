@@ -29,6 +29,7 @@ The e-xpert device has a set protocol that it uses to communicate with other dev
 
 
 \subsubsection{Destination and Start Byte}
+\label{sec:expertprotocol}
 
 The message data that the module outputs is transmitted as shown in figure \ref{tbs_protocol}. The first byte in the mesage is the start byte, in order to identify this start byte as the start byte it must be unique and never occur anywhere inside the payload. This is done by reserving the most significant bit (MSB) to be one only if it is a start or ending byte. The documentation refers to this bit as the IDHT (Identify Header Trailer ) bit. This does mean that there are only 7 bits available in each byte for transmitting data, but garuentees that the start and end of messages can be synchronized. As the first bit is a one due to the start byte being the header, the value of this byte is greater than 0x80. The rest of the bits in this first byte are the destination address. While communicating with a PC in broadcast mode, these bits can be ignored \cite{e_xpert}. The module also will not know where it is sending the byte, it is in broadcast mode, so there is no destination address. Thus the destination address bits will be 0, so the first header byte is always received as 0x80.
 

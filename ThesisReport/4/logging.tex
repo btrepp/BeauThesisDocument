@@ -3,23 +3,48 @@
 
 \section{File Logger}
 \label{sec:filelogger}
-\subsection{Hardware}
 
-
-\subsection{ Drivers}
-
+The previously mentioned components all generate data at various periodic rates. Data acquisition is useful, but it would be more useful to record this data so it can be analyzed at a later stage. This section outlines the design of a logging mechanism that will record the Battery Monitor and GPS data to a file. 
 
 \subsection {Design}
+
+\subsubsection{Program Flow}
+The process flow of the logger component is shown in Figure \ref{loggerflowchart}. This process will log the data for bother the GPS and Battery monitor components. It adapts to the speed of the slowest component. This was done to make the processor utilization more efficient. As the system will only write to a file when both values have data, it will automatically match that of the slowest component. Thus the limitation in the resolution that can be logged, is the resolution of the slowest data generating component.
+
+\figuremacro{loggerflowchart}{Flow chart of the Logger component}{This figure shows the process flow of the logger daemon. It will log both the battery monitor and GPS messages together, or individually one component is not transmitting.}
+
+If a component is does not transmit any messages in a reasonable time, the system will log the other values. This has been implemented so the system will not wait forever, for values that will never come. This allows the battery health, or the current location of the car to be recorded in all instances. Ideally this should never occur, but if the vehicle loses GPS signal, for instance when inside a tunnel, it is desirable to still record any changes in the battery status.
+
+\subsubsection{File storage}
+
+A massive file containing all the information logged is troublesome to manage. Each entry in the logger is recorded with a time-stamp. This time-stamp can be used to determine the current system date. A more manage-able solution to storing the data is to provide a unique file for each day. All new entries are appended to the end of this file. This makes it much easier to manage the logged data, and also makes it easier to observe how many days the logger has been active for.
+
+\subsubsection{File Format}
+
+The file format is a simple ASCII based CSV file. Each property of an entry is separated by a comma. A new entry occurs on the next line. This format is simple, human read-able and does not require much space to store. Figure \ref{loggingfilesample} shows a sample entry of the text file logger.
+
+\figuremacro{loggingfilesample}{Sample entry in log file}{This figure shows a sample entry in the file logger. The file is CSV formatted. The second line shows what each entry in the file means}
+
+As seen in figure \ref{loggingfilesample} each line in the file contains 78 characters. Each line will also store the newline character as-well. With the information the rate that the logging file consumes storage can be calculated using equation \ref{eq:logfilesize}. In ideal conditions the log file will fill up at a rate of 4760 bytes per minute.  This is equivalent to 277 kBytes an hour, or 6.5 megabytes per day. The internal storage of the eyebot is approximately 16 megabytes, but most of this needs to be taken up by the operating system and the code to run the various components. Luckily the eyebot can support usb storage devices.  A inexpensive 16GB usb drive has enough capacity to last 2520 days, which is more than enough logging capacity for the system.
+
+\begin{align}
+\label{eq:logfilesize}
+\mathrm{Bytes\ per\ minute} &=\mathrm{Characters\ per\ line}* \mathrm{Frequency}*\mathrm{Seconds\ per\ minute}\\
+&= 79*1*60 \notag \\
+&= 4740 \notag
+\end{align}
 
 \section{Network Logger}
 
-\subsection{Hardware}
-
-
-\subsection{ Drivers}
-
+Previously developed by other students was a server that provides Internet logging functionality. This server exists on a separate system, and uses TCP/IP to communicate with various clients. The car is equipped with a 3g module that enables it to access this server remotely. This component is concerned with receiving information from the existing components, and logging them to the already existing server so they can be displayed and analyzed via a web-portal. The logger implements the protocol according to Pearce's thesis \cite{john_thesis}.
 
 \subsection {Design}
+
+An important limitation of any network communication is that the network is unstable. At any time the network connection could disappear, preventing the program from logging data to the server. This would cause the program to hang while it waits for communication to resume. In order to solve this problem non-blocking communication was used. Non-blocking communication is when any data transmission will return instantly from being called. This allows the program to examine what has happened and react accordingly.
+
+If the network is down for an extended period of time, the system will not discard messages generated during this period of inactivity. These unsent messages are stored in memory in a queue. This queue maintains all the unsent messages, until the time in which they are able to be transmitted. Figure \ref{tcploggerflowchart} shows the program flow of the internet based logger.
+
+\figuremacro{tcploggerflowchart}{Flow chart of the Network Logger component}{This figure shows the process flow of the logger daemon. It will log both the battery monitor and GPS messages together. This diagram has simplified the receiving of ZeroMQ messages}
 
 
 

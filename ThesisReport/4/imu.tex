@@ -4,16 +4,61 @@
 \section{Accelerometer  Module}
 \label{sec:imu}
 
+Acceleration data is an important addition to any telemetry software. The aim behind this module is to provide various acceleration data so it can be analyzed later. Like all the previous components, this module reads information from a hardware device, and transmits it using the network protocol developed earlier.
+
 \subsection{Hardware}
 
+The hardware used in this module is a Sparkfun 6Dof Atomic IMU \cite{6dofimu}. This unit contains 3 accelerometers and 3 gyros. It also features a ATMega168 microprocessor that outputs the accelerometer data over a hardware UART. Table \ref{tab:atomicimusettings} show the properties of the serial connection to the device.
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|l|l|}
+        \hline
+        Property & Value \\ \hline
+        Baud Rate    & 115200 \\
+        Data Bits    & 8    \\ 
+        Stop Bits    & 1    \\ 
+        Parity       & None \\ 
+        Flow Control & None \\
+        \hline
+    \end{tabular}
+	\caption{Connection settings for Atomic IMU}
+	\label{tab:atomicimusettings}
+\end{center}
+\end{table}
 
 \subsection{ Drivers}
 
+The device used to capture the inertial data outputs the data over a serial link. As such any serial to usb module can be used. The serial connections on the eyebot itself are already used for the battery monitoring hardware. As mentioned earlier, there are issues with the FTDI drivers under this kernel, thus any FTDI branded hardware should be avoided. The other main manufacturer of usb to serial converters is Prolific. During development a Prolific usb to serial converter was used, using the pl-2303 drivers that are bundled with the kernel. This worked successfully and is currently the recommended way of interfacing with the IMU.
+
+The Atomic IMU has different modes of operation. It can output data in an ASCII or binary format. In order to simplify the code that interprets the IMU data, the device is set into the binary format. This outputs bytes that can be directly interpreted by the component software. The device is also set into auto-run mode, so it will output information as soon as it recieves power. The IMU synchronizes messages via two ASCII characters. A message starts with the 'A" character and is then followed by the 'Z' character exactly 15 bytes later. As the distance between characters is static, the chance that this exact combination would appear in the data is very low.
 
 \subsection {Design}
 
+The IMU program control loop works exactly like the GPS and Arduino loops. It will attempt to read as much data as possible into a buffer, and then find the control codes in the buffer. It will then process and transmit the data using the protocol mentioned earlier. Table \ref{tab:imuprotocol} shows the ZeroMQ layer message that is transmitted from this component.
 
 
+\begin{table}
+    \begin{tabular}{*{7}{|l}|}
+        \hline
+        49 &  4d & 55 & 0 & 0  & 4e1fe968  &        01F5   \\ \hline \hline
+        \multicolumn{5}{|c|}{ Header} & \multicolumn {2}{|c|}{Data Payload} \\ \hline
+	\multicolumn{3}{|c|}{Filter} & Minor Filter & Revision Number &Time(s) & Accel X \\
+        \hline
+    \end{tabular}
+%\end{table}
+%
+%\begin{table}
+    \begin{tabular}{*{5}{|l}|}
+        \hline
+ 01FE & 0314 & 0209 & 01F8 & 01EC \\ \hline \hline
+         \multicolumn {5}{|c|}{Data Payload} \\ \hline
+	  Accel Y & Accel Z & Pitch & Roll & Yaw \\
+        \hline
+    \end{tabular}
+	\caption{Network protocol for Atomic IMU daemon}
+	\label{tab:imuprotocol}
+\end{table}
 
 
 % ---------------------------------------------------------------------------
