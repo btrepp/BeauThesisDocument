@@ -2,7 +2,7 @@
 % this file is called up by thesis.tex
 % content in this file will be fed into the main document
 
-\chapter{Materials \& methods} % top level followed by section, subsection
+\chapter{Conclusions} % top level followed by section, subsection
 
 
 % ----------------------- paths to graphics ------------------------
@@ -18,8 +18,50 @@
 
 
 
+This project shows that it is possible to use high level programming techniques when developing for embedded devices. The hardware used in this project was powerful enough to separate into multiple components. This is significant as it provides flexibility in the development of embedded devices and highlights how these products are becoming more like traditional computers.
 
- 
+This project also illustrates the viability of using existing networking techniques, such as TCP/IP, in providing communication between different devices. The application of this technology to embedded systems provides increased robustness and decreases development time.  This shows that a network of small embedded systems that each contribute a portion of the overall system functionality is a viable solution to the problems of scaling and system cost.
+
+The ability to automatically log all the information recorded by the car is of great help to the goals of the REV team. The group will be able to log much more detailed data, and the system has been constructed in a way to make it easily extend-able. This will ultimately help in the research and development of the vehicle the system is running on.
+
+\section{Limitations}
+
+The system currently has a few limitations. These are caused by various constraints in the hardware and the design of the system.
+
+The system will be unable to support too many more additions with it's current processing power. The CPU is not able to run many high frequency data sources at the same time. This will limit the future expansion unless new hardware is acquired.
+
+The system also suffers some issues with the memory utilization of some components. Further investigation will need to take place in order to eliminate the bugs that are causing these issues.
+
+Due to time constraints the Arduino and Accelerometer were not developed fully in regards to the user interface. This is a limitation that can be overcome in the future, when a more specific use of these components is required.
+
+\section{Advantages}
+
+The system is easily expendable, providing a framework for the transmission and display of any data that the group may want to develop in the future. The development of the windowing toolkit makes it much easier to work with the touch interface on the device. 
+
+The messaging protocol developed, and the use of a message abstraction, makes it much easier to communicate between different sections. The fact that the complicated components of networking are abstracted from the developer make it easier to conceptualize what is happening. A component in this system only needs to worry about the data being sent, and not a complicated method of ensuring it is received correctly.
+
+Due to it's distributed nature, the system is easy and cost-effective to extend. Rather than having to source expensive new hardware to perform all the tasks, cheaper hardware can be used to take the role of some of the tasks. This allows the complete system to adapt to the conditions that it is being used in.
+
+\section{Applications}
+
+The system has applications in the project it was developed for. It provides a clean user interface for the display of data, and logging functionality so it can be analyzed later.
+
+The system is a proof of concept that embedded systems can communicate reliably using network protocols. This concept could be applied to newly developed systems, enabling products that can be purchased in sections, with each section providing different or improved functionality. This paves the way for embedded systems to be configured via pre-built components , rather than developed using one monolithic structure. 
+
+\section{Future work}
+
+The first aspect of future work is the finishing of the Arduino and Accelerometer components. These components are able to be decoded, but do not have very useful user interfaces. 
+
+Currently the networking is not encrypted, which does expose the possibility that it can be attacked. This does require access to the network, which is not easily, and understanding of the protocols being communicated. Future work would include the investigation of SSL in order to prevent any third party from viewing the data that is transmitted.
+
+The windowing toolkit could be further developed by providing rendering of the full alphabet at varying sizes. This would simplify the use of the toolkit, as it would be much easier to make text appear. The toolkit could also be further developed into it's own standalone package, either with dependencies on the existing libraries or not.
+
+Navigation could be added to the maps portion. A path-finding algorithm could be developed and implemented that would be able to direct the driver towards a specific destination.
+
+Further research could be conducted into sensor fusion. As the system has access to GPS, the speedometer pulse frequency, current, as well as the acceleration the car is undertaking a system could be developed in order to compensate for loss of a sensor. For instance the other sensors could approximate the GPS position when inside a tunnel. This would increase the user experience, has it would appear that the GPS works in all locations.
+
+New hardware should also be investigated for the system. Either in the form of additional devices to offset the load, or replacement of the main component running the system. This would increase the processing power of the system, and allow more complicated functionality to be developed.
+
 
 % ---------------------------------------------------------------------------
 %: ----------------------- end of thesis sub-document ------------------------
