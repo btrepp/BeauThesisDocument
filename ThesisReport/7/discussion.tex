@@ -1,7 +1,7 @@
 % this file is called up by thesis.tex
 % content in this file will be fed into the main document
 
-\chapter{Discussion} % top level followed by section, subsection
+\chapter{Performance} % top level followed by section, subsection
 
 
 % ----------------------- paths to graphics ------------------------
@@ -17,6 +17,61 @@
 % ----------------------- contents from here ------------------------
 
 
+\section{Limitations}
+
+In testing the final system, issues arose which limited the depth in which the systems could be evaluated. As such only partial evaluation has been undertaken. This was done in an effort to provide some indication as to the stability of the system, and this section will provide analysis over what data could be obtained.
+
+\subsection{Restricted Access to Vehicle}
+\label{sec:access}
+On the 15th of August the vehicle that was the main target for development was involved in a car accident. For safety reasons, the author was not allowed to work on the car in any form after this accident. This severely limited the amount of testing that could take place, as many aspects of the hardware are installed in the car which was no longer accessible.
+
+\section{Message Timings}
+
+This section reveals the time in between messages for the various components that transmit them. This was done using an eyebot to run the programs, and the messages were received on another laptop. Errors in the measurement can be contributed to the process switching active on both devices, as well as the fact that the laptop was communicating via a wireless network connection. All tests were conducted for approximately 20 minutes.
+
+\subsection{Arduino Board}
+
+Figure \ref{arduinotiming} shows the time between messages received vs the running time in the program. It is interesting to note that there are occasions when the time between two messages can be as much as 4 seconds. As the graph displays, this phenomenon appears to occur every 7 seconds. This is most likely caused by delays in the operating system on the receiving or sending end, as the process will not switch to the foreground automatically. As the delay is rarely more than 4 seconds, this will not interfere with the timeouts implemented in section \ref{toolkitfilter}
+
+\figuremacro{arduinotiming}{Inter message timing for Arduino network messages}{The time delay between messages plotted against the time the program has been running for}
+
+\subsection{Accelerometer}
+
+The accelerometer runs at a much faster rate than the Arduino board. This is reflected in graph \ref{imutiming}. It can easily be seen that this program sends out messages much more frequently.  It still suffers the same problem with longer delays occurring. However each occurrence is still well under any timeout limits. 
+
+\figuremacro{imutiming}{Inter message timing for accelerometer network messages}{The time delay between messages plotted against the time the program has been running for}
+
+\subsection{GPS and Battery Monitor}
+
+Due to both being physically installed in the vehicle, it was not possible to evaluate the message timings of these systems. See section \ref{sec:access}
+
+
+\section{Memory Utilization}
+
+This section shows plots of the memory usage of each daemon vs the running time of the program. If a program has a memory leak, it will eventually cause exhaust the systems memory and cause instability. These graphs exist to highlight any issues that may occur with running programs.
+
+\subsection{Arduino Board}
+
+Sadly, as shown in figure \ref{memoryarduino}, the Arduino based daemon does have a minor memory leak. After running the program for one hour, the memory usage had increased by 100kb. This memory leak is not too much of a problem. The system will never be on for more than a day at one time. After a day running non-stop, the program will only consume a little over 2mb. This is nothing compared to the 64mb of ram available to the system, so this problem is very minor.
+
+
+\figuremacro{memoryarduino}{Memory usage of the Arduino daemon}{Memory usage (in kb) plotted against the time the program has been running for}
+
+\subsection{Accelerometer}
+
+As shown in figure \ref{memoryimu} the Accelerometer daemon has a memory leak at the rate of 760kb per hour. This is much worse than the leak in the Arduino board. Extrapolating this usage out to one day yields a memory usage of approximately 18mb. This is still small enough to not cause major problems, though it does warrant an investigation into the cause of the memory leak. As long as the system is not run for over a day without a restart, this leak will not be a problem.
+
+\figuremacroW{memoryimu}{Memory usage of the Accelerometer daemon}{Memory usage (in kb) plotted against the time the program has been running for}{0.8}
+
+\subsection{User interface}
+
+The user interface was tested with a simulator sending messages from all four components developed in section \ref{sec:design}. As figure \ref{memorygui} shows, the user interface does not have any memory leaks. The interface can run for any amount of time and will not cause system instability. This is a good result as the user interface will always remain responsive.
+
+\figuremacroW{memorygui}{Memory usage of the user interface}{Memory usage (in kb) plotted against the time the program has been running for}{0.8}
+
+\subsection{GPS and Battery Monitor}
+
+Due to both being physically installed in the vehicle, it was not possible to evaluate the message timings of these systems. See section \ref{sec:access}. Running these programs without access to the hardware would not yield reliable results.
 
 
 

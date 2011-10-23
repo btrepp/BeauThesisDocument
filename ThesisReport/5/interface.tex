@@ -45,6 +45,7 @@ An infinite number of listeners can be registered to this class. Each listener w
 When a message is received, all the implemented filters are compared to the message. If a filter matches the received message, the message is forwarded to all the classes that are listening to this filter.
 
 \subsection{Filter}
+\label{sec:toolkitfilter}
 
 The filter class is responsible for identifying what messages will pass this filter, and maintaining a list of classes that should receive the message if it passes. Any class implementing the listener interface can be registered to a filter.
 
