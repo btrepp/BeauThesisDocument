@@ -28,14 +28,48 @@ The final advantage of developing this toolkit, is that it is not limited to use
 
 \input{5/elements}
 
-
-
 \section{Subscriber Queue}
 
-The distributed 
+As the interface will receive many different types of messages that are described in section \ref{sec:design}, the ability to easily process these messages was added to the framework. Three classes were developed in order to facilitate this functionality. A UML diagram of the classes is shown in figure \ref{uiframework2}. This functionality uses a listener based system, in order to direct each message to the class that needs the information.
 
+\figuremacro{uiframework2}{UML Diagram of messaging system for the window toolkit}{This figure shows the UML diagram of the message subscriber, filter and receiver classes}
 
-\section{Button Loop}
+\subsection{Subscriber}
+
+The subscriber class is the class that takes care of reading the messages from the network. This class maintains a instance of a ZeroMQ socket, and registers to receive all messages that are sent to that socket. It is able to listen to multiple endpoints, so it can receive messages from multiple unique devices and deal with them from the one class.
+
+The class can be run directly, or can spawn it's own thread. When the class is run, it will block indefinitely, as to direct messages to their intended destination. Thus it is recommended that the threaded functionality be utilized when this class is instantiated. 
+
+An infinite number of listeners can be registered to this class. Each listener will specify a filter that indicates what messages it is interested in. This associates the added listener with the desired filter. If the filter does not currently exist, it will be created by the subscriber class.
+
+When a message is received, all the implemented filters are compared to the message. If a filter matches the received message, the message is forwarded to all the classes that are listening to this filter.
+
+\subsection{Filter}
+
+The filter class is responsible for identifying what messages will pass this filter, and maintaining a list of classes that should receive the message if it passes. Any class implementing the listener interface can be registered to a filter.
+
+A filter also has some other options that are useful to it's operation. It is possible to set a timeout for each filter that is created. If a message that matches the filter is not received in the length it takes the timeout to occur, the listeners of this filter will be notified. This allows the listeners to respond to lapses in communication in whatever way they want. 
+
+A filter can also throttle the message rate. It is possible to specify a minimum time between messages, in order to reduce processing time used by the CPU. If the message rate is greater than the throttle rate, messages will be discarded at the filter level. This can be used to help prevent too many messages from appearing at a listener that cannot cope.
+
+\subsection{Listener}
+
+A listener is a abstract class that defines the function that will be called when a valid message arrives. If a class implements the recieveEvent method, whenever a message that it is interested in arrives it will call this method. This arguments passed through are the length of an array of bytes, and a pointer to the start of this array. This allows the class the receive the contents of the message, and use it in whatever way it pleases.
+
+\section{Button Translation}
+
+Discussed in section \ref{sec:button} is the class that represents buttons on the display. In order to interact with these buttons, and not interfere the operation of the other aspects of the system, a separate thread must be utilized. This thread has the sole responsibility of navigating through the display that is shown to the user, and triggering the actions of the button. The functionality of this thread is implemented in the activate() function of the base class. This ensures that any element created that will contain buttons has the ability to trigger them.
+
+The existing libraries for interfacing with the touch screen written by Sommer provided an integer indicating which button had been pressed \cite{thesis_sommer}. This method, while usable, is complicated and can cause many problems when determining what action had occurred. In order to simplify this, the activate() loop will take this integer value, and determine which button element it corresponded to. 
+
+The buttons on any element are stored in a vector that is separated from other elements. This provides a list of the buttons that have been added to the device in order. When refreshtouchmap() is called on an element, the loop will setup the touch regions using methods provided by Sommer's library. Sommer's libray will associate each button to a bit in a 32 bit register. Each bit corresponds to a section of the screen for an individual button. This allows multiple buttons to be pressed at the same time.
+
+The relationship between the value in the register and the position in the vector is given by equation \ref{eq:buttonregister}. Thus it is possible to convert the value returned from Sommer's library into an index in the vector. Knowing this, the loop will retrieve the runnable action from the button at this vector location. If the runnable action is valid, the result will be returned to the framework. When the framework recieves a runnable action, it will run it. As a safe-guard, if a runnable action is invalid for whatever reason, it will perform the action to display a default panel. As all calls to activate will return to the highest level of the framework, there is no nesting of panels in the system memory. Hence activate will always return to the top level.
+
+\begin{align}
+\label{eq:buttonregister}
+\mathrm{Button}_i &= \log2{(\mathrm{Register}) }
+\end{align}
 
 
 
