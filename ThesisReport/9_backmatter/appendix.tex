@@ -1,0 +1,195 @@
+% this file is called up by thesis.tex
+% content in this file will be fed into the main document
+
+%: ----------------------- name of chapter  -------------------------
+\appendix
+
+ % top level followed by section, subsection
+
+
+%: ----------------------- paths to graphics ------------------------
+
+% change according to folder and file names
+\ifpdf
+    \graphicspath{{9_backmatter/figures/PNG/}{9_backmatter/figures/PDF/}{9_backmatter/figures/}}
+\else
+    \graphicspath{{9_backmatter/figures/EPS/}{9_backmatter/figures/}}
+\fi
+
+%: ----------------------- contents from here ------------------------
+
+\chapter{Remotely Accessing Eyebot}
+
+\section{SSH Details}
+
+To connect to the eyebot, issue the command from any linux machine that has ssh installed.
+
+\begin{verbatim}
+ssh root@192.168.1.50
+\end{verbatim}
+
+You will then be prompted for a password. There is no password set by default. Hit enter when prompted for a password. The table \ref{app:tab:sshdetails} shows the settings to connect.
+
+\begin{table}
+    \begin{tabular}{|l|l|}
+        \hline
+        Property        & Value        \\ \hline
+        SSH Address(IP) & 192.168.1.50 \\ 
+        Account name    & root         \\ 
+        Password        & <empty>      \\
+        \hline
+    \end{tabular}
+	\caption{SSH Details}
+	\label{app:tab:sshdetails}
+\end{table}
+
+\section{Installing programs to Eyebot}
+
+Each program is accompanied with a makefile. This makefile will connect to the default IP address of the machine, and install the program in the folder \emph{/root/demo/rev2011/}. To install any program just run 
+
+\begin{verbatim}
+make install
+\end{verbatim}
+
+From the source folder of the desired program on the development machine. Press enter when prompted for a password.
+
+\chapter{Development environment setup}
+
+\section{Buildroot setup}
+
+The following section is based upon the legacy buildroot installation guide obtainable from
+
+\begin{verbatim}
+http://docwiki.gumstix.org/Buildroot
+\end{verbatim}
+
+This section purpose is to describe the steps needed to be undertaken to build the compiler and libraries required by the eyebot. The online guide requires some tweaks for newer versions of GCC to compile the older versions. This section will detail the changes required for Ubuntu 10.10. Other distributions may require further changes aswell.
+
+\subsection{Checkout Buildroot source code}
+
+\begin{enumerate}
+	\item To perform this section you must have subversion installed on your machine. This is a common version control system, and it's installation is out of the scope of this document.
+	\item Checkout the 1083 release of buildroot. The eyebot was built with older buildroot libraries, these are version 1083 in the repository. To check out this source use the command (all one line)
+
+\begin{verbatim}
+	svn co -r1083 http://svn.gumstix.com/gumstix-buildroot/trunk 
+	gumstix-buildroot
+\end{verbatim}
+
+\subsection{Setup environment}
+
+	\item Next you will have to setup the buildroot make environment. Change into the folder buildroot was downloaded too.
+	\item Remove the existing config (if present) with
+
+\begin{verbatim}
+	rm ./.config
+\end{verbatim}
+
+	\item Run the autoconfig program
+
+\begin{verbatim}
+	make defconfig
+\end{verbatim}
+
+	You will be prompted to select settings about the eyebot. The eyebot contains a 400mhz xscale processor, so select the options according to this. Any other options can be selected with the defaults.
+
+\subsection{Modify the source}
+	\item Modifying the source files.
+
+	The source files will not compile correctly on ubuntu 10.10 without some minor modifications. This has occured because most systems use gcc4+, while this code was originally compiled on gcc3
+
+\begin{enumerate}
+	\item Makeinfo will complain about not being installed to fix this edit the file. 
+\begin{verbatim}
+	toolchain_build_arm_nofpu/binutils-2.17-build/Makefile 
+\end{verbatim}
+	Change line 258 to 
+\begin{verbatim}
+	MAKEINFO = “/usr/bin/makeinfo”
+\end{verbatim}
+	or whatever the correct path to makeinfo is.
+
+	\item The older GCC did not require permission settings when opening a file, this must be added in. Edit the file
+\begin{verbatim}
+	toolchain_build_arm_nofpu/gcc-3.4.5/gcc/collect2.c
+\end{verbatim}
+	On line 1537 change it to read
+\begin{verbatim}
+	redir_handle = open (redir, O_WRONLY | O_TRUNC | O_CREAT,0666);
+\end{verbatim}
+
+	\item The limits.h file is not included by default when compiling using the newer GCC (caused by changes in libraries) to fix edit.
+\begin{verbatim}
+	build_arm_nofpu/linux-2.6.17gum/scripts/mod/sumversion.c
+\end{verbatim}
+	And insert at the top of the file
+\begin{verbatim}
+	#include <limits.h>
+\end{verbatim}
+\end{enumerate}
+
+	\item Include the e2fs files for the UUID functions. UUID functions are required by the ZeroMQ library. Run
+\begin{verbatim}
+	make menuconfig
+\end{verbatim}
+	And navigate the menus and enable the e2fs library.
+
+\subsection{Build}
+	\item Compile the environment. Run 
+\begin{verbatim}
+	make 
+\end{verbatim}
+	This will download and compile the build environment. Note that some packages may no longer be mirrored online. You will need to search the internet and manually download these files to the dl folder that is created. The compile process will fail with the name of the missing packages, so you can hunt them down.
+
+\end{enumerate}
+
+\section{Compiling ZeroMQ for the arm cpu}
+
+This section details the commands used to build zeroMQ libraries to run on the arm board. These commands work with zeroMQ version 2.2 on a ubuntu 10.10 machine. 
+
+\begin{enumerate}
+	\subsection{Setup path variable}
+	\item First you must setup the path variable so the automake process knows the location of the compiler. To do this run this command in the terminal. (all one line)
+ \begin{verbatim}
+	export PATH=$PATH:%PATHTOBUILDROOT%/gumstix-buildroot/
+	build_arm_nofpu/staging_dir/bin/
+\end{verbatim}
+	Where \%PATHTOBUILDROOT% is the path to the buildroot folder
+
+	\subsection{Run Automake}
+	\item ZeroMQ contains an configure utility that will generate make files for you. Run this utility with this command (all one line)
+\begin{verbatim}
+CC=arm-linux-uclibc-gcc CFLAGS=" -pthread -D_REENTRANT
+ -march=armv5te -mtune=xscale -DZMQ_FORCE_POLL" 
+CXX=arm-linux-uclibc-g++ 
+CXXFLAGS=" -pthread -D_REENTRANT -march=armv5te -mtune=xscale
+ -DZMQ_FORCE_POLL"
+LDFLAGS="-L%X%/gumstix-buildroot/build_arm_nofpu/e2fsprogs-1.38/lib/"
+CPPFLAGS="-I%X%/gumstix-buildroot/build_arm_nofpu/staging_dir/include 
+-I%X%/gumstix-buildroot/build_arm_nofpu/e2fsprogs-1.38/lib/uuid/"
+./configure --host=arm-linux 
+--prefix=%X%/build_arm_nofpu/root
+\end{verbatim}
+	Where \%X\% is the path to the gumstix buildroot environment setup earlier.
+
+	\subsection{Build}
+	\item To build ZeroMQ run the command
+\begin{verbatim}
+	make
+\end{verbatim}
+	This will build zeroMQ. To obtain the libraries run
+\begin{verbatim}
+	make installl
+\end{verbatim}
+	This will copy the libraries to \emph{\%X\%/build\_arm\_nofpu/root/\%ZEROMQVER\%/}
+\end{enumerate}
+
+
+
+
+
+
+% ---------------------------------------------------------------------------
+%: ----------------------- end of thesis sub-document ------------------------
+% ---------------------------------------------------------------------------
+
