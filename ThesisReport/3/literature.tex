@@ -17,7 +17,41 @@
 %: ----------------------- contents from here ------------------------
 
 
+\section{Renewable Energy Vehicle Instrumentation:
+Graphical User Interface and Black Box}
 
+In 2009 Daksh Varma completed a project entitled \emph{'Renewable Energy Vehicle Instrumentation:
+Graphical User Interface and Black Box'} \cite{thesis_varma}. This project developed systems for the Hyundai Getz featured in this project, and another vehicle, a Lotus Elise. This project focused on developing user interfaces and logging functionality for both vehicles.
+
+The system for the Getz was implemented on the current hardware installed in the vehicle. Varma implemented everything using C, rather than experimenting with more complicated languages. This code was very much tied to the current hardware configuration of the car, and is not functional with the unknown hardware changes that have occurred to the car since 2009. This highlights an interesting point, even though Varma had created a functional system, changes that happened after his system was deployed had large negative effects. Changes that were not under Varma's control, caused the system to crash and hang. This decreased the acceptance and view of the system.
+
+Varma used the FPGA present on the board to interface with the digital outputs available. This implementation would produce the fastest speed, but has some problems. Due to differences in the hardware revisions of the eyebot, several eyebots require different drivers for the FPGA. This means any code developed would require the correct drivers, which can be difficult to maintain. It also greatly ties the program to the eyebot platform, which limits future expansion to other machines.
+
+For threading Varma used the timers that were implemented in the RobiOS libraries. These would cause functions to be called at periodic intervals. Varma discussed the use of locks in order to protect shared variables. This of course did make the system complicated. Locking variables in thread's, if not implemented correctly, has a chance of causing deadlocks. This can cause the program to never respond to user input. The use of timers also restricts the ability of implementing the code on platforms that do not run RobiOS.
+
+When developing code for the Lotus, Varma separated front-end and back-end functionality. This separation was a good idea, as it helped provide robustness. The use of two programming languages allowed Varma to leverage the strengths of each individually.
+
+When implementing the maps functionality in the Lotus, Varma created the whole of Perth as one giant image. This would make the code simpler to maintain, as there is no complicated image swapping that needs to be performed. However this greatly limits the usability of the map system developed. The giant map image would need to be replaced manually for driving the car in different locations. It would also consume more ram than is necessary, as the whole image is always in memory. The map system develop also has no support for zoom, leaving the display stuck at the one size.
+
+Varma's system was functional and performed its tasks well. It suffers from a very rigid design, that is not very expandable. While a good technique of separating the user interface and the backend functionality was implemented for one vehicle, it was not done for the other. There is no indication why this was the case. Varma's system implemented functionality not seen on other cars, and improved the experience for the driver.
+
+\section{Development of a User Interface
+for Electric Cars}
+
+In 2010 Thomas Walter undertook a project names \emph{'Development of a User Interface
+for Electric Cars'}. This project was concerned with developing a user interface for the Lotus Elise.
+
+Walter implemented the interface by using a windowing toolkit named Qt. This toolkit is available for all major platforms, such as the windows operating system the project was developed on. Qt provides a large array of elements that the designer can use to lay-out the interface. The use of this framework would make development easier, and the final product more stable.
+
+Like Varma in 2009, Walter continued the ideal of separating the user interface from the back-end of the program. This helped diagnose problems with the system, and provided increased flexibility in development.
+
+Walter heavily relied on the use of an Object Orientated language in order to implement his system. This abstraction made it easier to identify what each classes functionality was, and makes the overall system design easier to understand. This also tied in well with the use of Qt for the user interface, as Qt is written in an Object Orientated Language.
+
+Network logging was an interesting feature added in Walters project. This logger enable the system to log data via an Internet enabled server. This logger functionality takes into account the unreliable nature of the connection used, and stores unsent messages in a queue if communication is lost.
+
+Walter provides a solution to the problems with the map system used in Varma's project. Rather than storing the map in one giant file, Walter uses a technique called tiling. This technique breaks the map up into many smaller images. By knowing the current location, the relevant images can be loaded and displayed. This reduces memory consumption, as only the active tiles are displayed, and allows the system to expand to other locations.
+
+Walter's design utilized abstractions and data structures in order to provide a more expandable system. This enabled the system to adapt to changes in location, and problems with the network. These two features are highly desirable, and would be welcome additions to the system installed in the Getz.
 
 
 
