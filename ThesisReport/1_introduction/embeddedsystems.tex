@@ -1,12 +1,33 @@
-\section{Embedded Systems} % section headings are printed smaller than chapter names
+\section{Hardware used} % section headings are printed smaller than chapter names
 % intro
 
 
-\subsection{History} % subsection headings are again smaller than section names
-% lead
+\subsection{Vehicle used in this project}
 
+The vehicle that this project will be developed for is a 2008 Hyundai Getz. This vehicle contains a 39kW electric motor \cite{rev_eco}. To power these motors, batteries have been installed resulting in a providing a total of 13kWh of power. These batteries are protected by the use of an EV Power Battery Balancing System \cite{evpowerbms}.  This system balances the charge contained in each cell, and prevents the individuals cells from under or over charging.
 
-\subsection{Telemetry}
+\subsection{Embedded Controller}
 
+An Eye-bot M6 embedded controller is the platform that all software developed in this project will run on. This controller contains a Gumstix board with a 400Mhz PXA255 processor that uses the ARMv5TE instruction set \cite{blackham_thesis}. This runs a version of busy-box linux and has also had libraries developed by the University of Western Australia to access a Xilinx FPGA and a Samsung LTE430WQF0 touchscreen \cite{macleod_thesis}. This hardware is no longer supported by the manufacturer, and as of writing the kernel is a few years old \cite{gumstix_buildroot}. This hardware is currently installed in the vehicle.
 
-\subsection{Modularity}
+\subsection{Battery Monitor}
+
+The battery monitor is current installed in the car also. It is a commercial product manufactured by TBS electronics \cite{tbs_features}. This device is able to read the voltage charge and current of the battery cells installed in the vehicle. It will interface with the embedded controller via a RS232 serial link. It transmits all the information automatically over the link everyone second \cite{tbs_specs}.
+
+\subsection{GPS}
+
+GPS works via the concept of resection.  This is a mathematically concept that can determine the an objects current location relative to 3 or more other locations \cite{intro_to_gps}. There are many satellites in the sky which transmit signals received by a GPS unit. By calculating the intersection of 3 or more spheres, each centered at a different satellite, the unit is able to calculate its current position on the earth. Once positional data has been obtained this can be compared against other values such as time, in order to calculate distance. This information can also be interpreted to calculate the distance the vehicle has traveled over arbitrary intervals.
+
+\section{Technological concepts}
+
+\subsection{Threading and Process}
+
+Having a program complete multiple tasks at once is a must for modern day systems. This is usually achieved through two methods. The first method is threading, in which a single program will have multiple "threads" accessing the same memory. The other technique is daemons, or individual processes, in which each concurrent aspect of the system will be handled by a separate program.
+
+\subsection{Messaging}
+
+Communication between devices can often be abstracted to the use of messages. There are two ways of dealing with messages, the two methods are called broker and broker-less \cite{zeromq_broker} . In this project a broker-less model will be used.
+
+\subsubsection{Brokerless}
+
+The broker less method allows each component to connect directly to any other component. There is no centralized "broker" to send messages to. This provides extra resilience as there is no single point of failure. A open source implementation that supports the broker-less method is called ZeroMQ \cite{zeromq_guide}. It has many different internal models and supports communication over TCP/IP.
