@@ -184,9 +184,294 @@ CPPFLAGS="-I%X%/gumstix-buildroot/build_arm_nofpu/staging_dir/include
 	This will copy the libraries to \emph{\%X\%/build\_arm\_nofpu/root/\%ZEROMQVER\%/}
 \end{enumerate}
 
+\chapter{Performance Testing Scripts}
+
+\section{Memory Utilization}
+
+In section \ref{sec:memutilization} the memory usage of various programs was recorded. To do this the following script was used
+
+\begin{verbatim}
+while true
+do
+	date +%s | awk '{ printf "%s ", $0 }' >> output.txt;
+	ps | grep %EXECUTABLE_NAME% | grep -v grep | head -n1 \
+	| awk '{print $3}' | awk '{printf "%s", $0}' >> output.txt;
+	echo '' >> output.txt
+	sleep 20;
+done
+
+\end{verbatim}
+
+\chapter{Utility Programs}
+
+During the development of this system, various utility programs were developed in order to help debug and test the system.
+
+\section{ZeroMQ Viewer}
+
+This component is located in the file 
+
+\begin{verbatim}
+	Utilities/programs/ZeroMQViewer
+\end{verbatim}
+
+This program is a subscriber that will attach to any publisher component. It print the time-stamp and hexadecimal values of the message whenever a message is received.
+
+\section{ZeroMQ Emulator}
+
+This component is located at 
+
+\begin{verbatim}
+	Utilities/programs/ZeroMQMessageEmulator/
+\end{verbatim}
+
+This component acts as a publisher, it will transmit messages that can be interpreted by subscribers. It loads the information ASCII information from a text file and interprets it as hexadecimal. It supports spaces in-between hexadecimal values and comments so the file should be human readable. Examples are contained in the folder with the binary.
+
+\section{ZeroMQ Evaluator}
+
+This program is contained in 
+
+\begin{verbatim}
+	Utilities/programs/ZeroMQMessageEvaluator/
+\end{verbatim}
+
+This program is a modified version of the Viewer. It will read in the specified number of messages and then stop. It also records the start and end time that this took place. This allows the time it take a certain volume or messages to be transmitted to be recorded and analyzed.
+
+\chapter{Message Timing Tables}
+\label{app:sec:timing}
+
+The following section shows the data measured for the time taken to receive varying numbers of messages. This data was obtained by running the Evaluate program on the eyebot, and sending messages from a laptop. This laptop generated messages as fast as it could using the Emulator program. When the Evaluate program recieved the desired number of messages it would halt and print the timing results.  The results are available in system clock ticks, and the system time  that elapsed during this period. The results are also available in varying message sizes. These messages were generated randomly using \emph{/dev/random} on a linux system, and stored in a file that the Emulator could load and run.
+
+\begin{table}
+    \begin{tabular}{*{7}{|l}|}
+        \hline
+Test Number & 1 & 2 & 3 & 4 & 5 &  ~ \\  \hline \hline
+1000 & 20000 & 40000 & 20000 & 20000 & 20000 & ~\\ 
+10000 & 170000 & 180000 & 120000 & 160000 & 160000 & ~ \\
+100000 & 870000 & 970000 & 1250000 & 1010000 & 1000000 & ~  \\ 
+1000000 & 9560000 & 10220000 & 10230000 & 11220000 & 9710000 & ~ \\ \hline
+Test Number &  6 & 7 & 8 & 9 & 10 &  Average \\  \hline \hline
+1000  & 10000 & 20000 & 30000 & 10000 & 30000 & 22000 \\ 
+10000  & 140000 & 160000 & 130000 & 120000 & 150000 & 149000 \\ 
+100000 &  1020000 & 1040000 & 940000 & 890000 & 1050000 & 1004000 \\ 
+1000000 & 9580000 & 10980000 & 10570000 & 10800000 & 11760000 & 10463000 \\
+        \hline
+    \end{tabular}
+	\caption{Clock ticks Vs Number of messages for 32byte random data}
+\end{table}
+
+\begin{table}
+    \begin{tabular}{*{7}{|l}|}
+        \hline
+Test Number & 1 & 2 & 3 & 4 & 5 &  ~ \\  \hline \hline
+1000  & 243750 & 212332 & 256312 & 3156460 & 341224 & ~\\
+10000 & 1419011 & 1349485 & 1436313 & 1534302 & 1349040 & ~ \\
+100000 & 15145656 & 15590986 & 15703572 & 15657899 & 15649278 & ~ \\
+1000000 & 152007642 & 156742950 & 157926991 & 158742238 & 157040941 & ~ \\ \hline
+Test Number &  6 & 7 & 8 & 9 & 10 &  Average \\  \hline \hline
+1000 & 356874 & 204477 & 386403 & 233102 & 359293 & 575022.7 \\
+10000 & 1405605 & 1662092 & 1697169 & 1501454 & 1398061 & 1475253.2 \\
+100000& 15663356 & 15267476 & 15416116 & 15363871 & 15265640 & 15472385 \\
+1000000 & 156889964 & 158464172 & 153960703 & 159458560 & 158363673 & 156959783.4 \\
+	\hline
+    \end{tabular}
+\caption{Time (us) Vs Number of messages for 32byte random data}
+\end{table}
+
+
+\begin{table}
+    \begin{tabular}{*{7}{|l}|}
+        \hline
+Test Number & 1 & 2 & 3 & 4 & 5 &  ~ \\  \hline \hline
+10 & 30000 & 20000 & 20000 & 20000 & 0 & ~ \\
+100 & 70000 & 30000 & 90000 & 60000 & 50000 & ~ \\
+1000 & 80000 & 30000 & 70000 & 40000 & 80000 & ~ \\
+10000 & 150000 & 190000 & 160000 & 210000 & 150000 & ~ \\
+100000 & 1930000 & 2210000 & 1850000 & 1890000 & 2080000 & ~ \\ \hline
+Test Number &  6 & 7 & 8 & 9 & 10 &  Average \\  \hline \hline
+10 & 20000 & 30000 & 60000 & 40000 & 30000 & 27000 \\
+100 & 10000 & 40000 & 10000 & 30000 & 10000 & 40000 \\
+1000 & 50000 & 30000 & 50000 & 50000 & 80000 & 56000 \\
+10000& 280000 & 290000 & 180000 & 220000 & 180000 & 201000 \\
+100000 & 2150000 & 2030000 & 1870000 & 2020000 & 2090000 & 2012000 \\
+        \hline
+    \end{tabular}
+	\caption{Clock ticks Vs Number of messages for 128byte random data}
+\end{table}
+
+\begin{table}
+    \begin{tabular}{*{7}{|l}|}
+        \hline
+Test Number & 1 & 2 & 3 & 4 & 5 &  ~ \\  \hline \hline
+10 & 323135 & 306990 & 220649 & 220649 & 191386 & ~ \\
+100 & 393113 & 205562 & 315971 & 328754 & 357496 & ~ \\
+1000 & 496815 & 438725 & 389029 & 505927 & 465334 & ~ \\
+10000 & 2740074 & 2723108 & 2601828 & 2576363 & 2711420 & ~ \\
+100000 & 27669065 & 27824854 & 26609896 & 25919529 & 26034126 & ~ \\ \hline
+Test Number &  6 & 7 & 8 & 9 & 10 &  Average \\  \hline \hline
+10 & 266575 & 220406 & 317913 & 307281 & 189971 & 256495.5 \\
+100 & 301369 & 291968 & 198676 & 311395 & 331863 & 303616.7 \\
+1000 & 488639 & 5468 & 519439 & 474776 & 523848 & 430800 \\
+10000 & 2732068 & 2710042 & 2631575 & 2639119 & 3595522 & 2766111.9 \\
+100000 & 27232333 & 26982161 & 27233195 & 26655991 & 27697161 & 26985831.1 \\
+	\hline
+    \end{tabular}
+\caption{Time (us) Vs Number of messages for 128byte random data}
+\end{table}
 
 
 
+\begin{table}
+    \begin{tabular}{*{7}{|l}|}
+        \hline
+Test Number & 1 & 2 & 3 & 4 & 5 &  ~ \\  \hline \hline
+10 & 0 & 20000 & 0 & 20000 & 30000 & ~ \\
+100 & 10000 & 50000 & 50000 & 30000 & 10000 & ~ \\
+1000 & 90000 & 70000 & 50000 & 50000 & 80000 & ~ \\
+10000 & 230000 & 170000 & 190000 & 270000 & 350000 & ~ \\
+100000 & 2170000 & 1800000 & 2230000 & 2240000 & 2020000 & ~ \\ \hline
+Test Number &  6 & 7 & 8 & 9 & 10 &  Average \\  \hline \hline
+ 10 & 30000 & 20000 & 20000 & 10000 & 40000 & 19000 \\
+100 & 20000 & 40000 & 90000 & 30000 & 30000 & 36000 \\
+1000 & 10000 & 30000 & 10000 & 40000 & 70000 & 50000 \\ 
+10000 & 260000 & 260000 & 150000 & 170000 & 3177625 & 522762.5 \\
+100000 & 2180000 & 2040000 & 1980000 & 1940000 & 2260000 & 2086000 \\
+        \hline
+    \end{tabular}
+	\caption{Clock ticks Vs Number of messages for 512byte random data}
+\end{table}
+
+\begin{table}
+    \begin{tabular}{*{7}{|l}|}
+        \hline
+Test Number & 1 & 2 & 3 & 4 & 5 &  ~ \\  \hline \hline
+10 & 202744 & 299140 & 243188 & 224886 & 310320 & ~ \\
+100 & 3134384 & 336945 & 344085 & 229151 & 226242 & ~ \\
+1000 & 527391 & 546638 & 584975 & 529211 & 548475 & ~ \\
+10000 & 3049670 & 2849869 & 2671973 & 2945053 & 3007291 & ~ \\
+100000 & 30712493 & 31676926 & 30686329 & 30285899 & 31565685 & ~ \\ \hline
+Test Number &  6 & 7 & 8 & 9 & 10 &  Average \\  \hline \hline
+10 & 320544 & 306020 & 220204 & 372283 & 325050 & 282437.9 \\
+100 & 203972 & 377633 & 368549 & 319270 & 336170 & 587640.1 \\ 
+1000 & 477733 & 595697 & 484988 & 587090 & 561919 & 544411.7 \\
+10000 & 2872847 & 2891389 & 2926986 & 3177625 & 2871762 & 2926446.5 \\
+100000 & 30283039 & 31059473 & 31532265 & 32491691 & 31771619 & 31206541.9 \\
+	\hline
+    \end{tabular}
+\caption{Time (us) Vs Number of messages for 512byte random data}
+\end{table}
+
+
+
+\begin{table}
+    \begin{tabular}{*{7}{|l}|}
+        \hline
+Test Number & 1 & 2 & 3 & 4 & 5 &  ~ \\  \hline \hline
+10 & 30000 & 20000 & 30000 & 20000 & 30000 & ~ \\
+100 & 100000 & 40000 & 40000 & 40000 & 0 & ~ \\
+1000 & 60000 & 30000 & 60000 & 50000 & 90000 & ~ \\
+10000 & 140000 & 200000 & 190000 & 200000 & 260000 & ~ \\
+100000 & 1800000 & 1890000 & 2410000 & 2210000 & 1700000 & ~ \\ \hline
+Test Number &  6 & 7 & 8 & 9 & 10 &  Average \\  \hline \hline
+10 & 10000 & 10000 & 30000 & 10000 & 30000 & 22000 \\
+100 & 80000 & 30000 & 10000 & 60000 & 20000 & 42000 \\
+1000 & 60000 & 50000 & 60000 & 0 & 80000 & 54000 \\
+10000 & 330000 & 200000 & 170000 & 280000 & 210000 & 218000 \\
+100000 & 2210000 & 2180000 & 2410000 & 2060000 & 1900000 & 2077000 \\
+        \hline
+    \end{tabular}
+	\caption{Clock ticks Vs Number of messages for 1024byte random data}
+\end{table}
+
+\begin{table}
+    \begin{tabular}{*{7}{|l}|}
+        \hline
+Test Number & 1 & 2 & 3 & 4 & 5 &  ~ \\  \hline \hline
+10 & 344441 & 307364 & 330483 & 315630 & 344759  & ~ \\
+100 & 383476 & 351497 & 350538 & 417289 & 339274  & ~ \\
+1000 & 539349 & 601257 & 716008 & 548840 & 711210  & ~ \\
+10000 & 3429580 & 3497672 & 3247387 & 4596539 & 3276066  & ~ \\
+100000 & 36594732 & 35013510 & 34448621 & 34661021 & 35992978  & ~ \\ \hline
+Test Number &  6 & 7 & 8 & 9 & 10 &  Average \\  \hline \hline
+10 & 310805 & 231331 & 267536 & 345342 & 335819 & 313351 \\
+100 & 352329 & 366358 & 197007 & 312781 & 215691 & 328624 \\
+1000 & 566045 & 520301 & 500614 & 591720 & 548868 & 584421.2 \\
+10000 & 3489945 & 3114163 & 3573906 & 3328063 & 3611572 & 3516489.3 \\
+100000 & 35032912 & 35081602 & 33674882 & 34417770 & 35152012 & 35007004 \\
+	\hline
+    \end{tabular}
+\caption{Time (us) Vs Number of messages for 1024byte random data}
+\end{table}
+
+
+\begin{table}
+    \begin{tabular}{*{7}{|l}|}
+        \hline
+Test Number & 1 & 2 & 3 & 4 & 5 &  ~ \\  \hline \hline
+10 & 30000 & 30000 & 40000 & 40000 & 20000 & ~ \\
+100 & 80000 & 40000 & 70000 & 30000 & 70000 & ~ \\
+1000 & 80000 & 50000 & 20000 & 60000 & 60000 & ~ \\
+10000 & 170000 & 200000 & 230000 & 190000 & 180000 & ~ \\
+100000 & 1730000 & 1580000 & 1580000 & 1570000 & 1490000 & ~ \\ \hline
+Test Number &  6 & 7 & 8 & 9 & 10 &  Average \\  \hline \hline
+10 & 40000 & 10000 & 70000 & 30000 & 40000 & 35000 \\
+100 & 50000 & 60000 & 30000 & 20000 & 80000 & 53000 \\
+1000 & 20000 & 60000 & 20000 & 60000 & 30000 & 46000 \\
+10000 & 210000 & 230000 & 190000 & 170000 & 220000 & 199000 \\
+100000 & 1970000 & 1570000 & 2100000 & 2070000 & 1900000 & 1756000 \\
+        \hline
+    \end{tabular}
+	\caption{Clock ticks Vs Number of messages for 10kilobyte random data}
+\end{table}
+
+\begin{table}
+    \begin{tabular}{*{7}{|l}|}
+        \hline
+Test Number & 1 & 2 & 3 & 4 & 5 &  ~ \\  \hline \hline
+10 & 377608 & 331011 & 285319 & 186330 & 224346  & ~ \\
+100 & 387303 & 395092 & 349759 & 344359 & 364674  & ~ \\
+1000 & 606900 & 694347 & 651131 & 470944 & 584394  & ~ \\
+10000 & 3034906 & 3020777 & 2916406 & 3016008 & 3014637  & ~ \\
+100000 & 29623959 & 30323297 & 31451455 & 31070588 & 30427494  & ~ \\ \hline
+Test Number &  6 & 7 & 8 & 9 & 10 &  Average \\  \hline \hline
+10 & 383401 & 243644 & 345962 & 264199 & 319124 & 296094.4 \\
+100 & 337517 & 395891 & 387481 & 216318 & 401400 & 357979.4 \\
+1000 & 491953 & 581445 & 603782 & 583448 & 704321 & 597266.5 \\
+10000 & 2909019 & 3082147 & 3222074 & 3322947 & 2926152 & 3046507.3 \\
+100000 & 29400026 & 31617928 & 30323380 & 30336067 & 32110036 & 30668423 \\
+	\hline
+    \end{tabular}
+\caption{Time (us) Vs Number of messages for 10kilobyte random data}
+\end{table}
+
+
+\begin{table}
+    \begin{tabular}{*{5}{|l}|}
+        \hline
+
+Message Size & 128 & 512 & 1024 & 10240 \\ \hline \hline
+10 & 256495.5 & 282437.9 & 313351 & 213073.6 \\
+100 & 303616.7 & 587640.1 & 328624 & 304995.2 \\
+1000 & 430800 & 544411.7 & 584421.2 & 390158.225 \\
+10000 & 2766111.9 & 2926446.5 & 3516489.3 & 2304761.925 \\
+100000 & 26985831.1 & 31206541.9 & 35007004 & 23324844.25 \\
+        \hline
+    \end{tabular}
+	\caption{Clock ticks Vs Number of messages combined data for varying message sizes}
+\end{table}
+
+\begin{table}
+    \begin{tabular}{*{5}{|l}|}
+        \hline
+ Message Size & 128 bytes & 512 bytes & 1024 bytes & 10 kilobytes \\ \hline \hline
+10 & 256.4955 & 282.4379 & 313.351 & 213.0736 \\
+100 & 303.6167 & 587.6401 & 328.624 & 304.9952 \\
+1000 & 430.8 & 544.4117 & 584.4212 & 390.158225 \\
+10000 & 2766.1119 & 2926.4465 & 3516.4893 & 2304.761925 \\
+100000 & 26985.8311 & 31206.5419 & 35007.004 & 23324.84425 \\
+	\hline
+    \end{tabular}
+\caption{Time(ms) Vs Number of messages combined data for varying message sizes}
+\end{table}
 
 
 % ---------------------------------------------------------------------------

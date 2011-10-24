@@ -25,7 +25,20 @@ In testing the final system, issues arose which limited the depth in which the s
 \label{sec:access}
 On the 15th of August the vehicle that was the main target for development was involved in a car accident. For safety reasons, the author was not allowed to work on the car in any form after this accident. This severely limited the amount of testing that could take place, as many aspects of the hardware are installed in the car which was no longer accessible.
 
-\section{Message Timings}
+\section{Message throughput}
+
+Figure \ref{messagethroughput} shows the amount of time it takes to receive varying sized messages. The raw data is available in appendix \ref{app:sec:timing}. This data was obtained by having the eyebot receive messages while a laptop sent them as fast as possible. 
+
+\figuremacro{messagethroughput}{Message throughput}{Time taken for a varying amount of messages to be received, for varying message sizes}
+
+The interesting thing about this graph is that it shows that the time taken to receive the messages does not differ greatly with larger message sizes. This is useful to observe as it means more complicated messages will not slow down the system, in regards to transmission times. More complicated messages do mean there is more data to process, which would adversely affect the system. A peculiar aspect is that of the 10 kilobyte payload size. It appears to take less time than the others. This is most likely due to the processor of the laptop or the eyebot being more busy when the other tests took place. This is very hard to prevent, as it is impossible to control the operating system to prevent this. However the difference is not too great, so the slight change in values is not a large problem.
+
+This graph also shows that the system does not slow down too much when under 1000 messages are being sent. The fact that 10,100 and 1000 are all reasonably similar indicates that the physical transmission and overhead of sending the data has more impact than the amount of messages being sent. This is good as the system currently does not exceed a message rate of 100 messages per second, using packets much smaller than the minimum in the test. As such the current configuration will not be hampered by transmission delays.
+
+It is important to note that this is transmitting the data from a laptop to the eyebot. On the hardware, the components reside on the same device, as such the transmission statistics would be much more favorable. This of course out-weighed by the fact that the hardware would be doing two things, generating and transmitting messages. The message subsystem was not tested this way as it would be hard to identify what was causing delays when the same device is both transmitting and receiving the messages.
+
+
+\section{Inter-message Timings}
 
 This section reveals the time in between messages for the various components that transmit them. This was done using an eyebot to run the programs, and the messages were received on another laptop. Errors in the measurement can be contributed to the process switching active on both devices, as well as the fact that the laptop was communicating via a wireless network connection. All tests were conducted for approximately 20 minutes.
 
@@ -47,6 +60,7 @@ Due to both being physically installed in the vehicle, it was not possible to ev
 
 
 \section{Memory Utilization}
+\label{sec:memutilization}
 
 This section shows plots of the memory usage of each daemon vs the running time of the program. If a program has a memory leak, it will eventually cause exhaust the systems memory and cause instability. These graphs exist to highlight any issues that may occur with running programs.
 
