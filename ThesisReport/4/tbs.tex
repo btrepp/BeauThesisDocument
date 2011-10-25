@@ -31,7 +31,7 @@ The e-xpert device has a set protocol that it uses to communicate with other dev
 \subsubsection{Destination and Start Byte}
 \label{sec:expertprotocol}
 
-The message data that the module outputs is transmitted as shown in figure \ref{tbs_protocol}. The first byte in the mesage is the start byte, in order to identify this start byte as the start byte it must be unique and never occur anywhere inside the payload. This is done by reserving the most significant bit (MSB) to be one only if it is a start or ending byte. The documentation refers to this bit as the IDHT (Identify Header Trailer ) bit. This does mean that there are only 7 bits available in each byte for transmitting data, but garuentees that the start and end of messages can be synchronized. As the first bit is a one due to the start byte being the header, the value of this byte is greater than 0x80. The rest of the bits in this first byte are the destination address. While communicating with a PC in broadcast mode, these bits can be ignored \cite{e_xpert}. The module also will not know where it is sending the byte, it is in broadcast mode, so there is no destination address. Thus the destination address bits will be 0, so the first header byte is always received as 0x80.
+The message data that the module outputs is transmitted as shown in figure \ref{tbs_protocol}. The first byte in the message is the start byte, in order to identify this start byte as the start byte it must be unique and never occur anywhere inside the payload. This is done by reserving the most significant bit (MSB) to be one only if it is a start or ending byte. The documentation refers to this bit as the IDHT (Identify Header Trailer ) bit. This does mean that there are only 7 bits available in each byte for transmitting data, but guarantees that the start and end of messages can be synchronized. As the first bit is a one due to the start byte being the header, the value of this byte is greater than 0x80. The rest of the bits in this first byte are the destination address. While communicating with a PC in broadcast mode, these bits can be ignored \cite{e_xpert}. The module also will not know where it is sending the byte, it is in broadcast mode, so there is no destination address. Thus the destination address bits will be 0, so the first header byte is always received as 0x80.
 
 \subsubsection{Source}
 
@@ -43,24 +43,12 @@ The third byte in the message is the device ID. This is a unique number that ide
 
 \subsubsection{Message Identifier}
 
-The e-xpert pro module transmits a variety of messages, which can be categorized into three groups. These different groups are handshake, commands and data. In broadcast mode, handshake and command messages are not required in order to extract information from the battery monitor. Table \ref{tbs:messages} shows the hexademical values for different messages.
-
-\subsubsection{Data}
-
-Following the message identifier is the actual payload of the message. This can take on various forms, but in the most simplistic sense is a number spread across a few bytes. Figure \ref{stuff} shows the data layout for the battery voltage message. For more information about the different values, see appendix \ref{APPENDIX}.  Due to the MSB of each byte being reserved, it is only possible to transmit 7 bits of data inside a byte, any value that requires more than 7 bits to be represented must be transmitted across multiple bytes.  
-
-COMBINE THEM AS AN EXAMPLE
-
-\subsubsection{Trailing Byte}
-
-The last byte in the message is the "end of transfer" byte \cite{e_xpert}. The purpose of this byte is to signal that the message has been sent. Like the starting byte, the MSB of this byte is set to one. The rest of the bits in this byte are also set to one, to signifiy that this is the end byte, rather than the start byte. The value transmitted is 0xFF, and this is the only location in which 0xFF can appear.
-
+The e-xpert pro module transmits a variety of messages, which can be categorized into three groups. These different groups are handshake, commands and data. In broadcast mode, handshake and command messages are not required in order to extract information from the battery monitor. Table \ref{tbs:messages} shows the hexadecimal values for different messages.
 
 \begin{table}
 \begin{center}
     \begin{tabular}{|l|l|}
         \hline
-	\label{tab:tbsmessages}
         Property & Value \\ \hline
         Battery Voltage   & 0x60 \\
         Battery Current    & 0x61    \\ 
@@ -74,7 +62,14 @@ The last byte in the message is the "end of transfer" byte \cite{e_xpert}. The p
 \end{center}
 \end{table}
 
+\subsubsection{Data}
 
+Following the message identifier is the actual payload of the message. This can take on various forms, but in the most simplistic sense is a number spread across a few bytes. Figure \ref{stuff} shows the data layout for the battery voltage message. For more information about the different values, see appendix \ref{APPENDIX}.  Due to the MSB of each byte being reserved, it is only possible to transmit 7 bits of data inside a byte, any value that requires more than 7 bits to be represented must be transmitted across multiple bytes.  
+
+
+\subsubsection{Trailing Byte}
+
+The last byte in the message is the "end of transfer" byte \cite{e_xpert}. The purpose of this byte is to signal that the message has been sent. Like the starting byte, the MSB of this byte is set to one. The rest of the bits in this byte are also set to one, to signify that this is the end byte, rather than the start byte. The value transmitted is 0xFF, and this is the only location in which 0xFF can appear.
 
 
 \subsection {Design}

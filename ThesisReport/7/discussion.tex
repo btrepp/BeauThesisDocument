@@ -44,7 +44,7 @@ This section reveals the time in between messages for the various components tha
 
 \subsection{Arduino Board}
 
-Figure \ref{arduinotiming} shows the time between messages received vs the running time in the program. It is interesting to note that there are occasions when the time between two messages can be as much as 4 seconds. As the graph displays, this phenomenon appears to occur every 7 seconds. This is most likely caused by delays in the operating system on the receiving or sending end, as the process will not switch to the foreground automatically. As the delay is rarely more than 4 seconds, this will not interfere with the timeouts implemented in section \ref{toolkitfilter}
+Figure \ref{arduinotiming} shows the time between messages received vs the running time in the program. It is interesting to note that there are occasions when the time between two messages can be as much as 4 seconds. As the graph displays, this phenomenon appears to occur every 7 seconds. This is most likely caused by delays in the operating system on the receiving or sending end, as the process will not switch to the foreground automatically. As the delay is rarely more than 4 seconds, this will not interfere with the timeouts implemented in section \ref{sec:toolkitfilter}
 
 \figuremacro{arduinotiming}{Inter message timing for Arduino network messages}{The time delay between messages plotted against the time the program has been running for}
 

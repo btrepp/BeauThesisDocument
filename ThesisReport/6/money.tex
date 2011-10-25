@@ -39,7 +39,7 @@ Over time, the operator may want to reset the settings back to an initial zero s
 
 \subsection{Persistance}
 
-Like the trip panel, see section \ref{sec:trippersistance}. The Economy panel also requires memory if the system goes off-line.  It achieves this functionality by storing the values needed in a simple text file, that is present with the program's executable. If this file is not present when the program is run, it will be created with zero values. The system will write data to this file every 10 seconds. The is exactly the same method use to provide memory to the trip panel.
+Like the trip panel, see section \ref{sec:tripersistence}. The Economy panel also requires memory if the system goes off-line.  It achieves this functionality by storing the values needed in a simple text file, that is present with the program's executable. If this file is not present when the program is run, it will be created with zero values. The system will write data to this file every 10 seconds. The is exactly the same method use to provide memory to the trip panel.
 
 Table \ref{tab:economyformat} shows the file structure used to store the information. Like the Trip panel the format used  stored is an ASCII file.  It creates it's own file under the name of \emph{moneysaved.txt} in order to simplify loading and protect it from errors in other files. This file is completely independent of \emph{tripsaved.txt} so changes in one file will not affect the other.
 

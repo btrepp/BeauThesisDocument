@@ -35,7 +35,7 @@ Another advantageous property of the distributed system is that each component c
 
 By allowing flexibility in the layout of hardware, the system can be simply expanded in future. Hardware requirements can be much more flexible, allowing older slower hardware to be supplemented by newer components, rather than replaced entirely. This will save costs in development of the system.
 
-This property also has advantages for debugging the system. Components can be run on other devices, such as the machines used to developed them. These machines can also use the network protocol to communicate to the existing system. This allows utilities to simulate the functionality of components, see Appendix \ref{app:utilities}, which greatly simplifies the task of debugging the system.
+This property also has advantages for debugging the system. Components can be run on other devices, such as the machines used to developed them. These machines can also use the network protocol to communicate to the existing system. This allows utilities to simulate the functionality of components, see Appendix \ref{app:sec:utilities}, which greatly simplifies the task of debugging the system.
 
 \subsection{Simpler Component Architecture}
 
@@ -55,13 +55,13 @@ The ZeroMQ layer transmits all information as messages, as opposed to the standa
 
 \figuremacro{messagesvstreams}{Messages Vs Streams of Data}{}
 
-TCP transmits data as a stream, it is stored and then read from a buffer on the receiving end. This method of transmission makes it hard to synchronize were the data stream has begun. Assumptions must be made as to the position of the currently recieved byte in the stream. While the nature of TCP does provide some  guarantees as to the start of the stream, a careless error in reading the length of the message could result in the program believing the wrong location is the current one. This can cause instability in the program, as the data would be interpreted incorrectly. This can either occur via accidental, or malicious means, such as a buffer overflow attack \cite{bufferoverflow}. 
+TCP transmits data as a stream, it is stored and then read from a buffer on the receiving end. This method of transmission makes it hard to synchronize were the data stream has begun. Assumptions must be made as to the position of the currently received byte in the stream. While the nature of TCP does provide some  guarantees as to the start of the stream, a careless error in reading the length of the message could result in the program believing the wrong location is the current one. This can cause instability in the program, as the data would be interpreted incorrectly. This can either occur via accidental, or malicious means, such as a buffer overflow attack \cite{bufferoverflow}. 
 
 A ZeroMQ message differs from a TCP stream as it is a bounded element of data. A message is received in full when it arrives. This allows the entire message to be processed, and removes concern about missing data that may still be on the network.  It is important to note that the TCP issues still exist over the ZeroMQ layer, as ZeroMQ runs on-top of the TCP layer. It is still theoretically vulnerable to these issues, but these problems can be prevented by different programming techniques. As these protections exist in this layer, there is no concern with implementing them, and the layer can be used in multiple projects, simplifying development time.
 
 \subsection{Publish-Subscribe model}
 
-The system developed will use a publish subscribe model. Each component will publisher data, that any number of subscribers can listen to. This simplifies communication as there are no ACKs or NACKs to worry about. Each publisher can have an infinite number of subscribers listening. This is taken care of by the ZeroMQ layer, so the development of the publisher is unware of how many subscribers exist. Figure \ref{publishsubscribe} shows an illustration of this.
+The system developed will use a publish subscribe model. Each component will publisher data, that any number of subscribers can listen to. This simplifies communication as there are no ACKs or NACKs to worry about. Each publisher can have an infinite number of subscribers listening. This is taken care of by the ZeroMQ layer, so the development of the publisher is unaware of how many subscribers exist. Figure \ref{publishsubscribe} shows an illustration of this.
 
 \figuremacro{publishsubscribe}{Publish Subscribe Model}{This diagram shows a publish subscribe model of communication. The publisher is unaware of the subscribers and has no code to deal with them, simplifying transmission}
 

@@ -16,6 +16,21 @@
 
 %: ----------------------- contents from here ------------------------
 
+This section discusses similar work that has previously been undertaken. The vehicle that is the basis for this project has been worked on for the past few years. Many solutions to the various problems have been developed. This section will examine the strengths and weaknesses of each project, so the strengths can be applied to the new design.
+
+
+\section{Getz Graphical User Interface}
+
+In 2009 a student named Jurek Malarecki performed work on the Getz \cite{thesis_malarecki}. This is documented in a report called \emph{'Getz Graphical User Interface}. The objective of the project was display information that had been partially completed in previous work.
+
+Malarecki opted to store all the user data in one structure. This contained all the variables in one element.  This would have allowed for all the variables to be easily accessible, but has many obvious dis-advantages. There is very little separation between the functionality of different components, they all occupy a similar space in memory. This makes it very easy for the data to be changed by any aspects of the program, either accidentally or maliciously. This also presents the problem of synchronization. If locking is used on the whole structure, it prevents the other variables from being updated when an unrelated variable is updated.
+
+Malarecki implemented basic map functionality using a tiling technique. This splits a map up into different smaller "tiles" which can be loaded individually. Malarecki converted the images to PPM format, which is supported by the Eyebot, but is a very rare file-format today. This can cause problems as conversions will always need to be conducted to get PPM format files. This becomes an extra step in obtaining map files. Malarecki also used lookup tables in order to determine which image to display in order to determine which image to display. This involves scanning a text file for co-ordinates that correspond to the current position. This technique would have problems as the time taken to find a image will increase as the total number of images is increased. This gives the method an O(n) complexity at best. This is problematic as if the world was stored in the map data, it would take very long to load any image.
+
+External storage was utilized to overcome the small storage capabilities of the Eye-bot. This enabled virtually unlimited storage possibilities to be used. This idea allows much a larger scope of maps to be stored and displayed, and also greatly increased the logging duration possible with the system.
+
+The use of tiles and external memory is the strong points of Malarecki's design. Other aspects of the program, while functional, were not optimized to their full extent. This would result in instability due to bugs, and a larger than needed time to load map data.
+
 
 \section{Renewable Energy Vehicle Instrumentation:
 Graphical User Interface and Black Box}

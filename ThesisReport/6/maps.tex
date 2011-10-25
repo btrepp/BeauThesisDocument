@@ -67,14 +67,15 @@ As mentioned previously, the map data is much larger than the internal storage o
 
 The GPS outputs the current position in latitude/longitude format. This format must be converted so that the correct tiles may be loaded. To do this the GPS co-ordinates are converted to grid based co-ordinates using a mercator projection \cite{slippy_map_tilenames}. The equations to convert to this format are given by \ref{eq:gpstotiles}. It is possible to convert from a grid co-ordinate back to a GPS co-ordinate using the equations given by \ref{eq:tiletogps}. This of course will only be able to return the top left corner of the tile in GPS co-ordinates, and not the original position.
 
-\begin{equation}
+\begin{align}
 \label{eq:gpstotiles}
-70=10
-\end{equation}
-\begin{equation}
+70&=10
+\end{align}
+
+\begin{align}
 \label{eq:tilestogps}
-70=10
-\end{equation}
+70&=10
+\end{align}
 
 With the GPS co-ordinate converted it is possible to locate the tile to display to the user. Rather than utilize lookup files to locate the tile, a specific folder structure is used to instantaneously load the file. This is done by storing the files in the format \emph{/zoom/tilex/tiley.png}. This allows the system to directly open the file and display it. Thus even if the entire world was loaded in the maps folder, for many different zoom levels, the display time of the current location would not change.
 
