@@ -87,8 +87,27 @@ The user interface was tested with a simulator sending messages from all four co
 
 Due to both being physically installed in the vehicle, it was not possible to evaluate the message timings of these systems. See section \ref{sec:access}. Running these programs without access to the hardware would not yield reliable results.
 
+\section{Logged data}
 
+Discussed earlier was logging mechanisms in order to record information about the vehicle. The following shows some of the data obtained through this mechanism. The following sections discuss the results obtained from a single drive. The intent was to undertake much more test drives, but due to the circumstances mentioned in section \ref{sec:access} this was not possible.
 
+\subsection{Path recording}
+
+The system developed records the GPS location. This will be recorded at a minimum of 1hz, so there will be one entry in the log file for each second. Figure \ref{revpathone} shows the path the car undertook on a test drive. This path drove from the 'University of Western Australia' to 'East Fremantle' and back again.
+
+\figuremacro{revpathone}{Map of test drive}{The path taken by the car during a test drive}
+
+\subsection{Speed and Current}
+
+Other aspects also recorded by the system are the speed and the current. These two variables are showed graphed against time in figure \ref{speedcurrenttime}. This graphs shows a few interesting points that would not be evident without the use of the logging system. The main point of this graph is that it shows the highest current consumption during times of acceleration. This is to be expected, however it also highlights that while the car is up to speed, it uses minimal current to maintain that speed. All the energy built up is wiped off by the breaks when the car slows down. This highlights that driving style may have a large impact on the range of the car, and prompts investigation into the use of regenerative breaking to capture the lost kinetic energy of the car.
+
+\figuremacro{speedcurrenttime}{Speed \& Current vs Time}{Instantaneous speed and current plotted against time for a test drive}
+
+\subsection{Charge vs Time}
+
+As figure \ref{speedcurrenttime} showed, the speed kept was reasonably constant. This is important when considering figure \ref{chargetime}, which shows the charge plotted against time for the same drive. As the charge decreases reasonably linearly, and the speed is constant, the distance traveled will be proportional to the charge depleted. This validates equation \ref{eq:distanceremaining} used to predict the remaining distance.
+
+\figuremacro{chargetime}{Charge vs Time}{Instantaneous charge plotted against time for a test drive}
 
 % ---------------------------------------------------------------------------
 % ----------------------- end of thesis sub-document ------------------------
