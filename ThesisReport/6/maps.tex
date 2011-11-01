@@ -65,16 +65,23 @@ As mentioned previously, the map data is much larger than the internal storage o
 
 \subsubsection{Converting GPS Co-ordinates}
 
-The GPS outputs the current position in latitude/longitude format. This format must be converted so that the correct tiles may be loaded. To do this the GPS co-ordinates are converted to grid based co-ordinates using a mercator projection \cite{slippy_map_tilenames}. The equations to convert to this format are given by \ref{eq:gpstotiles}. It is possible to convert from a grid co-ordinate back to a GPS co-ordinate using the equations given by \ref{eq:tiletogps}. This of course will only be able to return the top left corner of the tile in GPS co-ordinates, and not the original position.
+The GPS outputs the current position in latitude/longitude format. This format must be converted so that the correct tiles may be loaded. To do this the GPS co-ordinates are converted to grid based co-ordinates using a Mercator projection \cite{slippy_map_tilenames}. The equations to convert to this format are given by \ref{eq:gpstotiles} \cite{slippy_map_tilenames}. It is possible to convert from a grid co-ordinate back to a GPS co-ordinate using the equations given by \ref{eq:tilestogps} \cite{slippy_map_tilenames}. This of course will only be able to return the top left corner of the tile in GPS co-ordinates, and not the original position.
 
 \begin{align}
 \label{eq:gpstotiles}
-70&=10
+\mathrm{Tile\ X} = \lfloor(\frac{\mathrm{longitude}+180.0}{360}* 2^{\mathrm{zoom}})\rfloor 
+\end{align}
+\begin{align}
+\mathrm{Tile\ Y} = \lfloor{{\left(1- \frac{\ln \left(\tan(\frac{\pi*\mathrm{latitude}}{180})+\frac{1}{\cos(\frac{\mathrm{latitude}*\pi}{180})}\right)}{\pi} \right  )}*2^{\mathrm{zoom}-1}}\rfloor
 \end{align}
 
 \begin{align}
 \label{eq:tilestogps}
-70&=10
+\mathrm{Longitude} = \frac{\mathrm{X}*360}{2^{\mathrm{zoom}}} -180 \\
+\end{align}
+\begin{align}
+n = \frac{ \pi- 2.0*\pi*\mathrm{Y}}{2^{\mathrm{zoom}}} \\
+\mathrm{Latitude} = \frac{180*\tan^-1(0.5*(e^n-e^-n))}{\pi} 
 \end{align}
 
 With the GPS co-ordinate converted it is possible to locate the tile to display to the user. Rather than utilize lookup files to locate the tile, a specific folder structure is used to instantaneously load the file. This is done by storing the files in the format \emph{/zoom/tilex/tiley.png}. This allows the system to directly open the file and display it. Thus even if the entire world was loaded in the maps folder, for many different zoom levels, the display time of the current location would not change.

@@ -58,6 +58,7 @@ A filter can also throttle the message rate. It is possible to specify a minimum
 A listener is a abstract class that defines the function that will be called when a valid message arrives. If a class implements the recieveEvent method, whenever a message that it is interested in arrives it will call this method. This arguments passed through are the length of an array of bytes, and a pointer to the start of this array. This allows the class the receive the contents of the message, and use it in whatever way it pleases.
 
 \section{Button Translation}
+\label{sec:button_thread}
 
 Discussed in section \ref{sec:button} is the class that represents buttons on the display. In order to interact with these buttons, and not interfere the operation of the other aspects of the system, a separate thread must be utilized. This thread has the sole responsibility of navigating through the display that is shown to the user, and triggering the actions of the button. The functionality of this thread is implemented in the activate() function of the base class. This ensures that any element created that will contain buttons has the ability to trigger them.
 
