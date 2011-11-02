@@ -316,7 +316,8 @@ sudo apt-get install imagemagick ttf-dejavu
 cd ~/src
 svn co http://svn.mapnik.org/tags/release-0.7.1/ mapnik
 cd mapnik
-python scons/scons.py configure INPUT_PLUGINS=all OPTIMIZATION=3 SYSTEM_FONTS=/usr/share/fonts/truetype/
+python scons/scons.py configure INPUT_PLUGINS=all 
+OPTIMIZATION=3 SYSTEM_FONTS=/usr/share/fonts/truetype/
 python scons/scons.py
 sudo python scons/scons.py install
 sudo ldconfig
@@ -342,9 +343,11 @@ wget http://tile.openstreetmap.org/processed_p.tar.bz2
 tar xvjf processed_p.tar.bz2 -C world_boundaries
 wget http://tile.openstreetmap.org/shoreline_300.tar.bz2
 tar xjf shoreline_300.tar.bz2 -C world_boundaries
-wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/10m-populated-places.zip
+wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/
+    download/10m/cultural/10m-populated-places.zip
 unzip 10m-populated-places.zip -d world_boundaries
-wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/110m-admin-0-boundary-lines.zip
+wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/
+     download/110m/cultural/110m-admin-0-boundary-lines.zip
 unzip 110m-admin-0-boundary-lines.zip -d world_boundaries
 \end{verbatim}
 

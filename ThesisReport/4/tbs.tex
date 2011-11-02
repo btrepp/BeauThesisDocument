@@ -66,7 +66,7 @@ The e-xpert pro module transmits a variety of messages, which can be categorized
 
 Following the message identifier is the actual payload of the message. This can take on various forms, but in the most simplistic sense is a number spread across a few bytes. Figure \ref{tbsdatafigure} shows the data layout for the battery voltage message. For more information about the different values, see "e-xpert pro communications interface specifications" \cite{e_xpert}.  Due to the MSB of each byte being reserved, it is only possible to transmit 7 bits of data inside a byte, any value that requires more than 7 bits to be represented must be transmitted across multiple bytes.  
 
-\figuremacro{tbsdatafigure}{Structure of data payload}{Note that each byte transmitted only has seven usable bits of data, the 8th bit becomes the lowest bit in the next byte}
+\figuremacro{tbsdatafigure}{Structure of data payload}{Note that each byte transmitted only has seven usable bits of data, the 8th bit becomes the lowest bit in the next byte \cite{e_xpert}}
 
 \subsubsection{Trailing Byte}
 
