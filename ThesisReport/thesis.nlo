@@ -3,3 +3,33 @@
 \nomenclatureentry{aGPS@[{GPS}]\begingroup Global Positioning System\nomeqref {0}|nompageref}{xv}
 \nomenclatureentry{aBMS@[{BMS}]\begingroup Battery Management System\nomeqref {0}|nompageref}{xv}
 \nomenclatureentry{aCPU@[{CPU}]\begingroup Central Processing Unit\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aICE@[{ICE}]\begingroup Internal combustion engine\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aARM@[{ARM}]\begingroup Microprocessor manufactured by Arm holdings\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aFPGA@[{FPGA}]\begingroup Field programmable gate array\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aTBS@[{TBS}]\begingroup Manufacturer of industrial electronics devices\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aRS232@[{RS232}]\begingroup Standard for serial communication\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aIP@[{IP}]\begingroup Internet Protocol\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aOOP@[{OOP}]\begingroup Object Orientated Programming\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aPPM@[{PPM}]\begingroup Portable Pixel Map\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aC@[{C}]\begingroup Low level programming language\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aC++@[{C++}]\begingroup Extension of C that supports OOP\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aQt@[{Qt}]\begingroup Windowing toolkit developed by Nokia\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aIPC@[{IPC}]\begingroup Inter Process Communication\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aACK@[{ACK}]\begingroup Network Acknowledgment\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aNACK@[{NACK}]\begingroup Negative Network Acknowledgment\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aLinux@[{Linux}]\begingroup Open source operating system developed by Linus Torvalds\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aKernel@[{Kernel}]\begingroup Central component of operating system\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aTTY@[{TTY}]\begingroup Text terminal\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aACSII@[{ACSII}]\begingroup American Standard Code for Information Interchange\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aMSB@[{MSB}]\begingroup Most significant byte/bit\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aLSB@[{LSB}]\begingroup Least significant byte/bit\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aPC@[{PC}]\begingroup Personal computer\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aRPM@[{RPM}]\begingroup Revolutions per minute\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aIMU@[{IMU}]\begingroup Inertial Measurement Unit\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aCSV@[{CSV}]\begingroup Comma Separated Value\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aUSB@[{USB}]\begingroup Univeral Serial Bus\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aRGB@[{RGB}]\begingroup Red Green Blue\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aRGBA@[{RGBA}]\begingroup Red Green Blue Alpha\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aPNG@[{PNG}]\begingroup Portable Network Graphic\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aUML@[{UML}]\begingroup Unified Modeling Language\nomeqref {0}|nompageref}{xv}
+\nomenclatureentry{aUI@[{UI}]\begingroup User Interface\nomeqref {0}|nompageref}{xv}

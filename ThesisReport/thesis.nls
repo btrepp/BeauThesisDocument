@@ -2,14 +2,69 @@
 
  \nomgroup{A}
 
+  \item [{ACK}]\begingroup Network Acknowledgment\nomeqref {0}
+		\nompageref{xv}
+  \item [{ACSII}]\begingroup American Standard Code for Information Interchange\nomeqref {0}
+		\nompageref{xv}
+  \item [{ARM}]\begingroup Microprocessor manufactured by Arm holdings\nomeqref {0}
+		\nompageref{xv}
   \item [{BMS}]\begingroup Battery Management System\nomeqref {0}
-		\nompageref{viii}
+		\nompageref{xv}
+  \item [{C}]\begingroup Low level programming language\nomeqref {0}
+		\nompageref{xv}
+  \item [{C++}]\begingroup Extension of C that supports OOP\nomeqref {0}
+		\nompageref{xv}
   \item [{CPU}]\begingroup Central Processing Unit\nomeqref {0}
-		\nompageref{viii}
+		\nompageref{xv}
+  \item [{CSV}]\begingroup Comma Separated Value\nomeqref {0}
+		\nompageref{xv}
+  \item [{FPGA}]\begingroup Field programmable gate array\nomeqref {0}
+		\nompageref{xv}
   \item [{GPS}]\begingroup Global Positioning System\nomeqref {0}
-		\nompageref{viii}
+		\nompageref{xv}
+  \item [{ICE}]\begingroup Internal combustion engine\nomeqref {0}
+		\nompageref{xv}
+  \item [{IMU}]\begingroup Inertial Measurement Unit\nomeqref {0}
+		\nompageref{xv}
+  \item [{IP}]\begingroup Internet Protocol\nomeqref {0}\nompageref{xv}
+  \item [{IPC}]\begingroup Inter Process Communication\nomeqref {0}
+		\nompageref{xv}
+  \item [{Kernel}]\begingroup Central component of operating system\nomeqref {0}
+		\nompageref{xv}
+  \item [{Linux}]\begingroup Open source operating system developed by Linus Torvalds\nomeqref {0}
+		\nompageref{xv}
+  \item [{LSB}]\begingroup Least significant byte/bit\nomeqref {0}
+		\nompageref{xv}
+  \item [{MSB}]\begingroup Most significant byte/bit\nomeqref {0}
+		\nompageref{xv}
+  \item [{NACK}]\begingroup Negative Network Acknowledgment\nomeqref {0}
+		\nompageref{xv}
+  \item [{OOP}]\begingroup Object Orientated Programming\nomeqref {0}
+		\nompageref{xv}
+  \item [{PC}]\begingroup Personal computer\nomeqref {0}\nompageref{xv}
+  \item [{PNG}]\begingroup Portable Network Graphic\nomeqref {0}
+		\nompageref{xv}
+  \item [{PPM}]\begingroup Portable Pixel Map\nomeqref {0}
+		\nompageref{xv}
+  \item [{Qt}]\begingroup Windowing toolkit developed by Nokia\nomeqref {0}
+		\nompageref{xv}
+  \item [{RGB}]\begingroup Red Green Blue\nomeqref {0}\nompageref{xv}
+  \item [{RGBA}]\begingroup Red Green Blue Alpha\nomeqref {0}
+		\nompageref{xv}
+  \item [{RPM}]\begingroup Revolutions per minute\nomeqref {0}
+		\nompageref{xv}
+  \item [{RS232}]\begingroup Standard for serial communication\nomeqref {0}
+		\nompageref{xv}
+  \item [{TBS}]\begingroup Manufacturer of industrial electronics devices\nomeqref {0}
+		\nompageref{xv}
   \item [{TCP}]\begingroup Transmission Control Protocol\nomeqref {0}
-		\nompageref{viii}
-  \item [{ZMQ}]\begingroup Zero MQ\nomeqref {0}\nompageref{viii}
+		\nompageref{xv}
+  \item [{TTY}]\begingroup Text terminal\nomeqref {0}\nompageref{xv}
+  \item [{UI}]\begingroup User Interface\nomeqref {0}\nompageref{xv}
+  \item [{UML}]\begingroup Unified Modeling Language\nomeqref {0}
+		\nompageref{xv}
+  \item [{USB}]\begingroup Univeral Serial Bus\nomeqref {0}
+		\nompageref{xv}
+  \item [{ZMQ}]\begingroup Zero MQ\nomeqref {0}\nompageref{xv}
 
 \end{thenomenclature}

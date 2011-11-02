@@ -184,6 +184,176 @@ CPPFLAGS="-I%X%/gumstix-buildroot/build_arm_nofpu/staging_dir/include
 	This will copy the libraries to \emph{\%X\%/build\_arm\_nofpu/root/\%ZEROMQVER\%/}
 \end{enumerate}
 
+\chapter{Tile server setup}
+\label{app:sec:mapserver}
+In this project tiles for all of Perth were generated. This was done on a much more powerful machine then the eyebot before hand. This section details how to setup a server to generate these tiles.
+
+\subsection{Get the planet file}
+
+First you will need the raw map data in order to generated the maps. To download the latest version of earth run this command.
+
+\begin{verbatim}
+cd planet
+wget http://planet.openstreetmap.org/planet-latest.osm.bz2
+\end{verbatim}
+
+This file is quite large and will take a while to download. Smaller extract files do exist, so if you are only interested in a subsection, use one of these files instead.
+
+\subsection{Install a postGIS database}
+
+PostGIS is a postgresql extension for GIS functions. To install it in ubuntu run
+
+\begin{verbatim}
+sudo apt-get install postgresql-8.4-postgis postgresql-contrib-8.4
+sudo apt-get install postgresql-server-dev-8.4
+sudo apt-get install build-essential libxml2-dev libtool
+sudo apt-get install libgeos-dev libpq-dev libbz2-dev proj
+\end{verbatim}
+
+Or use the package manager of your distribution.
+
+\subsection{Install osm2pgsql}
+
+Earlier we download a osm file, we need to import that into the GIS database. Luckily scripts exist to do that for us. Run
+
+\begin{verbatim}
+cd ~/bin
+svn co http://svn.openstreetmap.org/applications/utils/export/osm2pgsql/
+cd osm2pgsql
+./autogen.sh
+./configure
+make
+\end{verbatim}
+
+\subsection{Tweak the GIS database}
+
+There will be alot of data inserted into this database, so it is best to modify the running parameters for some extra performance. Edit these lines to match in \emph{/etc/postgresql/8.4/main/postgresql.conf}
+
+\begin{verbatim}
+shared_buffers = 128MB # 16384 for 8.1 and earlier
+checkpoint_segments = 20
+maintenance_work_mem = 256MB # 256000 for 8.1 and earlier
+autovacuum = off
+\end{verbatim}
+
+Optionally increase the size of shared memory available
+
+\begin{verbatim}
+sudo sysctl -w kernel.shmmax=268435456
+sudo sysctl -p /etc/sysctl.conf
+\end{verbatim}
+
+Then restart postgresql
+
+\subsection{Create a database}
+
+Create a database called gis. Substitute user-name for the user-name that will be used to generate maps
+\begin{verbatim}
+sudo -u postgres -i
+createuser username # answer yes for superuser
+createdb -E UTF8 -O username gis
+createlang plpgsql gis
+exit
+\end{verbatim}
+
+\subsubsection{Create PostGIS data structures on the database}
+
+Run
+\begin{verbatim}
+psql -f /usr/share/postgresql/8.4/contrib/postgis-1.5/postgis.sql -d gis
+\end{verbatim}
+
+\subsubsection{Change ownership of database}
+
+Substitute user-name with the user that will be used to generate maps
+
+\begin{verbatim}
+echo "ALTER TABLE geometry_columns OWNER TO username;
+ ALTER TABLE spatial_ref_sys OWNER TO username;" | psql -d gis
+\end{verbatim}
+
+\subsubsection{Set the Spatial Reference Identifier}
+
+\begin{verbatim}
+psql -f ~/bin/osm2pgsql/900913.sql -d gis
+\end{verbatim}
+
+\subsection{Load the planet into the database}
+
+Now we have to load the osm file into the GIS database. Run the command 
+
+\begin{verbatim}
+cd ~/bin/osm2pgsql
+./osm2pgsql -S default.style --slim -d gis -C 2048 
+--number-processes=1 --cache-strategy=dense
+ ~/planet/planet-100217.osm.bz2
+\end{verbatim}
+
+Substituting for your planet file. This will take a very long time to complete.
+
+\subsection{Install mapnik}
+
+\subsubsection{Setup build environment}
+
+Run the commands
+\begin{verbatim}
+sudo apt-get install libltdl3-dev libpng12-dev libtiff4-dev libicu-dev
+sudo apt-get install libboost-python1.40-dev python-cairo-dev python-nose
+sudo apt-get install libboost1.40-dev libboost-filesystem1.40-dev
+sudo apt-get install libboost-iostreams1.40-dev
+ libboost-regex1.40-dev libboost-thread1.40-dev
+sudo apt-get install libboost-program-options1.40-dev libboost-python1.40-dev
+sudo apt-get install libfreetype6-dev libcairo2-dev libcairomm-1.0-dev
+sudo apt-get install libgeotiff-dev libtiff4 libtiff4-dev libtiffxx0c2
+sudo apt-get install libsigc++-dev libsigc++0c2 libsigx-2.0-2 libsigx-2.0-dev
+sudo apt-get install libgdal1-dev python-gdal
+sudo apt-get install imagemagick ttf-dejavu
+\end{verbatim}
+
+\subsubsection{Build mapnik from source}
+
+\begin{verbatim}
+cd ~/src
+svn co http://svn.mapnik.org/tags/release-0.7.1/ mapnik
+cd mapnik
+python scons/scons.py configure INPUT_PLUGINS=all OPTIMIZATION=3 SYSTEM_FONTS=/usr/share/fonts/truetype/
+python scons/scons.py
+sudo python scons/scons.py install
+sudo ldconfig
+\end{verbatim}
+
+\subsubsection{Install mapnik tools}
+
+\begin{verbatim}
+cd ~/bin
+svn co http://svn.openstreetmap.org/applications/rendering/mapnik
+\end{verbatim}
+
+\subsubsection{Optional: get world boundaries}
+
+These mark out ocean areas, which will increase map rendering speed. Run
+
+\begin{verbatim}
+cd ~/bin/mapnik
+mkdir world_boundaries
+wget http://tile.openstreetmap.org/world_boundaries-spherical.tgz
+tar xvzf world_boundaries-spherical.tgz
+wget http://tile.openstreetmap.org/processed_p.tar.bz2
+tar xvjf processed_p.tar.bz2 -C world_boundaries
+wget http://tile.openstreetmap.org/shoreline_300.tar.bz2
+tar xjf shoreline_300.tar.bz2 -C world_boundaries
+wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/10m-populated-places.zip
+unzip 10m-populated-places.zip -d world_boundaries
+wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/110m-admin-0-boundary-lines.zip
+unzip 110m-admin-0-boundary-lines.zip -d world_boundaries
+\end{verbatim}
+
+\subsection{Generate maps}
+
+If all goes well then the server is now setup. The file \emph{\~/bin/mapnik/generate\_image.py} will allow you to generate images. Other scripts in there will allow the generation of images based on gps co-ordinates, so bulk image generation can be scheduled.
+
+
+
 \chapter{Performance Testing Scripts}
 
 \section{Memory Utilization}

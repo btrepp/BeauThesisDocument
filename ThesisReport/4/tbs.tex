@@ -31,7 +31,7 @@ The e-xpert device has a set protocol that it uses to communicate with other dev
 \subsubsection{Destination and Start Byte}
 \label{sec:expertprotocol}
 
-The message data that the module outputs is transmitted as shown in figure \ref{tbs_protocol}. The first byte in the message is the start byte, in order to identify this start byte as the start byte it must be unique and never occur anywhere inside the payload. This is done by reserving the most significant bit (MSB) to be one only if it is a start or ending byte. The documentation refers to this bit as the IDHT (Identify Header Trailer ) bit. This does mean that there are only 7 bits available in each byte for transmitting data, but guarantees that the start and end of messages can be synchronized. As the first bit is a one due to the start byte being the header, the value of this byte is greater than 0x80. The rest of the bits in this first byte are the destination address. While communicating with a PC in broadcast mode, these bits can be ignored \cite{e_xpert}. The module also will not know where it is sending the byte, it is in broadcast mode, so there is no destination address. Thus the destination address bits will be 0, so the first header byte is always received as 0x80.
+The message data that the module outputs is transmitted via serial. The first byte in the message is the start byte, in order to identify this start byte as the start byte it must be unique and never occur anywhere inside the payload. This is done by reserving the most significant bit (MSB) to be one only if it is a start or ending byte. The documentation refers to this bit as the IDHT (Identify Header Trailer ) bit. This does mean that there are only 7 bits available in each byte for transmitting data, but guarantees that the start and end of messages can be synchronized. As the first bit is a one due to the start byte being the header, the value of this byte is greater than 0x80. The rest of the bits in this first byte are the destination address. While communicating with a PC in broadcast mode, these bits can be ignored \cite{e_xpert}. The module also will not know where it is sending the byte, it is in broadcast mode, so there is no destination address. Thus the destination address bits will be 0, so the first header byte is always received as 0x80.
 
 \subsubsection{Source}
 
@@ -64,8 +64,9 @@ The e-xpert pro module transmits a variety of messages, which can be categorized
 
 \subsubsection{Data}
 
-Following the message identifier is the actual payload of the message. This can take on various forms, but in the most simplistic sense is a number spread across a few bytes. Figure \ref{stuff} shows the data layout for the battery voltage message. For more information about the different values, see appendix \ref{APPENDIX}.  Due to the MSB of each byte being reserved, it is only possible to transmit 7 bits of data inside a byte, any value that requires more than 7 bits to be represented must be transmitted across multiple bytes.  
+Following the message identifier is the actual payload of the message. This can take on various forms, but in the most simplistic sense is a number spread across a few bytes. Figure \ref{tbsdatafigure} shows the data layout for the battery voltage message. For more information about the different values, see "e-xpert pro communications interface specifications" \cite{e_xpert}.  Due to the MSB of each byte being reserved, it is only possible to transmit 7 bits of data inside a byte, any value that requires more than 7 bits to be represented must be transmitted across multiple bytes.  
 
+\figuremacro{tbsdatafigure}{Structure of data payload}{Note that each byte transmitted only has seven usable bits of data, the 8th bit becomes the lowest bit in the next byte}
 
 \subsubsection{Trailing Byte}
 
